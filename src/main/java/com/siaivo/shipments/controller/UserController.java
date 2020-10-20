@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.awt.desktop.SystemEventListener;
 
 
 @Controller
@@ -86,17 +87,16 @@ public class UserController {
             modelAndView.addObject("successMessage", "Ім'я не може бути пустим");
             return modelAndView;
         } else {
-            userService.editUserName(name, id);
-            userService.saveUser(user);}
+        userService.editUserName(name, id);
+        }
         //password changing
-        if (password.length()<=4 && password.length()>0){
+        if (password.length()<=4 ){
             modelAndView.addObject("successMessage", "Пароль має бути не менше п'яти символів");
             return modelAndView;
-        } else if (password.length()==0){
-            userService.saveUser(user);
         } else {
-            userService.editUserPassword(password, id);
-            userService.saveUser(user);}
+        userService.editUserPassword(password, id);
+        }
+        userService.saveUser(user);
         modelAndView.addObject("successMessage", "Зміни успішно внесено");
         return modelAndView;
     }
