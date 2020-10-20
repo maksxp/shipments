@@ -6,17 +6,17 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "commodity")
+public class Commodity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "product_id")
+    @Column(name = "commodity_id")
     private int id;
 
-    @Column(name = "product_name")
-    @NotEmpty(message = "*Please provide product name")
-    private int productName;
+    @Column(name = "commodity_name")
+    @NotEmpty(message = "*Please provide commodity name")
+    private int commodityName;
 
     public int getId() {
         return id;
@@ -26,20 +26,20 @@ public class Product {
         this.id = id;
     }
 
-    public int getProductName() {
-        return productName;
+    public int getCommodityName() {
+        return commodityName;
     }
 
-    public void setProductName(int productName) {
-        this.productName = productName;
+    public void setCommodityName(int productName) {
+        this.commodityName = productName;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return id == product.id;
+        Commodity commodity = (Commodity) o;
+        return id == commodity.id;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "productName=" + productName +
+        return "Commodity{" +
+                "commodityName=" + commodityName +
                 '}';
     }
 }
