@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.validation.Valid;
-import java.awt.desktop.SystemEventListener;
-
 
 @Controller
 public class UserController {
@@ -25,7 +22,7 @@ public class UserController {
     @RequestMapping(value="/admin/allUsers", method = RequestMethod.GET)
     public ModelAndView allUsers(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", userService.listAllUsers());
+        modelAndView.addObject("allUsers", userService.allUsers());
         modelAndView.setViewName("/admin/allUsers");
         return modelAndView;
     }
@@ -44,7 +41,7 @@ public class UserController {
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         System.out.println("test_post");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", userService.listAllUsers());
+        modelAndView.addObject("allUsers", userService.allUsers());
         User userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {
             bindingResult

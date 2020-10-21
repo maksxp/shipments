@@ -2,14 +2,19 @@ package com.siaivo.shipments.repository;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.List;
+
 @Repository("contractRepository")
-public interface ContractRepository {
+public interface ContractRepository extends JpaRepository<Contract, Long> {
     Contract findById(int id);
-    Contract findByCustomer(String customer);
-    Contract findByContractNumber(String contractNumber);
-    Contract findByProducts(Product products);
-    Contract findByIsContractActive (Boolean isContractActive);
+    List<Contract> findByCustomer(String customer);
+    List<Contract> findByContractNumber(String contractNumber);
+    List<Contract> findByProducts(Product products);
+    List<Contract> findByIsContractActive (Boolean isContractActive);
+    List<Contract> findByContractDate(Date contractDate);
 
 }

@@ -11,5 +11,5 @@ public interface UserService {
     void editUserType(String userType, int userId);
     void editUserPassword(String password, int userId);
     void editUserName(String name, int userId);
-    List<User> listAllUsers();
+    List<User> allUsers();
 }

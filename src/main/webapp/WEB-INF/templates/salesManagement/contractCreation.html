@@ -4,7 +4,7 @@
 
 <head>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Access denied</title>
+    <title>Contract creation form</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 
     <!-- CSS only -->
@@ -16,9 +16,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 <body>
-
-<div class="container">
-    <h2>доступ заборонено</h2>
+<div class="container-fluid">
+    <div class="row row-flex">
+        <div  align="center" class=" col-md-3 col-xs-12 col-sm-3 col-lg-3" style="background-color:lavender" >
+            <div class="text"><p> ви увійшли як  <span th:text="${#httpServletRequest.remoteUser}"> </span></p></div>
+        </div>
+<!--        <div class=" col-md-6 col-xs-12 col-sm-6 col-lg-6" >-->
+<!--            <form th:action="@{/admin/userRegistration}" method="get">-->
+<!--                <button class="btn btn-md btn-warning btn-block" type="Submit">Створити нового користувача</button>-->
+<!--            </form>-->
+<!--        </div>-->
+        <div class=" col-md-3 col-xs-12 col-sm-3 col-lg-3" >
+            <form th:action="@{/logout}" method="get">
+                <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Вийти</button>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

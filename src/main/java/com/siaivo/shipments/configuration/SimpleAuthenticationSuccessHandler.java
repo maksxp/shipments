@@ -33,7 +33,7 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
                 }
             } else if(authority.getAuthority().equalsIgnoreCase("salesManagement")) {
                 try {
-                    redirectStrategy.sendRedirect(request, response, "/sales/inWorkBidsList");
+                    redirectStrategy.sendRedirect(request, response, "/salesManagement/openContracts");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
