@@ -81,10 +81,4 @@ public class Customer {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerName=" + customerName +
-                '}';
-    }
 }

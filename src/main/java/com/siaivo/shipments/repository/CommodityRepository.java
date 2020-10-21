@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface CommodityRepository extends JpaRepository<Commodity, Integer>{
     Commodity findByCommodityName(String commodityName);
     Commodity findById(int id);
-
 }
