@@ -45,6 +45,9 @@ public class Invoice {
     @Column(name = "actual_payment_date_of_final_part")
     private Date actualPaymentDateOfFinalPart;
 
+    @Column(name = "is_invoice_paid")
+    private Boolean isInvoicePaid;
+
     @Column(name = "comment")
     private String comment;
 
@@ -142,6 +145,14 @@ public class Invoice {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Boolean getInvoicePaid() {
+        return isInvoicePaid;
+    }
+
+    public void setInvoicePaid(Boolean invoicePaid) {
+        isInvoicePaid = invoicePaid;
     }
 
     @Override

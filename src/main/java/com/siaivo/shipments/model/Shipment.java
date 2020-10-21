@@ -46,7 +46,7 @@ public class Shipment {
     @NotEmpty(message = "*Please provide logistic instruction status")
     private LogisticInstructionStatus logisticInstructionStatus;
 
-    @Column(name = "labelsn_status")
+    @Column(name = "labels_status")
     @NotEmpty(message = "*Please provide labels status")
     private LabelsStatus labelsStatus;
 
