@@ -4,5 +4,5 @@ public enum PaymentTerms {
     UponLoading,
     SomeDaysAfterArriving,
     FullPrepayment,
-    ByInstallments;
+    InInstallments;
 }

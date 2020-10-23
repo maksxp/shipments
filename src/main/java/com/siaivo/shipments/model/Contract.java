@@ -18,15 +18,12 @@ public class Contract {
     private int id;
 
     @Column(name = "contract_number")
-    @NotEmpty(message = "*Please provide user name")
     private String contractNumber;
 
     @Column(name = "contract_date")
-    @NotEmpty(message = "*Please provide contract date")
     private Date contractDate;
 
     @Column(name = "payment_terms")
-    @NotEmpty(message = "*Please provide payment terms")
     private PaymentTerms paymentTerms;
 
     @Column(name = "comment")
