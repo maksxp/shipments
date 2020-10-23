@@ -16,11 +16,11 @@ public class Customer {
 
     @Column(name = "customer_name")
     @NotEmpty(message = "*Please provide customer name")
-    private int customerName;
+    private String customerName;
 
     @Column(name = "customer_country")
     @NotEmpty(message = "*Please provide customer country")
-    private int customerCountry;
+    private String customerCountry;
 
     @Column(name = "customer_type")
     private String customerType;
@@ -36,19 +36,19 @@ public class Customer {
         this.id = id;
     }
 
-    public int getCustomerName() {
+    public String getCustomerName() {
         return customerName;
     }
 
-    public void setCustomerName(int customerName) {
+    public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
-    public int getCustomerCountry() {
+    public String getCustomerCountry() {
         return customerCountry;
     }
 
-    public void setCustomerCountry(int customerCountry) {
+    public void setCustomerCountry(String customerCountry) {
         this.customerCountry = customerCountry;
     }
 

@@ -29,7 +29,6 @@ public class UserController {
 
     @RequestMapping(value="/admin/userRegistration", method = RequestMethod.GET)
     public ModelAndView createNewUser(){
-        System.out.println("test_get");
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
@@ -39,7 +38,6 @@ public class UserController {
 
     @RequestMapping(value = "/admin/userRegistration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-        System.out.println("test_post");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allUsers", userService.allUsers());
         User userExists = userService.findUserByEmail(user.getEmail());
