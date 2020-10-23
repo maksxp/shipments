@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.siaivo.shipments.repository.ContractRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("contractService")
@@ -27,4 +28,11 @@ public class ContractServiceImpl implements ContractService{
     public List<Contract> openContracts(){
         return contractRepository.findByIsContractActive(true);
     }
+
+    @Override
+    public Contract findContractByContractNumberAndContractDate (String contractNumber, Date contractDate){
+        return contractRepository.findContractByContractNumberAndContractDate(contractNumber, contractDate);
+    }
+
+
 }
