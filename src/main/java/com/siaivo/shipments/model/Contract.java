@@ -1,7 +1,5 @@
 package com.siaivo.shipments.model;
 
-import com.siaivo.shipments.support.PaymentTerms;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Calendar;
@@ -24,7 +22,8 @@ public class Contract {
     private Date contractDate;
 
     @Column(name = "payment_terms")
-    private PaymentTerms paymentTerms;
+    @NotEmpty(message = "*Please provide payment terms")
+    private String paymentTerms;
 
     @Column(name = "comment")
     private String comment;
@@ -33,7 +32,7 @@ public class Contract {
     @JoinColumn(name="product_id")
     private List<Product> products;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
@@ -76,11 +75,11 @@ public class Contract {
         this.contractDate = contractDate;
     }
 
-    public PaymentTerms getPaymentTerms() {
+    public String getPaymentTerms() {
         return paymentTerms;
     }
 
-    public void setPaymentTerms(PaymentTerms paymentTerms) {
+    public void setPaymentTerms(String paymentTerms) {
         this.paymentTerms = paymentTerms;
     }
 

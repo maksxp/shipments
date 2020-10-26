@@ -3,6 +3,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,9 @@ public class Customer {
 
     @Column(name = "customer_type")
     private String customerType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private List<Contract> contracts;
 
     @Column(name = "comment")
     private String comment;
@@ -58,6 +62,14 @@ public class Customer {
 
     public void setCustomerType(String customerType) {
         this.customerType = customerType;
+    }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
     }
 
     public String getComment() {

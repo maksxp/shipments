@@ -48,49 +48,42 @@
             <form autocomplete="off" action="#" th:action="@{/salesManagement/contractRegistration}"
                   th:object="${contract}" method="post" class="form-horizontal" role="form">
                 <h2>Форма реєстрації нового контракту</h2>
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('contractNumber')}" th:errors="*{contractNumber}"
-                               class="validation-message"></label>
-                        <input type="text" th:field="*{contractNumber}" placeholder="Номер контракту"
-                               class="form-control" />
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{customerCountry}" placeholder="Країна покупця"
-                               class="form-control" /> <label
-                            th:if="${#fields.hasErrors('customerCountry')}" th:errors="*{customerCountry}"
-                            class="validation-message"></label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <label>Тип покупця</label>
-                        <select th:field="*{customerType}">
-                            <!--                            <option th:value="trader">Трейдер</option>-->
-                            <!--                            <option th:value="processor">Переробник</option>-->
-                            <option th:value="Трейдер">Трейдер</option>
-                            <option th:value="Переробник">Переробник</option>
+                        <label>Покупець</label>
+                        <select th:field="*{customer}">
+                            <option th:each="customer : ${allCustomers}" th:value="${{customer.customerName}}" th:text="${customer.customerName}">
+                            </option>
                         </select>
                     </div>
                 </div>
 
-
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{comment}"
-                               placeholder="Коментар" class="form-control" /> <label
-                            th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"
-                            class="validation-message"></label>
+                        <input type="text" th:field="*{paymentTerms}" placeholder="Умови оплати" class="form-control" />
+                    </div>
+                </div>
+
+                <div th:object="${product}" class="form-group">
+                    <div class="col-sm-9">
+                        <label>Товар</label>
+                        <select th:field="*{commodity}">
+                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity.commodityName}}" th:text="${commodity.commodityName}">
+                            </option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block">Зареєструвати покупця</button>
+                        <input type="text" th:field="*{comment}" placeholder="Коментар" class="form-control" />
+                     </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <button type="submit" class="btn btn-primary btn-block">Зареєструвати новий контракт</button>
                     </div>
                 </div>
 

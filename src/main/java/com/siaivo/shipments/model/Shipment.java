@@ -2,7 +2,6 @@ package com.siaivo.shipments.model;
 
 import com.siaivo.shipments.support.LabelsStatus;
 import com.siaivo.shipments.support.LogisticInstructionStatus;
-import com.siaivo.shipments.support.PaymentTerms;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

@@ -1,14 +1,9 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Customer;
-import com.siaivo.shipments.model.Role;
-import com.siaivo.shipments.model.User;
 import com.siaivo.shipments.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Service("customerService")
