@@ -22,17 +22,23 @@ public class Product {
     private double price;
 
     @Column(name = "currency")
+    @NotEmpty(message = "*Please provide currency")
     private String currency;
 
     @Column(name = "product_packaging")
+    @NotEmpty(message = "*Please provide packaging")
     private String packaging;
 
-    @Column(name = "isProductOnPallets")
+    @Column(name = "is_product_on_pallets")
     private Boolean isProductOnPallets;
 
     @Column(name = "product_quantity")
     @NotEmpty(message = "*Please provide a quantity")
     private double quantity;
+
+    @Column(name = "product_batch")
+    @NotEmpty(message = "*Please provide batch")
+    private String batch;
 
     public int getId() {
         return id;
@@ -89,6 +95,10 @@ public class Product {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
+
+    public String getBatch() { return batch; }
+
+    public void setBatch(String batch) { this.batch = batch; }
 
     @Override
     public boolean equals(Object o) {

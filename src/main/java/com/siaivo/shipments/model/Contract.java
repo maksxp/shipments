@@ -36,15 +36,15 @@ public class Contract {
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @Column(name = "firstMonthOfShipments")
+    @Column(name = "first_month_of_shipments")
     @NotEmpty(message = "*Please provide first month of shipments")
     private Calendar firstMonthOfShipments;
 
-    @Column(name = "lastMonthOfShipments")
+    @Column(name = "last_month_of_shipments")
     @NotEmpty(message = "*Please provide last month of shipments")
     private Calendar lastMonthOfShipments;
 
-    @Column(name = "isContractActive")
+    @Column(name = "is_contract_active")
     private Boolean isContractActive;
 
     @OneToMany
