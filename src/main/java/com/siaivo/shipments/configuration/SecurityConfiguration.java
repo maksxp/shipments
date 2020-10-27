@@ -3,6 +3,10 @@ package com.siaivo.shipments.configuration;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -46,6 +51,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .sessionRegistry(sessionRegistry());
         http.
                 authorizeRequests()
                 .antMatchers("/").permitAll()
@@ -70,7 +80,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .accessDeniedPage("/access-denied")
+                .and()
+                .sessionManagement()
+                .maximumSessions(1)
+                .expiredUrl("/expired")
+                .maxSessionsPreventsLogin(false)
+                .sessionRegistry(sessionRegistry());
     }
 
     @Override
@@ -80,4 +96,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+        return sessionRegistry;
+    }
+
+    @Bean
+    public static ServletListenerRegistrationBean httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
+    }
 }
