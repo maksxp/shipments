@@ -13,7 +13,7 @@ public class Product {
     @Column(name = "product_id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="commodity_id")
     private Commodity commodity;
 

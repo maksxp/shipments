@@ -4,7 +4,7 @@
 
 <head>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All customers</title>
+    <title>All commodities</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 
     <!-- CSS only -->
@@ -18,42 +18,36 @@
 <body>
 <div class="container-fluid">
     <div class="row row-flex">
-        <div  align="center" class=" col-md-2 col-xs-12 col-sm-2 col-lg-2" style="background-color:lavender" >
+        <div  align="center" class="col-md-2 col-xs-12 col-sm-2 col-lg-2" style="background-color:lavender" >
             <div class="text"><p> ви увійшли як  <span th:text="${#httpServletRequest.remoteUser}"> </span></p></div>
         </div>
-        <div class=" col-md-4 col-xs-12 col-sm-4 col-lg-4" >
-            <form th:action="@{/salesSupport/customerRegistration}" method="get">
-                 <button class="btn btn-md btn-warning btn-block" type="Submit">Додати нового покупця</button>
-            </form>
-        </div>
         <div class=" col-md-4 col-xs-12 col-sm-4 col-lg-4" style="background-color:lavenderblush">
-            <form th:action="@{/salesSupport/allCommodities}" method="get">
-                <button class="btn btn-md btn-info btn-block" type="Submit">Переглянути список всіх товарів</button>
+            <form th:action="@{/salesSupport/allCustomers}" method="get">
+                <button class="btn btn-md btn-info btn-block" type="Submit">Переглянути список всіх покупців</button>
             </form>
         </div>
-        <div class=" col-md-2 col-xs-12 col-sm-2 col-lg-2" >
+        <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4" >
+            <form th:action="@{/salesSupport/commodityRegistration}" method="get">
+                <button class="btn btn-md btn-warning btn-block" type="Submit">Додати новий товар</button>
+            </form>
+        </div>
+        <div class=" сol-md-2 col-xs-12 col-sm-2 col-lg-2" >
             <form th:action="@{/logout}" method="get">
-                <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Вийти</button>
+                <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
             </form>
         </div>
     </div>
 </div>
 <div class="container">
-    <h2>Список покупців</h2>
+    <h2>Список товарів</h2>
     <table class="table table-striped">
         <tr>
             <th>Назва</th>
-            <th>Країна</th>
-            <th>Тип</th>
-            <th>Коментар</th>
-            <th>Редагувати</th>
+            <th>Код УКТЗЕД</th>
         </tr>
-        <tr th:each="customer : ${allCustomers}">
-            <td th:text="${customer.customerName}">Name</td>
-            <td th:text="${customer.customerCountry}">E-Mail</td>
-            <td th:text="${customer.customerType}">E-Mail</td>
-            <td th:text="${customer.comment}">Type</td>
-            <td><a th:href="${'/salesSupport/customerEdit/' + customer.id}"> Edit</a></td>
+        <tr th:each="commodity : ${allCommodities}">
+            <td th:text="${commodity.commodityName}">commodityName</td>
+            <td th:text="${commodity.commodityCode}">commodityCode</td>
         </tr>
     </table>
 

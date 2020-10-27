@@ -8,6 +8,7 @@ public interface CommodityService {
     void saveCommodity(Commodity commodity);
     List<Commodity> allCommodities();
     Commodity findCommodityByCommodityName (String commodityName);
+    Commodity findCommodityByCommodityCode (String commodityCode);
     Commodity findCommodityById (int id);
 
 }

@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository("commodityRepository")
 public interface CommodityRepository extends JpaRepository<Commodity, Integer>{
     Commodity findByCommodityName(String commodityName);
+    Commodity findByCommodityCode(String commodityCode);
     Commodity findById(int id);
 }

@@ -28,6 +28,11 @@ public class CommodityServiceImpl implements CommodityService{
     }
 
     @Override
+    public Commodity findCommodityByCommodityCode(String commodityCode) {
+        return commodityRepository.findByCommodityCode(commodityCode);
+    }
+
+    @Override
     public Commodity findCommodityById(int id) {
         return commodityRepository.findById(id);
     }

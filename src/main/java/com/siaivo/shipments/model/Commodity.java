@@ -3,6 +3,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +17,14 @@ public class Commodity {
 
     @Column(name = "commodity_name")
     @NotEmpty(message = "*Please provide commodity name")
-    private int commodityName;
+    private String commodityName;
+
+    @Column(name = "commodity_code")
+    @NotEmpty(message = "*Please provide commodity code")
+    private String commodityCode;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commodity")
+    private List<Product> products;
 
     public int getId() {
         return id;
@@ -26,12 +34,28 @@ public class Commodity {
         this.id = id;
     }
 
-    public int getCommodityName() {
+    public String getCommodityName() {
         return commodityName;
     }
 
-    public void setCommodityName(int productName) {
+    public void setCommodityName(String productName) {
         this.commodityName = productName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public String getCommodityCode() {
+        return commodityCode;
+    }
+
+    public void setCommodityCode(String commodityCode) {
+        this.commodityCode = commodityCode;
     }
 
     @Override

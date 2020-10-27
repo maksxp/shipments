@@ -4,7 +4,7 @@
 
 <head>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Customer registration form</title>
+    <title>Commodity registration form</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 
     <!-- CSS only -->
@@ -41,50 +41,30 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form autocomplete="off" action="#" th:action="@{/salesSupport/customerRegistration}"
-                  th:object="${customer}" method="post" class="form-horizontal" role="form">
-                <h2>Форма реєстрації покупця</h2>
+            <form autocomplete="off" action="#" th:action="@{/salesSupport/commodityRegistration}"
+                  th:object="${commodity}" method="post" class="form-horizontal" role="form">
+                <h2>Форма реєстрації товару</h2>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"
+                        <label th:if="${#fields.hasErrors('commodityName')}" th:errors="*{commodityName}"
                                class="validation-message"></label>
-                        <input type="text" th:field="*{customerName}" placeholder="Назва покупця"
+                        <input type="text" th:field="*{commodityName}" placeholder="Назва товару"
                                class="form-control" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{customerCountry}" placeholder="Країна покупця"
-                               class="form-control" /> <label
-                            th:if="${#fields.hasErrors('customerCountry')}" th:errors="*{customerCountry}"
-                            class="validation-message"></label>
+                        <label th:if="${#fields.hasErrors('commodityCode')}" th:errors="*{commodityCode}"
+                               class="validation-message"></label>
+                        <input type="number" th:field="*{commodityCode}" placeholder="Код УКТЗЕД"
+                               class="form-control" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label>Тип покупця</label>
-                        <select th:field="*{customerType}">
-                            <option th:value="Трейдер">Трейдер</option>
-                            <option th:value="Переробник">Переробник</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <input type="text" th:field="*{comment}"
-                               placeholder="Коментар" class="form-control" /> <label
-                            th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"
-                            class="validation-message"></label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block">Зареєструвати покупця</button>
+                        <button type="submit" class="btn btn-primary btn-block">Зареєструвати товар</button>
                     </div>
                 </div>
 
