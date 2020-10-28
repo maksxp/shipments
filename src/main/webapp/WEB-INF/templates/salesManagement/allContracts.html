@@ -41,5 +41,25 @@
         </div>
     </div>
 </div>
+<div class="container">
+    <h2>Список контрактів</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Номер</th>
+            <th>Покупець</th>
+            <th>Умови оплати</th>
+            <th>Товари</th>
+        </tr>
+        <tr th:each="contract : ${allContracts}">
+            <td th:text="${contract.contractNumber}">contractNumber</td>
+            <td th:text="${contract.getCustomer().customerName}">customerName</td>
+            <td th:text="${contract.paymentTerms}">paymentTerms</td>
+<!--            <td th:each="product : ${contract.getProducts()}" th:text="${product.getCommodity().getCommodityName()+', '}">products</td>-->
+            <td th:each="product : ${contract.getProducts()}" th:text="${product.getCommodity().getCommodityName()+'/<br>'}">products</td>
+            <td></td>
+
+    </table>
+
+</div>
 </body>
 </html>

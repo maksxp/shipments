@@ -28,8 +28,7 @@ public class Contract {
     @Column(name = "comment")
     private String comment;
 
-    @OneToMany
-    @JoinColumn(name="product_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract")
     private List<Product> products;
 
     @ManyToOne (fetch = FetchType.LAZY)

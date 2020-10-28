@@ -17,6 +17,10 @@ public class Product {
     @JoinColumn(name="commodity_id")
     private Commodity commodity;
 
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name="contract_id")
+    private Contract contract;
+
     @Column(name = "product_price")
     @NotEmpty(message = "*Please provide a price")
     private double price;
@@ -99,6 +103,14 @@ public class Product {
     public String getBatch() { return batch; }
 
     public void setBatch(String batch) { this.batch = batch; }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
 
     @Override
     public boolean equals(Object o) {

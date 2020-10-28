@@ -40,7 +40,8 @@ public class UserController {
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allUsers", userService.allUsers());
-        User userExists = userService.findUserByEmail(user.getEmail());
+        User userExists;
+        userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",

@@ -53,7 +53,7 @@
                     <div class="col-sm-9">
                         <label>Покупець</label>
                         <select th:field="*{customer}">
-                            <option th:each="customer : ${allCustomers}" th:value="${{customer.customerName}}" th:text="${customer.customerName}">
+                            <option th:each="customer : ${allCustomers}" th:value="${{customer}}" th:text="${customer.customerName}">
                             </option>
                         </select>
                     </div>
@@ -69,9 +69,12 @@
                     <div class="col-sm-9">
                         <label>Товар</label>
                         <select th:field="*{commodity}">
-                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity.commodityName}}" th:text="${commodity.commodityName}">
+                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}">
                             </option>
                         </select>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" th:field="*{batch}" placeholder="Партія" class="form-control" />
                     </div>
                 </div>
 

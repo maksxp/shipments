@@ -2,6 +2,7 @@ package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
+import com.siaivo.shipments.service.CommodityService;
 import com.siaivo.shipments.service.ContractService;
 import com.siaivo.shipments.service.CustomerService;
 import com.siaivo.shipments.service.ProductService;
@@ -19,6 +20,8 @@ public class ContractController {
     private ProductService productService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CommodityService commodityService;
 
     @RequestMapping(value="/salesManagement/openContracts", method = RequestMethod.GET)
     public ModelAndView openContracts(){
@@ -37,11 +40,12 @@ public class ContractController {
     }
 
     @RequestMapping(value="/salesManagement/contractRegistration", method = RequestMethod.GET)
-    public ModelAndView registerNewCustomer(){
+    public ModelAndView registerNewContract(){
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = new Contract ();
         Product product = new Product();
         modelAndView.addObject("allCustomers", customerService.allCustomers());
+        modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("product", product);
         modelAndView.setViewName("/salesManagement/contractRegistration");
@@ -49,13 +53,16 @@ public class ContractController {
     }
 
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewCustomer (Contract contract, Product product) {
+    public ModelAndView registerNewContract (Contract contract, Product product) {
         ModelAndView modelAndView = new ModelAndView();
             contractService.saveContract(contract);
+            product.setContract(contract);
             productService.saveProduct(product);
             modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
             modelAndView.addObject("contract", new Contract());
             modelAndView.addObject("product", new Product());
+            modelAndView.addObject("allCustomers", customerService.allCustomers());
+            modelAndView.addObject("allCommodities", commodityService.allCommodities());
             modelAndView.setViewName("/salesManagement/contractRegistration");
             return modelAndView;
     }
