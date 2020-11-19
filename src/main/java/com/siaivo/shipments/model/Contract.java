@@ -2,6 +2,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,11 +37,11 @@ public class Contract {
     private Customer customer;
 
     @Column(name = "first_month_of_shipments")
-    @NotEmpty(message = "*Please provide first month of shipments")
+//    @NotNull(message = "*Please provide first month of shipments")
     private Calendar firstMonthOfShipments;
 
     @Column(name = "last_month_of_shipments")
-    @NotEmpty(message = "*Please provide last month of shipments")
+//    @NotNull(message = "*Please provide last month of shipments")
     private Calendar lastMonthOfShipments;
 
     @Column(name = "is_contract_active")

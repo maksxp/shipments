@@ -41,21 +41,12 @@
                 <h2>Форма реєстрації користувача</h2>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                               class="validation-message"></label>
                         <input type="text" th:field="*{name}" placeholder="Прізвище та ім'я"
                                class="form-control" />
+                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                               class="validation-message"></label>
                     </div>
                 </div>
-
-                <!--<div class="form-group">-->
-                <!--<div class="col-sm-9">-->
-                <!--<label	th:if="${#fields.hasErrors('company')}" th:errors="*{company}"-->
-                <!--class="validation-message"></label>-->
-                <!--<input type="text" th:field="*{company}"-->
-                <!--placeholder="Назва дилера або ГПО" class="form-control" />-->
-                <!--</div>-->
-                <!--</div>-->
                 <div class="form-group">
                     <div class="col-sm-9">
                         <input type="text" th:field="*{email}" placeholder="Email"
@@ -90,10 +81,7 @@
                         <button type="submit" class="btn btn-primary btn-block">Зареєструвати користувача</button>
                     </div>
                 </div>
-
                 <span th:utext="${successMessage}"></span>
-
-
             </form>
         </div>
     </div>

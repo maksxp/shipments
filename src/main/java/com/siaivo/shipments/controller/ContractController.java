@@ -1,7 +1,6 @@
 package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Contract;
-import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.service.CommodityService;
 import com.siaivo.shipments.service.ContractService;
@@ -9,13 +8,13 @@ import com.siaivo.shipments.service.CustomerService;
 import com.siaivo.shipments.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Controller
 public class ContractController {
@@ -49,9 +48,31 @@ public class ContractController {
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = new Contract ();
         Product product = new Product();
+        return getContractModelAndView(contract, product, modelAndView);
+    }
+
+    @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
+    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, Product product, @RequestParam("customerName") String customerName) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (isCustomerExists(customerName)!= true) {
+              bindingResult
+                    .rejectValue("customer", "error.customer",
+                            "Необхідно обрати покупця зі списку");
+        }
+        if (bindingResult.hasErrors()) {
+            return getContractModelAndView(contract, product, modelAndView);}
+        contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
+        contractService.saveContract(contract);
+        product.setContract(contract);
+        productService.saveProduct(product);
+        modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
+        return getContractModelAndView(contract, product, modelAndView);
+//         return new ModelAndView( "redirect:/salesManagement/contractRegistration");
+    }
+
+    private ModelAndView getContractModelAndView(@Valid Contract contract, Product product, ModelAndView modelAndView) {
         List<String> allCustomersNames = new ArrayList<>();
         customerService.allCustomers().forEach(customer -> allCustomersNames.add(customer.getCustomerName()));
-//        modelAndView.addObject("allCustomers", customerService.allCustomers());
         modelAndView.addObject("allCustomersNames", allCustomersNames);
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
@@ -60,19 +81,10 @@ public class ContractController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewContract (Contract contract, Product product, @RequestParam("customerName") String customerName) {
-        ModelAndView modelAndView = new ModelAndView();
-        System.out.println("POST customer name is : "+customerName);
-        contractService.saveContract(contract);
-        product.setContract(contract);
-        productService.saveProduct(product);
-        modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
-        modelAndView.addObject("contract", new Contract());
-        modelAndView.addObject("product", new Product());
-        modelAndView.addObject("allCustomers", customerService.allCustomers());
-        modelAndView.addObject("allCommodities", commodityService.allCommodities());
-        modelAndView.setViewName("/salesManagement/contractRegistration");
-        return modelAndView;
+    private boolean isCustomerExists (String customerName) {
+        if (customerService.findCustomerByCustomerName(customerName)!=null) {
+            return true;
+        } else
+            return false;
     }
 }

@@ -5,10 +5,7 @@ import com.siaivo.shipments.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
@@ -16,8 +13,6 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     private UserService userService;
-//    @Autowired
-//    private CompanyService companyService;
 
     @RequestMapping(value="/admin/allUsers", method = RequestMethod.GET)
     public ModelAndView allUsers(){
@@ -42,19 +37,21 @@ public class UserController {
         modelAndView.addObject("allUsers", userService.allUsers());
         User userExists;
         userExists = userService.findUserByEmail(user.getEmail());
+        if (bindingResult.hasErrors()) {
+            System.out.println("error");
+            modelAndView.setViewName("/admin/userRegistration");
+            return modelAndView;}
         if (userExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",
                             "Користувач з такими email вже зареєстрований");
         }
-        if (bindingResult.hasErrors()) {
-           modelAndView.setViewName("/admin/userRegistration");
-        } else {
+        else {
+            System.out.println("NO errors");
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "Користувача успішно додано");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("/admin/userRegistration");
-
         }
         return modelAndView;
     }

@@ -1,8 +1,9 @@
 package com.siaivo.shipments.model;
 
-import javax.validation.constraints.*;
-import org.springframework.data.annotation.Transient;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class User {
     @NotEmpty(message = "*Please provide an email")
     private String email;
     @Column(name = "password")
-    @Size (min = 5, message = "*Your password must have at least 5 characters" )
+    @Size(min = 5, message = "*Password must have at least 5 characters" )
     @NotEmpty(message = "*Please provide user password")
     @Transient
     private String password;
