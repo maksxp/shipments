@@ -6,6 +6,7 @@ import com.siaivo.shipments.service.CommodityService;
 import com.siaivo.shipments.service.ContractService;
 import com.siaivo.shipments.service.CustomerService;
 import com.siaivo.shipments.service.ProductService;
+import com.siaivo.shipments.support.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -47,12 +48,12 @@ public class ContractController {
     public ModelAndView registerNewContract(){
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = new Contract ();
-        Product product = new Product();
-        return getContractModelAndView(contract, product, modelAndView);
+        ProductForm productForm = new ProductForm();
+        return getContractModelAndView(contract, productForm, modelAndView);
     }
 
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, Product product, @RequestParam("customerName") String customerName) {
+    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName) {
         ModelAndView modelAndView = new ModelAndView();
         if (isCustomerExists(customerName)!= true) {
               bindingResult
@@ -60,23 +61,20 @@ public class ContractController {
                             "Необхідно обрати покупця зі списку");
         }
         if (bindingResult.hasErrors()) {
-            return getContractModelAndView(contract, product, modelAndView);}
+            return getContractModelAndView(contract, productForm, modelAndView);}
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contractService.saveContract(contract);
-        product.setContract(contract);
-        productService.saveProduct(product);
+//        product.setContract(contract);
+//        productService.saveProduct(product);
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
-        return getContractModelAndView(contract, product, modelAndView);
-//         return new ModelAndView( "redirect:/salesManagement/contractRegistration");
+        return getContractModelAndView(contract, productForm, modelAndView);
     }
 
-    private ModelAndView getContractModelAndView(@Valid Contract contract, Product product, ModelAndView modelAndView) {
-        List<String> allCustomersNames = new ArrayList<>();
-        customerService.allCustomers().forEach(customer -> allCustomersNames.add(customer.getCustomerName()));
-        modelAndView.addObject("allCustomersNames", allCustomersNames);
+    private ModelAndView getContractModelAndView(@Valid Contract contract, ProductForm productForm, ModelAndView modelAndView) {
+        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
-        modelAndView.addObject("product", product);
+        modelAndView.addObject("productForm", productForm);
         modelAndView.setViewName("/salesManagement/contractRegistration");
         return modelAndView;
     }
@@ -86,5 +84,10 @@ public class ContractController {
             return true;
         } else
             return false;
+    }
+    private List<String> getAllCustomersNames (){
+        List<String> allCustomersNames = new ArrayList<>();
+        customerService.allCustomers().forEach(customer -> allCustomersNames.add(customer.getCustomerName()));
+        return allCustomersNames;
     }
 }

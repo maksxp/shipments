@@ -31,13 +31,13 @@
     </script>
 
     <script th:inline="javascript">
-        const real_data = /*[[${allCustomersNames}]]*/'noValue';
+        const allCustomersNames = /*[[${allCustomersNames}]]*/'noValue';
         $(document).ready(function () {
             let customerName;
             $("#nameInput").autocomplete({
                 minLength : 2,
-                source : real_data,
-                select : function(e, ui) {
+                source : allCustomersNames,
+                    select : function(e, ui) {
                     $("#nameOutput").text('Ви обрали : ' + ui.item.value);
                     customerName = ui.item.value;
                     return ui.item.value;
@@ -45,21 +45,27 @@
             })
         });
     </script>
+
     <style>
         .layerHeader {
-            padding: 20px; /* Поля вокруг текста */
+            padding: 20px;
         }
         .layerBottom {
             width: 20%;
-            padding: 20px; /* Поля вокруг текста */
+            padding: 20px;
         }
         .layerForm{
             border: 4px solid cornflowerblue;
-            padding: 20px; /* Поля вокруг текста */
+            padding: 20px;
+        }
+        .BuyerWidth {
+            width: 100%;
+            margin-left: -300px;
         }
     </style>
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="row row-flex">
         <div  align="center" class=" col-md-2 col-xs-12 col-sm-2 col-lg-2" style="background-color:lavender" >
@@ -97,15 +103,17 @@
       th:object="${contract}" method="post" class="form-horizontal" role="form">
     <div class="container-fluid">
         <div class="row row-flex">
-            <div  align="center" class=" col-md-4 col-xs-12 col-sm-4 col-lg-4" >
+            <div  align="center" class=" col-md-5 col-xs-12 col-sm-5 col-lg-5" >
                 <div class="layerForm">
-                <div class="ui-widget">
-                    <label for="nameInput">Покупець :</label>
-                    <input th:name="customerName" id="nameInput" />
-                    <h3 id="nameOutput"></h3>
-                    <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}"
+                    <div class="ui-widget">
+<!--                    <div class="BuyerWidth">-->
+                        <label for="nameInput">Покупець :</label>
+                        <input th:name="customerName" id="nameInput" />
+                        <h3 id="nameOutput"></h3>
+                        <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}"
                            class="validation-message"></label>
-                </div>
+<!--                    </div>-->
+                    </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
@@ -122,22 +130,24 @@
                 </div>
                 </div>
             </div>
-            <div class=" col-md-8 col-xs-12 col-sm-8 col-lg-8">
+            <div class=" col-md-7 col-xs-12 col-sm-7 col-lg-7">
                 <div class="layerForm">
-                <div th:object="${product}" class="form-group">
-                    <div class="col-sm-9">
-                        <label>Товар</label>
-                        <select th:field="*{commodity}" required>
-            <!--        <option selected value="none" >Оберіть товар</option>-->
-                        <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
-                        </select>
+                    <div th:object="${productForm}" class="form-group">
+<!--                <div th:object="${product}" class="form-group">-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <label>Товар</label>-->
+<!--                        <select th:field="*{commodity}" required>-->
+<!--            &lt;!&ndash;        <option selected value="none" >Оберіть товар</option>&ndash;&gt;-->
+<!--                        <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <input type="text" th:field="*{batch}" placeholder="Партія" class="form-control" />-->
+<!--                        <label th:if="${#fields.hasErrors('batch')}" th:errors="*{batch}"-->
+<!--                               class="validation-message"></label>-->
+<!--                    </div>-->
+<!--                </div>-->
                     </div>
-                    <div class="col-sm-9">
-                        <input type="text" th:field="*{batch}" placeholder="Партія" class="form-control" />
-                        <label th:if="${#fields.hasErrors('batch')}" th:errors="*{batch}"
-                               class="validation-message"></label>
-                    </div>
-                </div>
                 </div>
             </div>
          </div>
