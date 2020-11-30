@@ -58,9 +58,16 @@
             border: 4px solid cornflowerblue;
             padding: 20px;
         }
-        .BuyerWidth {
-            width: 100%;
-            margin-left: -300px;
+        #product_form{
+            position:relative;
+            top: 30px;
+            margin-bottom: 30px;
+        }
+        label{
+            position:relative;
+            display: inline-block;
+            top:-30px;
+            width: 0px;
         }
     </style>
 </head>
@@ -99,16 +106,17 @@
         </div>
     </div>
 </div>
+
 <form autocomplete="off" action="#" th:action="@{/salesManagement/contractRegistration}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
     <div class="container-fluid">
         <div class="row row-flex">
-            <div  align="center" class=" col-md-5 col-xs-12 col-sm-5 col-lg-5" >
+            <div  align="center" class=" col-md-3 col-xs-12 col-sm-3 col-lg-3" >
                 <div class="layerForm">
                     <div class="ui-widget">
 <!--                    <div class="BuyerWidth">-->
-                        <label for="nameInput">Покупець :</label>
-                        <input th:name="customerName" id="nameInput" />
+<!--                        <label for="nameInput">Покупець :</label>-->
+                        Покупець : <input th:name="customerName" id="nameInput" />
                         <h3 id="nameOutput"></h3>
                         <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}"
                            class="validation-message"></label>
@@ -116,7 +124,7 @@
                     </div>
 
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="ui-widget">
                         <input type="text" th:field="*{paymentTerms}" placeholder="Умови оплати" class="form-control" />
                         <label th:if="${#fields.hasErrors('paymentTerms')}" th:errors="*{paymentTerms}"
                                class="validation-message"></label>
@@ -124,29 +132,43 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="ui-widget">
                         <input type="text" th:field="*{comment}" placeholder="Коментар" class="form-control" />
                     </div>
                 </div>
                 </div>
             </div>
-            <div class=" col-md-7 col-xs-12 col-sm-7 col-lg-7">
+
+            <div class=" col-md-9 col-xs-12 col-sm-9 col-lg-9">
                 <div class="layerForm">
-                    <div th:object="${productForm}" class="form-group">
-<!--                <div th:object="${product}" class="form-group">-->
-<!--                    <div class="col-sm-9">-->
-<!--                        <label>Товар</label>-->
-<!--                        <select th:field="*{commodity}" required>-->
-<!--            &lt;!&ndash;        <option selected value="none" >Оберіть товар</option>&ndash;&gt;-->
-<!--                        <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                    <div class="col-sm-9">-->
-<!--                        <input type="text" th:field="*{batch}" placeholder="Партія" class="form-control" />-->
-<!--                        <label th:if="${#fields.hasErrors('batch')}" th:errors="*{batch}"-->
-<!--                               class="validation-message"></label>-->
-<!--                    </div>-->
-<!--                </div>-->
+                    <div th:object="${productForm}" class="form-group" id="product_form">
+                        <label th:for="commodity">Товар</label>
+                        <select th:field="*{products[__${0}__].commodity}" th:id="commodity" required>
+                            <option selected value="none" >Оберіть товар</option>
+                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
+                        </select>
+                        <label th:for="packaging">Пакування</label>
+                        <input type="text" th:field="*{products[__${0}__].packaging}" th:id="packaging">
+                        <label th:for="quantity">Кількість</label>
+                        <input type="number" th:field="*{products[__${0}__].quantity}" th:id="quantity" th:size="40">
+                        <label th:for="price">Ціна</label>
+                        <input type="number" th:field="*{products[__${0}__].price}" th:id="price" th:size="40">
+                        <label th:for="currency">Валюта</label>
+                        <select th:field="*{products[__${0}__].currency}" th:id="currency" required>
+                            <option selected value="none" >Оберіть валюту</option>
+                            <option th:value="EUR">Євро</option>
+                            <option th:value="USD">Долар США</option>
+                            <option th:value="UAH">Українська гривня</option>
+                        </select>
+                        <label th:for="isProductOnPallets">Піддони</label>
+                        <select th:field="*{products[__${0}__].productOnPallets}" th:id="isProductOnPallets" required>
+                            <option selected value="none" >Оберіть</option>
+                            <option th:value="true">Так</option>
+                            <option th:value="false">Ні</option>
+                        </select>
+                        <label th:for="batch">Партія</label>
+                        <input type="text" th:field="*{products[__${0}__].batch}" th:id="batch">
+
                     </div>
                 </div>
             </div>

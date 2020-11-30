@@ -3,15 +3,25 @@ package com.siaivo.shipments.support;
 import com.siaivo.shipments.model.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductForm {
-    private ArrayList<Product> productList;
+    private List<Product> products;
 
-    public ArrayList<Product> getProductList() {
-        return productList;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public ProductForm(List<Product> products) {
+        super();
+        this.products = products;
+    }
+
+    public ProductForm() {
+        super();
     }
 }

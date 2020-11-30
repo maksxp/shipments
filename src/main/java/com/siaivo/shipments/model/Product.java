@@ -2,6 +2,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +24,7 @@ public class Product {
 
     @Column(name = "product_price")
     @NotEmpty(message = "*Please provide a price")
-    private double price;
+    private BigDecimal price;
 
     @Column(name = "currency")
     @NotEmpty(message = "*Please provide currency")
@@ -38,7 +39,7 @@ public class Product {
 
     @Column(name = "product_quantity")
     @NotEmpty(message = "*Please provide a quantity")
-    private double quantity;
+    private BigDecimal quantity;
 
     @Column(name = "product_batch")
     @NotEmpty(message = "*Please provide batch")
@@ -60,11 +61,11 @@ public class Product {
         this.commodity = commodity;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -84,19 +85,11 @@ public class Product {
         this.packaging = packaging;
     }
 
-    public Boolean getProductOnPallets() {
-        return isProductOnPallets;
-    }
-
-    public void setProductOnPallets(Boolean productOnPallets) {
-        isProductOnPallets = productOnPallets;
-    }
-
-    public double getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
@@ -112,6 +105,14 @@ public class Product {
         this.contract = contract;
     }
 
+    public Boolean getProductOnPallets() {
+        return isProductOnPallets;
+    }
+
+    public void setProductOnPallets(Boolean productOnPallets) {
+        isProductOnPallets = productOnPallets;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,5 +124,16 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", commodity=" + commodity +
+                ", contract=" + contract +
+                ", packaging='" + packaging + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

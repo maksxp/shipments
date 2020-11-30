@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,8 @@ public class ContractController {
                     .rejectValue("customer", "error.customer",
                             "Необхідно обрати покупця зі списку");
         }
+        System.out.println("product 1: " +productForm.getProducts().get(0));
+        List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
             return getContractModelAndView(contract, productForm, modelAndView);}
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
@@ -67,7 +71,7 @@ public class ContractController {
 //        product.setContract(contract);
 //        productService.saveProduct(product);
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
-        return getContractModelAndView(contract, productForm, modelAndView);
+        return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
 
     private ModelAndView getContractModelAndView(@Valid Contract contract, ProductForm productForm, ModelAndView modelAndView) {
