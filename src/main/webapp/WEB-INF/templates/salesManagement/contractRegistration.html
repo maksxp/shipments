@@ -14,11 +14,14 @@
     <!-- JS, Popper.js, and jQuery -->
     <!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
     <!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
-    <script
-            src="http://code.jquery.com/jquery-3.5.1.js"
-            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-            crossorigin="anonymous">
-    </script>
+<!--    <script-->
+<!--            src="http://code.jquery.com/jquery-3.5.1.js"-->
+<!--            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="-->
+<!--            crossorigin="anonymous">-->
+<!--    </script>-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"
             integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
@@ -44,11 +47,37 @@
                 }
             })
         });
+
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            let i=1;
+            $("#button_add_another_product").click(function(){
+                $("#product_form").append($('<div>', {
+                    'text': 'Текст... ['+ i +'])'
+                }));
+                i=i+1;
+            })});
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".datepicker").datepicker({
+                monthNames: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+                dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay: 1,
+                dateFormat: "dd.mm.yy",
+                minDate: "0",
+                showWeek: true,
+                weekHeader: "тиждень",
+            });
+        });
+
+    </script>
     <style>
         .layerHeader {
-            padding: 20px;
+            padding: 5px;
         }
         .layerBottom {
             width: 20%;
@@ -56,18 +85,31 @@
         }
         .layerForm{
             border: 4px solid cornflowerblue;
-            padding: 20px;
+            padding: 10px;
         }
         #product_form{
             position:relative;
             top: 30px;
             margin-bottom: 30px;
         }
+        .validation_error{
+            position:relative;
+            color: crimson;
+            width: auto;
+            top: 5px;
+            margin-bottom: 5px;
+        }
+        .product_number {
+            width: 7em;
+        }
         label{
             position:relative;
             display: inline-block;
             top:-30px;
             width: 0px;
+        }
+        div {
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -102,7 +144,7 @@
 <div class="container-fluid">
     <div align="center">
         <div class="layerHeader">
-            <h2>Форма реєстрації нового контракту</h2>
+            <h3>Форма реєстрації нового контракту</h3>
         </div>
     </div>
 </div>
@@ -114,26 +156,41 @@
             <div  align="center" class=" col-md-3 col-xs-12 col-sm-3 col-lg-3" >
                 <div class="layerForm">
                     <div class="ui-widget">
-<!--                    <div class="BuyerWidth">-->
-<!--                        <label for="nameInput">Покупець :</label>-->
-                        Покупець : <input th:name="customerName" id="nameInput" />
-                        <h3 id="nameOutput"></h3>
-                        <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}"
-                           class="validation-message"></label>
+                    <div class="form-group">
+<!--                    <div class="col-sm-9">-->
+                        <p style="font-size: medium">Покупець</p>
+                        <input th:name="customerName" id="nameInput" />
+<!--                        <p id="nameOutput" style="color:dodgerblue;"></p>-->
+                        <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}" class="validation_error"> </label>
+<!--                           class="validation-message"></label>-->
 <!--                    </div>-->
                     </div>
-
+                    </div>
                 <div class="form-group">
                     <div class="ui-widget">
-                        <input type="text" th:field="*{paymentTerms}" placeholder="Умови оплати" class="form-control" />
-                        <label th:if="${#fields.hasErrors('paymentTerms')}" th:errors="*{paymentTerms}"
-                               class="validation-message"></label>
+                        <p style="font-size: medium">Умови оплати</p>
+                        <textarea th:field="*{paymentTerms}" class="form-control"> </textarea>
+                        <label th:if="${#fields.hasErrors('paymentTerms')}" th:errors="*{paymentTerms}" class="validation_error"> </label>
                     </div>
                 </div>
-
+                <div class="form-group">
+                   <div class="ui-widget">
+                       <p style="font-size: medium">Початок відвантажень</p>
+                       <input type="text" th:field="*{startOfShipments}" class="datepicker" readonly/>
+                       <label th:if="${#fields.hasErrors('startOfShipments')}" th:errors="*{startOfShipments}" class="validation_error"> </label>
+                   </div>
+                </div>
+                <div class="form-group">
+                   <div class="ui-widget">
+                       <p style="font-size: medium">Завершення відвантажень</p>
+                        <input type="text" th:field="*{endOfShipments}" class="datepicker" readonly/>
+                       <label th:if="${#fields.hasErrors('endOfShipments')}" th:errors="*{endOfShipments}" class="validation_error"> </label>
+                   </div>
+                </div>
                 <div class="form-group">
                     <div class="ui-widget">
-                        <input type="text" th:field="*{comment}" placeholder="Коментар" class="form-control" />
+                        <p style="font-size: medium">Коментар</p>
+                        <textarea th:field="*{comment}" class="form-control"> </textarea>
                     </div>
                 </div>
                 </div>
@@ -144,32 +201,32 @@
                     <div th:object="${productForm}" class="form-group" id="product_form">
                         <label th:for="commodity">Товар</label>
                         <select th:field="*{products[__${0}__].commodity}" th:id="commodity" required>
-                            <option selected value="none" >Оберіть товар</option>
+                            <option value="" >Оберіть товар</option>
                             <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
                         </select>
-                        <label th:for="packaging">Пакування</label>
-                        <input type="text" th:field="*{products[__${0}__].packaging}" th:id="packaging">
-                        <label th:for="quantity">Кількість</label>
-                        <input type="number" th:field="*{products[__${0}__].quantity}" th:id="quantity" th:size="40">
+                        <label th:for="batch">Партія</label>
+                        <input type="text" th:field="*{products[__${0}__].batch}" required th:id="batch">
                         <label th:for="price">Ціна</label>
-                        <input type="number" th:field="*{products[__${0}__].price}" th:id="price" th:size="40">
+                        <input type="number" th:field="*{products[__${0}__].price}" th:id="price" required step="0.01" class="product_number">
                         <label th:for="currency">Валюта</label>
                         <select th:field="*{products[__${0}__].currency}" th:id="currency" required>
-                            <option selected value="none" >Оберіть валюту</option>
-                            <option th:value="EUR">Євро</option>
-                            <option th:value="USD">Долар США</option>
-                            <option th:value="UAH">Українська гривня</option>
+                            <option value="" >Оберіть</option>
+                            <option th:value="EUR">EUR</option>
+                            <option th:value="USD">USD</option>
+                            <option th:value="UAH">UAH</option>
                         </select>
+                        <label th:for="quantity">Кількість</label>
+                        <input type="number" th:field="*{products[__${0}__].quantity}" th:id="quantity" required step="0.001" class="product_number">
+                        <label th:for="packaging">Пакування</label>
+                        <input type="text" th:field="*{products[__${0}__].packaging}" required th:id="packaging">
                         <label th:for="isProductOnPallets">Піддони</label>
                         <select th:field="*{products[__${0}__].productOnPallets}" th:id="isProductOnPallets" required>
-                            <option selected value="none" >Оберіть</option>
+                            <option value="" >Оберіть</option>
                             <option th:value="true">Так</option>
                             <option th:value="false">Ні</option>
                         </select>
-                        <label th:for="batch">Партія</label>
-                        <input type="text" th:field="*{products[__${0}__].batch}" th:id="batch">
-
                     </div>
+                    <input id="button_add_another_product" type="button" value="Додати ще товар" />
                 </div>
             </div>
          </div>
@@ -181,8 +238,11 @@
             </div>
         </div>
     </div>
-
-    <span th:utext="${successMessage}"></span>
+    <div style="text-align: center;">
+        <span font-size="3"
+            th:utext="${successMessage}">
+        </span>
+    </div>
 </form>
 </div>
 

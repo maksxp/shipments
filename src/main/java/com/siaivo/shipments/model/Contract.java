@@ -2,8 +2,6 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +21,7 @@ public class Contract {
     private Date contractDate;
 
     @Column(name = "payment_terms")
-    @NotEmpty(message = "*Please provide payment terms")
+    @NotEmpty(message = "*Необхідно вказати умови оплати")
     private String paymentTerms;
 
     @Column(name = "comment")
@@ -36,16 +34,16 @@ public class Contract {
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @Column(name = "first_month_of_shipments")
-//    @NotNull(message = "*Please provide first month of shipments")
-    private Calendar firstMonthOfShipments;
+    @Column(name = "start_of_shipments")
+    @NotEmpty(message = "*Необхідно вказати початок відвантажень")
+    private String startOfShipments;
 
-    @Column(name = "last_month_of_shipments")
-//    @NotNull(message = "*Please provide last month of shipments")
-    private Calendar lastMonthOfShipments;
+    @Column(name = "end_of_shipments")
+    @NotEmpty(message = "*Необхідно вказати завершення відвантажень")
+    private String endOfShipments;
 
-    @Column(name = "is_contract_active")
-    private Boolean isContractActive;
+    @Column(name = "state")
+    private String state;
 
     @OneToMany
     @JoinColumn(name="shipment_id")
@@ -107,28 +105,28 @@ public class Contract {
         this.customer = customer;
     }
 
-    public Calendar getFirstMonthOfShipments() {
-        return firstMonthOfShipments;
+    public String getStartOfShipments() {
+        return startOfShipments;
     }
 
-    public void setFirstMonthOfShipments(Calendar firstMonthOfShipments) {
-        this.firstMonthOfShipments = firstMonthOfShipments;
+    public void setStartOfShipments(String startOfShipments) {
+        this.startOfShipments = startOfShipments;
     }
 
-    public Calendar getLastMonthOfShipments() {
-        return lastMonthOfShipments;
+    public String getEndOfShipments() {
+        return endOfShipments;
     }
 
-    public void setLastMonthOfShipments(Calendar lastMonthOfShipments) {
-        this.lastMonthOfShipments = lastMonthOfShipments;
+    public void setEndOfShipments(String endOfShipments) {
+        this.endOfShipments = endOfShipments;
     }
 
-    public Boolean getContractActive() {
-        return isContractActive;
+    public String getState() {
+        return state;
     }
 
-    public void setContractActive(Boolean contractActive) {
-        isContractActive = contractActive;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public List<Shipment> getShipment() {

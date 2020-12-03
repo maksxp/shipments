@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -60,16 +62,15 @@ public class ContractController {
         if (isCustomerExists(customerName)!= true) {
               bindingResult
                     .rejectValue("customer", "error.customer",
-                            "Необхідно обрати покупця зі списку");
+                            "*Необхідно обрати покупця зі списку");
         }
-        System.out.println("product 1: " +productForm.getProducts().get(0));
         List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
             return getContractModelAndView(contract, productForm, modelAndView);}
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contractService.saveContract(contract);
-//        product.setContract(contract);
-//        productService.saveProduct(product);
+        products.get(0).setContract(contract);
+        productService.saveProduct(products.get(0));
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
         return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }

@@ -1,7 +1,9 @@
 package com.siaivo.shipments.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -23,7 +25,7 @@ public class Product {
     private Contract contract;
 
     @Column(name = "product_price")
-    @NotEmpty(message = "*Please provide a price")
+    @NotNull
     private BigDecimal price;
 
     @Column(name = "currency")
@@ -38,7 +40,7 @@ public class Product {
     private Boolean isProductOnPallets;
 
     @Column(name = "product_quantity")
-    @NotEmpty(message = "*Please provide a quantity")
+    @NotNull
     private BigDecimal quantity;
 
     @Column(name = "product_batch")

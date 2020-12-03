@@ -14,7 +14,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> findByCustomer(String customer);
     List<Contract> findByContractNumber(String contractNumber);
     List<Contract> findByProducts(Product products);
-    List<Contract> findByIsContractActive (Boolean isContractActive);
+    List<Contract> findByState (String state);
     List<Contract> findByContractDate(Date contractDate);
     Contract findContractByContractNumberAndContractDate (String contractNumber, Date contractDate);
 

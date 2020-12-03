@@ -15,7 +15,7 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public void saveContract(Contract contract) {
-        contract.setContractActive(true);
+        contract.setState("готується");
         contractRepository.save(contract);
     }
 
@@ -26,7 +26,7 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public List<Contract> openContracts(){
-        return contractRepository.findByIsContractActive(true);
+        return contractRepository.findByState("підписаний");
     }
 
     @Override

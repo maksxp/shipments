@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#datepicker").datepicker();
+            $("#datepicker1").datepicker({
+                monthNames:["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                dayNamesMin:["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay:1,
+                dateFormat:"dd.mm.yy"
+            });
+
+        });
+    </script>
+</head>
+<body>
+<p>Стандартный виджет datepicker (щелкните в текстовом поле ниже):</p>
+<input type="text" id="datepicker" />
+<p>Теперь настроим данный виджет для использования в России (переведем названия месяцев и дней недели, сделаем первым днем недели понедельник, а не воскресенье как принято в США и установим более привычный формат даты: день.месяц.год).</p>
+<input type="text" id="datepicker1" />
+</body>
+</html>
