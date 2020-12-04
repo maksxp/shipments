@@ -70,7 +70,9 @@ public class ContractController {
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contractService.saveContract(contract);
         products.get(0).setContract(contract);
+        products.get(1).setContract(contract);
         productService.saveProduct(products.get(0));
+        productService.saveProduct(products.get(1));
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
         return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
