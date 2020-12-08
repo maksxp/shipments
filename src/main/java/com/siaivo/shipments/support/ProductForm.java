@@ -1,8 +1,6 @@
 package com.siaivo.shipments.support;
 
 import com.siaivo.shipments.model.Product;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductForm {

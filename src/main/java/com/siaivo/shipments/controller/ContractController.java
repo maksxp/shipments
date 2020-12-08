@@ -16,9 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -67,12 +65,21 @@ public class ContractController {
         List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
             return getContractModelAndView(contract, productForm, modelAndView);}
+        products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> product.setContract(contract));
+        products.forEach(System.out::println);
+        while (products.remove(null)) {
+        }
+        System.out.println("size "+products.size());
+        products.forEach(System.out::println);
+        products.stream().forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
+//        products.get(0).setContract(contract);
+//        products.get(1).setContract(contract);
         contractService.saveContract(contract);
-        products.get(0).setContract(contract);
-        products.get(1).setContract(contract);
-        productService.saveProduct(products.get(0));
-        productService.saveProduct(products.get(1));
+        products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> productService.saveProduct(product));
+//        productService.saveProduct(products);
+//        productService.saveProduct(products.get(0));
+//        productService.saveProduct(products.get(1));
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
         return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
