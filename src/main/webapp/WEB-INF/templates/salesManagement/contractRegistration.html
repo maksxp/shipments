@@ -84,27 +84,36 @@
 <!--    </script>-->
 
     <script>
-        let id=1;
+        let id=0;
         $(document).ready(function () {
             $(".prod1").attr('required', false);
             $(".prod2").attr('required', false);
             $(".prod3").attr('required', false);
             $(".prod4").attr('required', false);
+            $("button[id='addRow']").click(function(){
+                addRow();
+            });
+            $("button[id='deleteRow']").click(function(){
+                deleteRow();
+            });
         });
         function addRow() {
-            if (id<5){
+            if (id<4){
+                id+=1;
+                alert(id);
                 let x = document.getElementById("id_" + id);
                 x.style.display = "table-row";
                 $(".prod" + id).attr('required', true);
-                id++;
             }
         }
         function deleteRow() {
+            alert(id);
             if (id > 0) {
             let x = document.getElementById("id_" + id);
             x.style.display = "none";
             $(".prod" + id).attr('required', false);
-            id--;
+            id-=1;
+            alert(id);
             }
         }
     </script>
@@ -247,19 +256,19 @@
                     <tbody>
                     <tr id="id_0">
                         <td>
-                        <select th:field="*{products[__${0}__].commodity}" th:id="commodity" required>
+                        <select th:field="*{products[__${0}__].commodity}" class="prod0" required>
                            <option value="" >Оберіть товар</option>
                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
                         </select>
                         </td>
                         <td>
-                            <input type="text" th:field="*{products[__${0}__].batch}" required th:id="batch" style="width: 7em">
+                            <input type="text" th:field="*{products[__${0}__].batch}" required class="prod0" style="width: 7em">
                         </td>
                         <td>
-                            <input type="number" th:field="*{products[__${0}__].price}" required step="0.01" th:id="price" style="width: 7em">
+                            <input type="number" th:field="*{products[__${0}__].price}" required step="0.01" class="prod0" style="width: 7em">
                         </td>
                         <td>
-                            <select th:field="*{products[__${0}__].currency}" th:id="currency" required>
+                            <select th:field="*{products[__${0}__].currency}" class="prod0" required>
                                <option value="" >Оберіть</option>
                                 <option th:value="EUR">EUR</option>
                                 <option th:value="USD">USD</option>
@@ -267,21 +276,19 @@
                             </select>
                         </td>
                         <td>
-                            <input type="number" th:field="*{products[__${0}__].quantity}" th:id="quantity" required step="0.001" style="width: 7em">
+                            <input type="number" th:field="*{products[__${0}__].quantity}" class="prod0" required step="0.001" style="width: 7em">
                         </td>
                         <td>
-                            <input type="text" th:field="*{products[__${0}__].packaging}" required th:id="packaging">
+                            <input type="text" th:field="*{products[__${0}__].packaging}" required class="prod0">
                         </td>
                         <td>
-                            <select th:field="*{products[__${0}__].productOnPallets}" th:id="isProductOnPallets" required>
+                            <select th:field="*{products[__${0}__].productOnPallets}" class="prod0" required>
                                 <option value="" >Оберіть</option>
                                 <option th:value="true">Так</option>
                                 <option th:value="false">Ні</option>
                             </select>
                         </td>
                     </tr>
-                    <button onclick="addRow()">Додати товар</button>
-                    <button onclick="deleteRow()">Видалити товар</button>
                     <tr id="id_1" style="display:none;">
                         <td>
                             <select th:field="*{products[__${1}__].commodity}" class="prod1" required>
@@ -424,6 +431,8 @@
                     </tr>
                     </tbody>
                 </table>
+                    <button type="button" id="addRow">Додати товар</button>
+                    <button type="button" id="deleteRow">Видалити товар</button>
                 </div>
             </div>
          </div>
