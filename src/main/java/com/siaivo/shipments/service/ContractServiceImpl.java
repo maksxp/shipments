@@ -1,6 +1,7 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.siaivo.shipments.repository.ContractRepository;
@@ -33,6 +34,5 @@ public class ContractServiceImpl implements ContractService{
     public Contract findContractByContractNumberAndContractDate (String contractNumber, Date contractDate){
         return contractRepository.findContractByContractNumberAndContractDate(contractNumber, contractDate);
     }
-
 
 }

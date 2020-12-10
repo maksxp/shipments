@@ -28,6 +28,11 @@
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous">
     </script>
+    <style type="text/css">
+        .layerHeader {
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -55,21 +60,31 @@
         </div>
     </div>
 </div>
+<div class="container-fluid">
+    <div align="center">
+        <div class="layerHeader">
+            <h3>Список контрактів</h3>
+        </div>
+    </div>
+</div>
 <div class="container">
-    <h2>Список контрактів</h2>
     <table class="table table-striped">
         <tr>
             <th>Номер</th>
             <th>Покупець</th>
             <th>Умови оплати</th>
             <th>Товари</th>
+            <th>Початок відвантажень</th>
+            <th>Завершення відвантажень</th>
         </tr>
         <tr th:each="contract : ${allContracts}">
             <td th:text="${contract.contractNumber}">contractNumber</td>
             <td th:text="${contract.getCustomer().customerName}">customerName</td>
             <td th:text="${contract.paymentTerms}">paymentTerms</td>
-            <td th:each="product : ${contract.getProducts()}" th:utext="${product.getCommodity().getCommodityName()+'<br/>'}">products</td>
-            <td></td>
+<!--            <td th:text="${contract.getProducts().forEach(item -> item.getCommodity().getCommodityName())}">products</td>-->
+            <td th:text="${contract.getStringOfCommodityNames(contract)}"></td>
+            <td th:text="${contract.startOfShipments}">startOfShipments</td>
+            <td th:text="${contract.endOfShipments}">endOfShipments</td>
 
     </table>
 

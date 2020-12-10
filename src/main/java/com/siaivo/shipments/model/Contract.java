@@ -2,6 +2,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -135,6 +136,13 @@ public class Contract {
 
     public void setShipment(List<Shipment> shipment) {
         this.shipment = shipment;
+    }
+
+    public String getStringOfCommodityNames (Contract contract) {
+        StringBuilder str = new StringBuilder();
+        contract.getProducts().stream().forEach(product -> str.append(product.getCommodity().getCommodityName()+"/"));
+        String stringOfCommodityNames = str.toString().trim().replaceAll(".$", "");
+        return stringOfCommodityNames.replaceAll("/","+");
     }
 
     @Override
