@@ -2,10 +2,8 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity
 @Table(name = "contract")
@@ -143,6 +141,12 @@ public class Contract {
         contract.getProducts().stream().forEach(product -> str.append(product.getCommodity().getCommodityName()+"/"));
         String stringOfCommodityNames = str.toString().trim().replaceAll(".$", "");
         return stringOfCommodityNames.replaceAll("/","+");
+    }
+
+    public BigDecimal getSumOfContract (Contract contract){
+        List <BigDecimal> costOfEachProduct = new ArrayList<>();
+        contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
+        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

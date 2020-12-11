@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/images/favicon.ico}" />
     <title>Open contracts</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <!--data tables-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css"/>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <!--jquery should be upper than local *.js-->
+    <script type="text/javascript" src="../static/js/script.js" ></script>
+    <script>
+        $(document).ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#tables thead tr').clone(true).appendTo( '#tables thead' );
+            $('#tables thead tr:eq(1) th').each( function (i) {
+                // var title = $(this).text();
+                $(this).html( '<input type="text" placeholder=" " />' );
 
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
 
-    <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+            var table = $('#tables').DataTable( {
+                orderCellsTop: true,
+                fixedHeader: true,
+            } );
+        } );
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -34,12 +58,51 @@
             </form>
         </div>
 
-        <div class=" col-md-4 col-xs-12 col-sm-2 col-lg-2" >
+        <div class=" col-md-2 col-xs-12 col-sm-2 col-lg-2" >
             <form th:action="@{/logout}" method="get">
                 <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Вийти</button>
             </form>
         </div>
     </div>
+</div>
+
+<div class="container-fluid">
+    <h3 align="center">Список відкритих контрактів</h3>
+    <table id="tables" cellspacing="2" style="width:100%;table-layout:fixed">
+        <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Покупець</th>
+            <th>Умови оплати</th>
+            <th>Товари</th>
+            <th>Сума контракту</th>
+            <th>Початок відвантажень</th>
+            <th>Завершення відвантажень</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Номер</th>
+            <th>Покупець</th>
+            <th>Умови оплати</th>
+            <th>Товари</th>
+            <th>Сума контракту</th>
+            <th>Початок відвантажень</th>
+            <th>Завершення відвантажень</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <tr th:each="contract : ${openContracts}">
+            <td th:text="${contract.contractNumber}">contractNumber</td>
+            <td style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
+            <td style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
+            <td style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
+            <td th:text="${contract.getSumOfContract(contract)}">sumOfContract</td>
+            <td th:text="${contract.startOfShipments}">startOfShipments</td>
+            <td th:text="${contract.endOfShipments}">endOfShipments</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
