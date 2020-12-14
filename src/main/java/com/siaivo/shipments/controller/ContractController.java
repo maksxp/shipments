@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.*;
 
 
@@ -40,10 +37,18 @@ public class ContractController {
     }
 
     @RequestMapping(value="/salesManagement/allContracts", method = RequestMethod.GET)
-    public ModelAndView allContracts(){
+    public ModelAndView allContractsForSalesManagement(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allContracts", contractService.allContracts());
         modelAndView.setViewName("/salesManagement/allContracts");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/allContracts", method = RequestMethod.GET)
+    public ModelAndView allContractsForSalesSupport(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allContracts", contractService.allContracts());
+        modelAndView.setViewName("/salesSupport/allContracts");
         return modelAndView;
     }
 
@@ -56,7 +61,7 @@ public class ContractController {
     }
 
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName) {
+    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = new ModelAndView();
         if (isCustomerExists(customerName)!= true) {
               bindingResult
@@ -70,17 +75,12 @@ public class ContractController {
         products.forEach(System.out::println);
         while (products.remove(null)) {
         }
-        System.out.println("size "+products.size());
         products.forEach(System.out::println);
         products.stream().forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
-//        products.get(0).setContract(contract);
-//        products.get(1).setContract(contract);
+        contract.setPaymentTerms(paymentTerms);
         contractService.saveContract(contract);
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> productService.saveProduct(product));
-//        productService.saveProduct(products);
-//        productService.saveProduct(products.get(0));
-//        productService.saveProduct(products.get(1));
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
         return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
