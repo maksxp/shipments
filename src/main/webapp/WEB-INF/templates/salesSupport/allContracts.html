@@ -83,7 +83,7 @@
             data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 7em" data-sortable="true" data-field="number" data-filter-control="input">Номер</th>
+        <th class="forClick" style="width: 7em" data-sortable="true" data-field="number" data-filter-control="input">Номер</th>
         <th data-sortable="true" data-field="customer" data-filter-control="input">Покупець</th>
         <th data-sortable="true" data-field="paymentTerms" data-filter-control="select">Умови оплати</th>
         <th data-sortable="true" data-field="commodityNames" data-filter-control="select">Товари</th>
@@ -105,7 +105,7 @@
 <!--    </tfoot>-->
     <tbody>
     <tr th:each="contract : ${allContracts}">
-        <td data-sortable="true" style="width: 7em"data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
+        <td class="forClick" data-sortable="true" style="width: 7em"data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
         <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
         <td data-sortable="true" data-field="commodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
@@ -119,6 +119,11 @@
     $(function() {
         $('#table').bootstrapTable()
     })
+</script>
+<script>
+    $('#table').on('dbl-click-cell.bs.table', function () {
+        window.open("allCommodities","_self");
+    });
 </script>
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
