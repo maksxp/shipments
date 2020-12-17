@@ -20,9 +20,15 @@
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
     <title>All Contracts</title>
+
+    <style>
+        .layerHeader {
+            padding: 70px 5px 5px
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 <!--    <a class="navbar-brand" href="#">Navbar</a>-->
 <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
 <!--        <span class="navbar-toggler-icon"></span>-->
@@ -59,7 +65,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="preparingContracts">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="contractRegistration">Реєстрація нового товару</a>
+                    <a class="dropdown-item" href="contractRegistration">Реєстрація нового контракту</a>
                 </div>
             </li>
 
@@ -72,7 +78,13 @@
         </form>
     </div>
 </nav>
-<h3 align="center">Список контрактів</h3>
+<div class="container-fluid">
+    <div align="center">
+        <div class="layerHeader">
+            <h3>Усі контракти</h3>
+        </div>
+    </div>
+</div>
     <table  class="table table-hover table-bordered"
             id="table"
             data-show-columns="true"
@@ -83,7 +95,8 @@
             data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th class="forClick" style="width: 7em" data-sortable="true" data-field="number" data-filter-control="input">Номер</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
+        <th style="width: 7em" data-sortable="true" data-field="contractNumber" data-filter-control="input">Номер</th>
         <th data-sortable="true" data-field="customer" data-filter-control="input">Покупець</th>
         <th data-sortable="true" data-field="paymentTerms" data-filter-control="select">Умови оплати</th>
         <th data-sortable="true" data-field="commodityNames" data-filter-control="select">Товари</th>
@@ -105,7 +118,8 @@
 <!--    </tfoot>-->
     <tbody>
     <tr th:each="contract : ${allContracts}">
-        <td class="forClick" data-sortable="true" style="width: 7em"data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
+        <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${contract.id}">id</td>
+        <td data-sortable="true" style="width: 7em"data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
         <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
         <td data-sortable="true" data-field="commodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
@@ -121,8 +135,10 @@
     })
 </script>
 <script>
-    $('#table').on('dbl-click-cell.bs.table', function () {
-        window.open("allCommodities","_self");
+
+    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
+        if (value=="contractNumber")
+        window.open("allCommodities"+$element.id,"_self");
     });
 </script>
 <!-- Bootstrap JS -->

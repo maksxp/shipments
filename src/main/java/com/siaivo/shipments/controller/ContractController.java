@@ -31,7 +31,6 @@ public class ContractController {
     public ModelAndView openContracts(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("openContracts", contractService.openContracts());
-        System.out.println("test "+contractService.openContracts());
         modelAndView.setViewName("/salesManagement/openContracts");
         return modelAndView;
     }
