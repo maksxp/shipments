@@ -42,10 +42,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -126,7 +123,7 @@
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
         if (value=="contractNumber")
-            window.open("allCommodities"+$element.id,"_self");
+            window.open("editContract/"+$element.id,"_self");
     });
 </script>
 <!-- Bootstrap JS -->

@@ -1,6 +1,7 @@
 package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.service.CommodityService;
 import com.siaivo.shipments.service.ContractService;
@@ -56,7 +57,18 @@ public class ContractController {
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = new Contract ();
         ProductForm productForm = new ProductForm();
-        return getContractModelAndView(contract, productForm, modelAndView);
+        return getNewContractModelAndView(contract, productForm, modelAndView);
+    }
+    @RequestMapping(value="/salesManagement/editContract/{id}", method = RequestMethod.GET)
+    public ModelAndView editContract(@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = contractService.findContractById(id);
+        ProductForm productForm =new ProductForm();
+        productForm.setProducts(productService.findProductsByContract(contract));
+        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
+        int numberOfProducts = productForm.getProducts().size();
+        System.out.println(numberOfProducts);
+        return getEditContractModelAndView(contract, productForm, numberOfProducts, modelAndView);
     }
 
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
@@ -69,27 +81,38 @@ public class ContractController {
         }
         List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
-            return getContractModelAndView(contract, productForm, modelAndView);}
+            return getNewContractModelAndView(contract, productForm, modelAndView);}
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> product.setContract(contract));
-        products.forEach(System.out::println);
-        while (products.remove(null)) {
-        }
-        products.forEach(System.out::println);
-        products.stream().forEach(product -> product.setContract(contract));
+//        products.forEach(System.out::println);
+//        while (products.remove(null)) {
+//        }
+//        products.forEach(System.out::println);
+//        products.stream().forEach(product -> product.setContract(contract));
+//        products.forEach(System.out::println);
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
         contractService.saveContract(contract);
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> productService.saveProduct(product));
         modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
-        return getContractModelAndView(new Contract(), new ProductForm(), modelAndView);
+        return getNewContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
 
-    private ModelAndView getContractModelAndView(@Valid Contract contract, ProductForm productForm, ModelAndView modelAndView) {
+    private ModelAndView getNewContractModelAndView(@Valid Contract contract, ProductForm productForm, ModelAndView modelAndView) {
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("productForm", productForm);
         modelAndView.setViewName("/salesManagement/contractRegistration");
+        return modelAndView;
+    }
+
+    private ModelAndView getEditContractModelAndView(@Valid Contract contract, ProductForm productForm, int numberOfProducts, ModelAndView modelAndView) {
+        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
+        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+        modelAndView.addObject("contract", contract);
+        modelAndView.addObject("productForm", productForm);
+        modelAndView.addObject("numberOfProducts", numberOfProducts);
+        modelAndView.setViewName("/salesManagement/editContract");
         return modelAndView;
     }
 

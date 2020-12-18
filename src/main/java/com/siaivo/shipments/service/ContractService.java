@@ -9,4 +9,5 @@ public interface ContractService {
     List<Contract> allContracts();
     List<Contract> openContracts();
 
+    Contract findContractById(int id);
 }

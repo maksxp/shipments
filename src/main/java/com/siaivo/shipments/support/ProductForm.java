@@ -22,4 +22,11 @@ public class ProductForm {
     public ProductForm() {
         super();
     }
+
+    @Override
+    public String toString() {
+        return "ProductForm{" +
+                "products=" + products +
+                '}';
+    }
 }

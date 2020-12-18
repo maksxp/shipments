@@ -37,4 +37,9 @@ public class ContractServiceImpl implements ContractService{
         contractsToReturn.removeAll(canceledContracts);
         return contractsToReturn;
     }
+
+    @Override
+    public Contract findContractById(int id) {
+        return contractRepository.findById(id);
+    }
 }

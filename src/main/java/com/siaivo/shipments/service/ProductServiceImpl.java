@@ -1,5 +1,6 @@
 package com.siaivo.shipments.service;
 
+import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product findProductById(int id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public List<Product> findProductsByContract(Contract contract) {
+        return productRepository.findProductsByContract(contract);
     }
 
 }
