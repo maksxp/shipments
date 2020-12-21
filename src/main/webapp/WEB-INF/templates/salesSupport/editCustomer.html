@@ -20,6 +20,11 @@
         .layerHeader {
             padding: 70px 5px 5px
         }
+        p {
+            font-size: medium;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -84,39 +89,42 @@
 <div class="container pt-lg-5">
     <div class="row justify-content-center">
         <div class="col-8">
-            <form autocomplete="off" action="#" th:action="@{/salesSupport/customerEdit}"
+            <form autocomplete="off" action="#" th:action="@{/salesSupport/editCustomer}"
                   th:object="${customer}" method="post" class="form-horizontal" role="form">
 
                 <input type="hidden" th:field="*{id}"/>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{customerName}" placeholder="Назва покупця"
-                               class="form-control" />
+                        <p>Назва покупця</p>
+                        <input type="text" th:field="*{customerName}" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9" >
+                        <p>Країна покупця</p>
+                        <input type="text" th:field="*{customerCountry}" class="form-control" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{customerCountry}" placeholder="Країна покупця"
-                               class="form-control" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <label>Тип покупця</label>
-                        <select th:field="*{customerType}">
+                        <p>Тип покупця</p>
+<!--                        <label>Тип покупця</label>-->
+                        <div style="text-align: center">
+                        <select  th:field="*{customerType}">
                             <option th:value="Трейдер">Трейдер</option>
                             <option th:value="Переробник">Переробник</option>
                         </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{comment}" placeholder="Коментар"
-                               class="form-control" />
+                        <p>Коментар</p>
+                        <input type="text" th:field="*{comment}" class="form-control" />
                     </div>
                 </div>
 

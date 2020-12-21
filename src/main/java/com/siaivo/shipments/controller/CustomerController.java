@@ -56,16 +56,16 @@ public class CustomerController {
         }
         return modelAndView;
     }
-    @RequestMapping(value = "/salesSupport/customerEdit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/salesSupport/editCustomer/{id}", method = RequestMethod.GET)
     public ModelAndView editCustomer(@PathVariable(value = "id") int id){
         ModelAndView modelAndView = new ModelAndView();
         Customer customer =  customerService.findCustomerById(id);
         modelAndView.addObject("customer", customer);
-        modelAndView.setViewName("salesSupport/customerEdit");
+        modelAndView.setViewName("/salesSupport/editCustomer");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/salesSupport/customerEdit", method = RequestMethod.POST)
+    @RequestMapping(value = "/salesSupport/editCustomer", method = RequestMethod.POST)
         public ModelAndView editCustomer(@ModelAttribute("customer") Customer customer) {
         ModelAndView modelAndView = new ModelAndView();
         String customerName =  customer.getCustomerName();
