@@ -14,4 +14,6 @@ public interface ProductService {
     public Product findProductById(int id);
 
     List <Product> findProductsByContract (Contract contract);
+
+    public void deleteProductsByContract (Contract contract);
 }

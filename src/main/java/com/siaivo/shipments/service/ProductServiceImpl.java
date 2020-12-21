@@ -33,4 +33,9 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findProductsByContract(contract);
     }
 
+    @Override
+    public void deleteProductsByContract(Contract contract) {
+        productRepository.deleteAll(productRepository.findProductsByContract(contract));
+    }
+
 }

@@ -73,9 +73,19 @@ public class ContractController {
 
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        return saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+    }
+
+    @RequestMapping(value = "/salesManagement/editContract", method = RequestMethod.POST)
+    public ModelAndView editContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        productService.deleteProductsByContract(contract);
+        return saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+    }
+
+    private ModelAndView saveContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = new ModelAndView();
         if (isCustomerExists(customerName)!= true) {
-              bindingResult
+            bindingResult
                     .rejectValue("customer", "error.customer",
                             "*Необхідно обрати покупця зі списку");
         }
@@ -83,17 +93,11 @@ public class ContractController {
         if (bindingResult.hasErrors()) {
             return getNewContractModelAndView(contract, productForm, modelAndView);}
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> product.setContract(contract));
-//        products.forEach(System.out::println);
-//        while (products.remove(null)) {
-//        }
-//        products.forEach(System.out::println);
-//        products.stream().forEach(product -> product.setContract(contract));
-//        products.forEach(System.out::println);
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
         contractService.saveContract(contract);
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> productService.saveProduct(product));
-        modelAndView.addObject("successMessage", "Контракт успішно зареєстровано");
+        modelAndView.addObject("successMessage", "Готово");
         return getNewContractModelAndView(new Contract(), new ProductForm(), modelAndView);
     }
 

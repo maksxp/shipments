@@ -1,56 +1,140 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Tables -->
+    <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" rel="stylesheet">
+    <script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
+
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All commodities</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+    <title>All Contracts</title>
 
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <style>
+        .layerHeader {
+            padding: 70px 5px 5px
+        }
+        .table {
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <!--    <a class="navbar-brand" href="#">Navbar</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <!--            <li class="nav-item active">-->
+            <!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+            <!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="#">Link</a>-->
+            <!--            </li>-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Покупці та товари
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
+                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Контракти
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="closedContracts">Виконані контракти</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="preparingContracts">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="contractRegistration">Реєстрація нового контракту</a>
+                </div>
+            </li>
+
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+            <!--            </li>-->
+        </ul>
+        <form th:action="@{/logout}" method="get">
+            <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
+        </form>
+    </div>
+</nav>
 <div class="container-fluid">
-    <div class="row row-flex">
-        <div  align="center" class="col-md-2 col-xs-12 col-sm-2 col-lg-2" style="background-color:lavender" >
-            <div class="text"><p> ви увійшли як  <span th:text="${#httpServletRequest.remoteUser}"> </span></p></div>
-        </div>
-        <div class=" col-md-4 col-xs-12 col-sm-4 col-lg-4" style="background-color:lavenderblush">
-            <form th:action="@{/salesSupport/allCustomers}" method="get">
-                <button class="btn btn-md btn-info btn-block" type="Submit">Переглянути список всіх покупців</button>
-            </form>
-        </div>
-        <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4" >
-            <form th:action="@{/salesSupport/commodityRegistration}" method="get">
-                <button class="btn btn-md btn-warning btn-block" type="Submit">Додати новий товар</button>
-            </form>
-        </div>
-        <div class=" сol-md-2 col-xs-12 col-sm-2 col-lg-2" >
-            <form th:action="@{/logout}" method="get">
-                <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
-            </form>
+    <div align="center">
+        <div class="layerHeader">
+            <h3>Усі контракти</h3>
         </div>
     </div>
 </div>
-<div class="container">
-    <h2>Список товарів</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>Назва</th>
-            <th>Код УКТЗЕД</th>
-        </tr>
-        <tr th:each="commodity : ${allCommodities}">
-            <td th:text="${commodity.commodityName}">commodityName</td>
-            <td th:text="${commodity.commodityCode}">commodityCode</td>
-        </tr>
-    </table>
+<table  class="table table-hover table-bordered"
+        id="table"
+        data-show-columns="true"
+        data-pagination="true"
+        data-show-jump-to="true"
+        data-side-pagination="client"
+        data-toggle="table"
+        data-filter-control="true"
+        style="width: max-content">
+    <thead class="thead-light">
+    <tr>
+        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Назва товару</th>
+        <th data-sortable="true" data-field="commodityCode" data-filter-control="input">Код товару</th>
+    </tr>
+    </thead>
+    <!--    <tfoot>-->
+    <!--    <tr>-->
+    <!--        <th>Номер</th>-->
+    <!--        <th>Покупець</th>-->
+    <!--        <th>Умови оплати</th>-->
+    <!--        <th>Товари</th>-->
+    <!--        <th>Сума контракту</th>-->
+    <!--        <th>Початок відвантажень</th>-->
+    <!--        <th>Завершення відвантажень</th>-->
+    <!--    </tr>-->
+    <!--    </tfoot>-->
+    <tbody>
+    <tr th:each="commodity : ${allCommodities}">
+        <td data-sortable="true" data-field="commodityName" data-filter-control="input" th:text="${commodity.commodityName}">Назва товару</td>
+        <td data-sortable="true" data-field="commodityCode" data-filter-control="input" th:text="${commodity.commodityCode}">Код товару</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $(function() {
+        $('#table').bootstrapTable()
+    })
+</script>
+<script>
 
-</div>
+    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
+        if (value=="contractNumber")
+            window.open("allCommodities"+$element.id,"_self");
+    });
+</script>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
 </html>
