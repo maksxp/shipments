@@ -9,6 +9,7 @@ import com.siaivo.shipments.service.CustomerService;
 import com.siaivo.shipments.service.ProductService;
 import com.siaivo.shipments.support.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,18 @@ public class ContractController {
     private CommodityService commodityService;
 
     @RequestMapping(value="/salesManagement/openContracts", method = RequestMethod.GET)
-    public ModelAndView openContracts(){
+    public ModelAndView openContractsForSalesManagement (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("openContracts", contractService.openContracts());
         modelAndView.setViewName("/salesManagement/openContracts");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/openContracts", method = RequestMethod.GET)
+    public ModelAndView openContractsForSalesSupport(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("openContracts", contractService.openContracts());
+        modelAndView.setViewName("/salesSupport/openContracts");
         return modelAndView;
     }
 
@@ -60,17 +69,14 @@ public class ContractController {
         return getNewContractModelAndView(contract, productForm, modelAndView);
     }
     @RequestMapping(value="/salesManagement/editContract/{id}", method = RequestMethod.GET)
-    public ModelAndView editContract(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
-        Contract contract = contractService.findContractById(id);
-        ProductForm productForm =new ProductForm();
-        productForm.setProducts(productService.findProductsByContract(contract));
-        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
-        int numberOfProducts = productForm.getProducts().size();
-        System.out.println(numberOfProducts);
-        return getEditContractModelAndView(contract, productForm, numberOfProducts, modelAndView);
+    public ModelAndView editContractForSalesManagement (@PathVariable(value = "id") int id){
+        return getEditContractModelAndView(id);
     }
 
+    @RequestMapping(value="/salesSupport/editContract/{id}", method = RequestMethod.GET)
+    public ModelAndView editContractForSalesSupport (@PathVariable(value = "id") int id){
+        return getEditContractModelAndView(id);
+    }
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         return saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
@@ -109,8 +115,76 @@ public class ContractController {
         modelAndView.setViewName("/salesManagement/contractRegistration");
         return modelAndView;
     }
+//    private ModelAndView getModelAndView(@PathVariable("id") int id) {
+////        ModelAndView modelAndView = new ModelAndView();
+////        Contract contract = contractService.findContractById(id);
+////        ProductForm productForm =new ProductForm();
+////        productForm.setProducts(productService.findProductsByContract(contract));
+////        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
+////        int numberOfProducts = productForm.getProducts().size();
+//        DataForContractEdition dataForContractEdition = getDataForContractEdition(id);
+//        return getEditContractModelAndView(dataForContractEdition.getContract(), dataForContractEdition.getProductForm(), dataForContractEdition.getNumberOfProducts());
+//    }
 
-    private ModelAndView getEditContractModelAndView(@Valid Contract contract, ProductForm productForm, int numberOfProducts, ModelAndView modelAndView) {
+//    private DataForContractEdition getDataForContractEdition (int id) {
+//        DataForContractEdition dataForContractEdition = new DataForContractEdition ();
+//        dataForContractEdition.setContract(contractService.findContractById(id));
+//        Contract contract = contractService.findContractById(id);
+//        ProductForm productForm = new ProductForm();
+//        productForm.setProducts(productService.findProductsByContract(contract));
+//        //  productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
+//        int numberOfProducts = productForm.getProducts().size();
+//        dataForContractEdition.setContract(contract);
+//        dataForContractEdition.setNumberOfProducts(numberOfProducts);
+//        return dataForContractEdition;
+//    }
+//    private class DataForContractEdition {
+//        Contract contract;
+//        ProductForm productForm;
+//        int numberOfProducts;
+//
+//        public Contract getContract() {
+//            return contract;
+//        }
+//
+//        public void setContract(Contract contract) {
+//            this.contract = contract;
+//        }
+//
+//        public ProductForm getProductForm() {
+//            return productForm;
+//        }
+//
+//        public void setProductForm(ProductForm productForm) {
+//            this.productForm = productForm;
+//        }
+//
+//        public int getNumberOfProducts() {
+//            return numberOfProducts;
+//        }
+//
+//        public void setNumberOfProducts(int numberOfProducts) {
+//            this.numberOfProducts = numberOfProducts;
+//        }
+//
+//    }
+//    private ModelAndView getEditContractModelAndView(@Valid Contract contract, ProductForm productForm, int numberOfProducts) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
+//        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+//        modelAndView.addObject("contract", contract);
+//        modelAndView.addObject("productForm", productForm);
+//        modelAndView.addObject("numberOfProducts", numberOfProducts);
+//        modelAndView.setViewName("/salesManagement/editContract");
+//        return modelAndView;
+//    }
+    private ModelAndView getEditContractModelAndView(int id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = contractService.findContractById(id);
+        ProductForm productForm =new ProductForm();
+        productForm.setProducts(productService.findProductsByContract(contract));
+//        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
+        int numberOfProducts = productForm.getProducts().size();
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);

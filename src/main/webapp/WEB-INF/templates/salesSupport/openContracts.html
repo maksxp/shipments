@@ -19,33 +19,28 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All Contracts</title>
-
+    <title>Open Contracts</title>
     <style>
         .layerHeader {
-            padding: 70px 5px 5px
-        }
-        .editable {
-            color: blue;
-            width: 7em;
+            padding: 70px 5px 5px;
         }
     </style>
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-<!--    <a class="navbar-brand" href="#">Navbar</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
+    <!--    <a class="navbar-brand" href="#">Navbar</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Link</a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item active">-->
+            <!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+            <!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="#">Link</a>-->
+            <!--            </li>-->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Покупці та товари
@@ -64,7 +59,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allContracts">Усі контракти</a>
-                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
                     <a class="dropdown-item" href="closedContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
@@ -73,9 +67,9 @@
                 </div>
             </li>
 
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link disabled" href="#">Disabled</a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+            <!--            </li>-->
         </ul>
         <form th:action="@{/logout}" method="get">
             <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
@@ -85,18 +79,18 @@
 <div class="container-fluid">
     <div align="center">
         <div class="layerHeader">
-            <h3>Усі контракти</h3>
+            <h3>Відкриті контракти</h3>
         </div>
     </div>
 </div>
-    <table  class="table table-hover table-bordered"
-            id="table"
-            data-show-columns="true"
-            data-pagination="true"
-            data-show-jump-to="true"
-            data-side-pagination="client"
-            data-toggle="table"
-            data-filter-control="true">
+<table  class="table table-hover table-bordered"
+        id="table"
+        data-show-columns="true"
+        data-pagination="true"
+        data-show-jump-to="true"
+        data-side-pagination="client"
+        data-toggle="table"
+        data-filter-control="true">
     <thead class="thead-light">
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
@@ -109,21 +103,21 @@
         <th data-sortable="true" data-field="endOfShipments" data-filter-control="input">Завершення відвантажень</th>
     </tr>
     </thead>
-<!--    <tfoot>-->
-<!--    <tr>-->
-<!--        <th>Номер</th>-->
-<!--        <th>Покупець</th>-->
-<!--        <th>Умови оплати</th>-->
-<!--        <th>Товари</th>-->
-<!--        <th>Сума контракту</th>-->
-<!--        <th>Початок відвантажень</th>-->
-<!--        <th>Завершення відвантажень</th>-->
-<!--    </tr>-->
-<!--    </tfoot>-->
+    <!--    <tfoot>-->
+    <!--    <tr>-->
+    <!--        <th>Номер</th>-->
+    <!--        <th>Покупець</th>-->
+    <!--        <th>Умови оплати</th>-->
+    <!--        <th>Товари</th>-->
+    <!--        <th>Сума контракту</th>-->
+    <!--        <th>Початок відвантажень</th>-->
+    <!--        <th>Завершення відвантажень</th>-->
+    <!--    </tr>-->
+    <!--    </tfoot>-->
     <tbody>
-    <tr th:each="contract : ${allContracts}">
+    <tr th:each="contract : ${openContracts}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${contract.id}">id</td>
-        <td class="editable" data-sortable="true" data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
+        <td data-sortable="true" style="width: 7em"data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
         <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
         <td data-sortable="true" data-field="commodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
@@ -141,8 +135,10 @@
 <script>
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="contractNumber")
-            window.open("editContract/"+$element.id,"_self");
+        if (value=="contractNumber") {
+            window.open("editContract/"+$element.id,"_self");}
+        else {
+            window.open("contract/"+$element.id,"_self");}
     });
 </script>
 <!-- Bootstrap JS -->
