@@ -17,10 +17,15 @@ public class CommodityController {
     private CommodityService commodityService;
 
     @RequestMapping(value="/salesSupport/allCommodities", method = RequestMethod.GET)
-    public ModelAndView allCommodities(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+    public ModelAndView allCommoditiesForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllCommodities();
         modelAndView.setViewName("/salesSupport/allCommodities");
+        return modelAndView;
+    }
+    @RequestMapping(value="/salesManagement/allCommodities", method = RequestMethod.GET)
+    public ModelAndView allCommoditiesForSalesManagement(){
+        ModelAndView modelAndView = getModelAndViewWithAllCommodities();
+        modelAndView.setViewName("/salesManagement/allCommodities");
         return modelAndView;
     }
 
@@ -52,6 +57,11 @@ public class CommodityController {
             modelAndView.setViewName("/salesSupport/commodityRegistration");
 
         }
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithAllCommodities (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allCommodities", commodityService.allCommodities());
         return modelAndView;
     }
 }

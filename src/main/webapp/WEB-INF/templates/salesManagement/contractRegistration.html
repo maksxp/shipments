@@ -106,6 +106,7 @@
     <style>
         .layerHeader {
             padding: 70px 5px 5px;
+            text-align: center;
         }
         .layerBottom {
             width: 20%;
@@ -166,10 +167,10 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allContracts">Усі контракти</a>
                     <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="closedContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="preparingContracts">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
                 </div>
             </li>
 
@@ -184,11 +185,9 @@
 </nav>
 
 <div class="container-fluid">
-    <div align="center">
         <div class="layerHeader">
             <h3>Форма реєстрації нового контракту</h3>
         </div>
-    </div>
 </div>
 
 <form autocomplete="off" action="#" th:action="@{/salesManagement/contractRegistration}"

@@ -19,13 +19,18 @@ public class CustomerController {
     private CustomerService customerService;
 
     @RequestMapping(value="/salesSupport/allCustomers", method = RequestMethod.GET)
-    public ModelAndView allCustomers(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allCustomers", customerService.allCustomers());
+    public ModelAndView allCustomersForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllCustomers();
         modelAndView.setViewName("/salesSupport/allCustomers");
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesManagement/allCustomers", method = RequestMethod.GET)
+    public ModelAndView allCustomersForSalesManagement(){
+        ModelAndView modelAndView = getModelAndViewWithAllCustomers();
+        modelAndView.setViewName("/salesManagement/allCustomers");
+        return modelAndView;
+    }
     @RequestMapping(value="/salesSupport/customerRegistration", method = RequestMethod.GET)
     public ModelAndView registerNewCustomer(){
         ModelAndView modelAndView = new ModelAndView();
@@ -94,6 +99,11 @@ public class CustomerController {
         }
         customerService.saveCustomer(customer);
         modelAndView.addObject("successMessage", "Зміни успішно внесено");
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithAllCustomers (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allCustomers", customerService.allCustomers());
         return modelAndView;
     }
 }

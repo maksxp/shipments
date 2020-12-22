@@ -19,17 +19,15 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All Customers</title>
+    <title>All Commodities</title>
 
     <style>
         .layerHeader {
             padding: 70px 5px 5px;
             text-align: center;
         }
-
-        .editable {
-            color: blue;
-            width: 7em;
+        .table {
+            margin: auto;
         }
     </style>
 </head>
@@ -53,10 +51,7 @@
                     Покупці та товари
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -85,7 +80,7 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі покупці</h3>
+            <h3>Усі товари</h3>
         </div>
 </div>
 <table  class="table table-hover table-bordered"
@@ -99,11 +94,8 @@
         style="width: max-content">
     <thead class="thead-light">
     <tr>
-        <th data-sortable="true" data-field="id" data-filter-control="input">Id</th>
-        <th data-sortable="true" data-field="customerName" data-filter-control="input">Назва</th>
-        <th data-sortable="true" data-field="customerCountry" data-filter-control="input">Країна</th>
-        <th data-sortable="true" data-field="customerType" data-filter-control="select">Тип</th>
-        <th data-sortable="true" data-field="comment" data-filter-control="input">Коментар</th>
+        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Назва товару</th>
+        <th data-sortable="true" data-field="commodityCode" data-filter-control="input">Код товару</th>
     </tr>
     </thead>
     <!--    <tfoot>-->
@@ -118,12 +110,9 @@
     <!--    </tr>-->
     <!--    </tfoot>-->
     <tbody>
-    <tr th:each="customer : ${allCustomers}">
-        <td class="editable" data-sortable="true" data-field="id" data-filter-control="input" th:text="${customer.id}">Id</td>
-        <td data-sortable="true" data-field="customerName" data-filter-control="input" th:text="${customer.customerName}">Назва</td>
-        <td data-sortable="true" data-field="customerCountry" data-filter-control="input" th:text="${customer.customerCountry}">Країна</td>
-        <td data-sortable="true" data-field="customerType" data-filter-control="input" th:text="${customer.customerType}">Тип</td>
-        <td data-sortable="true" data-field="comment" data-filter-control="input" th:text="${customer.comment}">Коментар</td>
+    <tr th:each="commodity : ${allCommodities}">
+        <td data-sortable="true" data-field="commodityName" data-filter-control="input" th:text="${commodity.commodityName}">Назва товару</td>
+        <td data-sortable="true" data-field="commodityCode" data-filter-control="input" th:text="${commodity.commodityCode}">Код товару</td>
     </tr>
     </tbody>
 </table>
@@ -132,13 +121,7 @@
         $('#table').bootstrapTable()
     })
 </script>
-<script>
 
-    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="id")
-            window.open("editCustomer/"+$element.id,"_self");
-    });
-</script>
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

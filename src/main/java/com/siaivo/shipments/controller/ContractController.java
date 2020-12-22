@@ -31,63 +31,117 @@ public class ContractController {
 
     @RequestMapping(value="/salesManagement/openContracts", method = RequestMethod.GET)
     public ModelAndView openContractsForSalesManagement (){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("openContracts", contractService.openContracts());
+        ModelAndView modelAndView = getModelAndViewWithOpenContracts();
         modelAndView.setViewName("/salesManagement/openContracts");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/openContracts", method = RequestMethod.GET)
     public ModelAndView openContractsForSalesSupport(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("openContracts", contractService.openContracts());
+        ModelAndView modelAndView = getModelAndViewWithOpenContracts();
         modelAndView.setViewName("/salesSupport/openContracts");
+        return modelAndView;
+    }
+    @RequestMapping(value="/salesManagement/fulfilledContracts", method = RequestMethod.GET)
+    public ModelAndView fulfilledContractsForSalesManagement (){
+        ModelAndView modelAndView = getModelAndViewWithFulfilledContracts();
+        modelAndView.setViewName("/salesManagement/fulfilledContracts");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/fulfilledContracts", method = RequestMethod.GET)
+    public ModelAndView fulfilledContractsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithFulfilledContracts();
+        modelAndView.setViewName("/salesSupport/fulfilledContracts");
+        return modelAndView;
+    }
+    @RequestMapping(value="/salesManagement/contractsForPreparation", method = RequestMethod.GET)
+    public ModelAndView contractsForPreparationForSalesManagement (){
+        ModelAndView modelAndView = getModelAndViewWithContractsForPreparation();
+        modelAndView.setViewName("/salesManagement/contractsForPreparation");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/contractsForPreparation", method = RequestMethod.GET)
+    public ModelAndView contractsForPreparationForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithContractsForPreparation();
+        modelAndView.setViewName("/salesSupport/contractsForPreparation");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesManagement/allContracts", method = RequestMethod.GET)
     public ModelAndView allContractsForSalesManagement(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allContracts", contractService.allContracts());
+        ModelAndView modelAndView = getModelAndViewWithAllContracts();
         modelAndView.setViewName("/salesManagement/allContracts");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/allContracts", method = RequestMethod.GET)
     public ModelAndView allContractsForSalesSupport(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allContracts", contractService.allContracts());
+        ModelAndView modelAndView = getModelAndViewWithAllContracts();
         modelAndView.setViewName("/salesSupport/allContracts");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesManagement/contractRegistration", method = RequestMethod.GET)
-    public ModelAndView registerNewContract(){
+    public ModelAndView registerNewContractForSalesManagement (){
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = new Contract ();
         ProductForm productForm = new ProductForm();
+        modelAndView.setViewName("/salesManagement/contractRegistration");
+        return getNewContractModelAndView(contract, productForm, modelAndView);
+    }
+
+    @RequestMapping(value="/salesSupport/contractRegistration", method = RequestMethod.GET)
+    public ModelAndView registerNewContractForSalesSupport(){
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = new Contract ();
+        ProductForm productForm = new ProductForm();
+        modelAndView.setViewName("/salesSupport/contractRegistration");
         return getNewContractModelAndView(contract, productForm, modelAndView);
     }
     @RequestMapping(value="/salesManagement/editContract/{id}", method = RequestMethod.GET)
     public ModelAndView editContractForSalesManagement (@PathVariable(value = "id") int id){
-        return getEditContractModelAndView(id);
+        ModelAndView modelAndView = getEditContractModelAndView(id);
+        modelAndView.setViewName("/salesManagement/editContract");
+        return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/editContract/{id}", method = RequestMethod.GET)
     public ModelAndView editContractForSalesSupport (@PathVariable(value = "id") int id){
-        return getEditContractModelAndView(id);
+        ModelAndView modelAndView = getEditContractModelAndView(id);
+        modelAndView.setViewName("/salesSupport/editContract");
+        return modelAndView;
     }
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
-        return saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+    public ModelAndView registerNewContractForSalesManagement (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+        modelAndView.setViewName("/salesManagement/contractRegistration");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/salesSupport/contractRegistration", method = RequestMethod.POST)
+    public ModelAndView registerNewContractForSalesSupport (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+        modelAndView.setViewName("/salesSupport/contractRegistration");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/salesManagement/editContract", method = RequestMethod.POST)
-    public ModelAndView editContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+    public ModelAndView editContractForSalesManagement (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         productService.deleteProductsByContract(contract);
-        return saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+        ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+        modelAndView.setViewName("/salesManagement/contractRegistration");
+        return modelAndView;
     }
 
+    @RequestMapping(value = "/salesSupport/editContract", method = RequestMethod.POST)
+    public ModelAndView editContractForSalesSupport (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        productService.deleteProductsByContract(contract);
+        ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+        modelAndView.setViewName("/salesSupport/contractRegistration");
+        return modelAndView;
+    }
     private ModelAndView saveContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = new ModelAndView();
         if (isCustomerExists(customerName)!= true) {
@@ -112,88 +166,44 @@ public class ContractController {
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("productForm", productForm);
-        modelAndView.setViewName("/salesManagement/contractRegistration");
+//        modelAndView.setViewName("/salesManagement/contractRegistration");
         return modelAndView;
     }
-//    private ModelAndView getModelAndView(@PathVariable("id") int id) {
-////        ModelAndView modelAndView = new ModelAndView();
-////        Contract contract = contractService.findContractById(id);
-////        ProductForm productForm =new ProductForm();
-////        productForm.setProducts(productService.findProductsByContract(contract));
-////        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
-////        int numberOfProducts = productForm.getProducts().size();
-//        DataForContractEdition dataForContractEdition = getDataForContractEdition(id);
-//        return getEditContractModelAndView(dataForContractEdition.getContract(), dataForContractEdition.getProductForm(), dataForContractEdition.getNumberOfProducts());
-//    }
 
-//    private DataForContractEdition getDataForContractEdition (int id) {
-//        DataForContractEdition dataForContractEdition = new DataForContractEdition ();
-//        dataForContractEdition.setContract(contractService.findContractById(id));
-//        Contract contract = contractService.findContractById(id);
-//        ProductForm productForm = new ProductForm();
-//        productForm.setProducts(productService.findProductsByContract(contract));
-//        //  productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
-//        int numberOfProducts = productForm.getProducts().size();
-//        dataForContractEdition.setContract(contract);
-//        dataForContractEdition.setNumberOfProducts(numberOfProducts);
-//        return dataForContractEdition;
-//    }
-//    private class DataForContractEdition {
-//        Contract contract;
-//        ProductForm productForm;
-//        int numberOfProducts;
-//
-//        public Contract getContract() {
-//            return contract;
-//        }
-//
-//        public void setContract(Contract contract) {
-//            this.contract = contract;
-//        }
-//
-//        public ProductForm getProductForm() {
-//            return productForm;
-//        }
-//
-//        public void setProductForm(ProductForm productForm) {
-//            this.productForm = productForm;
-//        }
-//
-//        public int getNumberOfProducts() {
-//            return numberOfProducts;
-//        }
-//
-//        public void setNumberOfProducts(int numberOfProducts) {
-//            this.numberOfProducts = numberOfProducts;
-//        }
-//
-//    }
-//    private ModelAndView getEditContractModelAndView(@Valid Contract contract, ProductForm productForm, int numberOfProducts) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
-//        modelAndView.addObject("allCommodities", commodityService.allCommodities());
-//        modelAndView.addObject("contract", contract);
-//        modelAndView.addObject("productForm", productForm);
-//        modelAndView.addObject("numberOfProducts", numberOfProducts);
-//        modelAndView.setViewName("/salesManagement/editContract");
-//        return modelAndView;
-//    }
     private ModelAndView getEditContractModelAndView(int id) {
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = contractService.findContractById(id);
         ProductForm productForm =new ProductForm();
         productForm.setProducts(productService.findProductsByContract(contract));
-//        productForm.getProducts().forEach(product -> System.out.println("index: "+productForm.getProducts().indexOf(product)));
         int numberOfProducts = productForm.getProducts().size();
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("productForm", productForm);
         modelAndView.addObject("numberOfProducts", numberOfProducts);
-        modelAndView.setViewName("/salesManagement/editContract");
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithAllContracts (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allContracts", contractService.allContracts());
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithFulfilledContracts (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("fulfilledContracts", contractService.fulfilledContracts());
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithOpenContracts (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("openContracts", contractService.openContracts());
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithContractsForPreparation (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("contractsForPreparation", contractService.contractsForPreparation());
+        return modelAndView;
+    }
     private boolean isCustomerExists (String customerName) {
         if (customerService.findCustomerByCustomerName(customerName)!=null) {
             return true;

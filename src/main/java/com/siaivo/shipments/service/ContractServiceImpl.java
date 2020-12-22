@@ -31,11 +31,21 @@ public class ContractServiceImpl implements ContractService{
         List <Contract> closedContracts = new ArrayList<>();
         List <Contract> canceledContracts = new ArrayList<>();
         List <Contract> contractsToReturn = contractService.allContracts();
-        closedContracts.addAll(contractRepository.findByStateLike("виконано"));
-        canceledContracts.addAll(contractRepository.findByStateLike("відмінено"));
+        closedContracts.addAll(contractRepository.findByStateLike("виконаний"));
+        canceledContracts.addAll(contractRepository.findByStateLike("відмінений"));
         contractsToReturn.removeAll(closedContracts);
         contractsToReturn.removeAll(canceledContracts);
         return contractsToReturn;
+    }
+
+    @Override
+    public List<Contract> contractsForPreparation() {
+        return contractRepository.findByStateLike("готується");
+    }
+
+    @Override
+    public List<Contract> fulfilledContracts() {
+        return contractRepository.findByStateLike("виконаний");
     }
 
     @Override

@@ -19,11 +19,12 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All Contracts</title>
+    <title>All Commodities</title>
 
     <style>
         .layerHeader {
-            padding: 70px 5px 5px
+            padding: 70px 5px 5px;
+            text-align: center;
         }
         .table {
             margin: auto;
@@ -63,10 +64,10 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allContracts">Усі контракти</a>
                     <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="closedContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="preparingContracts">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
                     <a class="dropdown-item" href="contractRegistration">Реєстрація нового контракту</a>
                 </div>
             </li>
@@ -81,11 +82,9 @@
     </div>
 </nav>
 <div class="container-fluid">
-    <div align="center">
         <div class="layerHeader">
             <h3>Усі товари</h3>
         </div>
-    </div>
 </div>
 <table  class="table table-hover table-bordered"
         id="table"

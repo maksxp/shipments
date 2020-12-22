@@ -8,6 +8,7 @@ public interface ContractService {
     void saveContract(Contract contract);
     List<Contract> allContracts();
     List<Contract> openContracts();
-
+    List<Contract> contractsForPreparation();
+    List<Contract> fulfilledContracts ();
     Contract findContractById(int id);
 }
