@@ -113,6 +113,16 @@ public class ContractController {
         modelAndView.setViewName("/salesSupport/editContract");
         return modelAndView;
     }
+
+    @RequestMapping(value="/salesSupport/contractPreparation/{id}", method = RequestMethod.GET)
+    public ModelAndView contractPreparationForSalesSupport (@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = contractService.findContractById(id);
+        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
+        modelAndView.addObject("contract", contract);
+        modelAndView.setViewName("/salesSupport/contractPreparation");
+        return modelAndView;
+    }
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewContractForSalesManagement (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);

@@ -139,8 +139,12 @@
 <script>
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="contractNumber")
+        if (value=="contractNumber") {
             window.open("editContract/"+$element.id,"_self");
+        }
+        else {
+            window.open("contractPreparation/"+$element.id,"_self");
+        }
     });
 </script>
 <!-- Bootstrap JS -->

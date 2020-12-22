@@ -52,11 +52,11 @@
                     Покупці та товари
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
+                    <a class="dropdown-item" href="../allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="../customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+                    <a class="dropdown-item" href="../allCommodities">Усі товари</a>
+                    <a class="dropdown-item" href="../commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -64,13 +64,13 @@
                     Контракти
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
-                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="../allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="../openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="../fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="contractRegistration">Реєстрація нового контракту</a>
+                    <a class="dropdown-item" href="../notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="../contractsForPreparation">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="../contractRegistration">Реєстрація нового контракту</a>
                 </div>
             </li>
 
@@ -88,48 +88,57 @@
             <h3>Підготовка контракту</h3>
         </div>
 </div>
-    <table  class="table table-hover table-bordered"
-            id="table"
-            data-show-columns="true"
-            data-pagination="true"
-            data-show-jump-to="true"
-            data-side-pagination="client"
-            data-toggle="table"
-            data-filter-control="true">
+<div class="container-fluid">
+    <div style="text-align: left">
+        <h4>Базова інформація</h4>
+    </div>
+</div>
+<table class="table table-hover table-bordered"
+       data-pagination="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
-        <th style="width: 7em" data-sortable="true" data-field="contractNumber" data-filter-control="input">Номер</th>
-        <th data-sortable="true" data-field="customer" data-filter-control="input">Покупець</th>
-        <th data-sortable="true" data-field="paymentTerms" data-filter-control="select">Умови оплати</th>
-        <th data-sortable="true" data-field="commodityNames" data-filter-control="select">Товари</th>
-        <th data-sortable="true" data-field="sumOfContract" data-filter-control="input">Сума контракту</th>
-        <th data-sortable="true" data-field="startOfShipments" data-filter-control="input">Початок відвантажень</th>
-        <th data-sortable="true" data-field="endOfShipments" data-filter-control="input">Завершення відвантажень</th>
+        <th data-field="id">id</th>
+        <th data-field="customer">Покупець</th>
+        <th data-field="paymentTerms">Умови оплати</th>
+        <th data-field="startOfShipments">Початок відвантажень</th>
+        <th data-field="endOfShipments">Завершення відвантажень</th>
+        <th data-field="comment">Коментар</th>
     </tr>
     </thead>
-<!--    <tfoot>-->
-<!--    <tr>-->
-<!--        <th>Номер</th>-->
-<!--        <th>Покупець</th>-->
-<!--        <th>Умови оплати</th>-->
-<!--        <th>Товари</th>-->
-<!--        <th>Сума контракту</th>-->
-<!--        <th>Початок відвантажень</th>-->
-<!--        <th>Завершення відвантажень</th>-->
-<!--    </tr>-->
-<!--    </tfoot>-->
     <tbody>
-    <tr th:each="contract : ${allContracts}">
-        <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${contract.id}">id</td>
-        <td class="editable" data-sortable="true" data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
-        <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
-        <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
-        <td data-sortable="true" data-field="commodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
-        <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${contract.getSumOfContract(contract)}">sumOfContract</td>
-        <td data-sortable="true" data-field="startOfShipments" data-filter-control="input" th:text="${contract.startOfShipments}">startOfShipments</td>
-        <td data-sortable="true" data-field="endOfShipments" data-filter-control="input" th:text="${contract.endOfShipments}">endOfShipments</td>
+    <td th:text="${contract.id}">id</td>
+    <td th:text="${contract.customer.customerName}">Покупець</td>
+    <td th:text="${contract.paymentTerms}">Умови оплати</td>
+    <td th:text="${contract.startOfShipments}">Початок відвантажень</td>
+    <td th:text="${contract.endOfShipments}">Завершення відвантажень</td>
+    <td th:text="${contract.comment}">Коментар</td>
+    </tbody>
+</table>
+<div class="container-fluid">
+    <div style="text-align: left">
+        <h4>Товари та ціни</h4>
+    </div>
+</div>
+<table class="table table-hover table-bordered"
+       data-pagination="true">
+    <thead class="thead-light">
+    <tr>
+        <th data-field="id">Товар</th>
+        <th data-field="customer">Партія</th>
+        <th data-field="paymentTerms">Ціна</th>
+        <th data-field="startOfShipments">Валюта</th>
+        <th data-field="endOfShipments">Кількість</th>
+        <th data-field="comment">Пакування</th>
     </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${allProductsByContract}">
+        <td th:text="${product.commodity.commodityName}">Товар</td>
+        <td th:text="${product.batch}">Партія</td>
+        <td th:text="${product.price}">Ціна</td>
+        <td th:text="${product.currency}">Валюта</td>
+        <td th:text="${product.quantity}">Кількість</td>
+        <td th:text="${product.packaging}">Пакування</td>  </tr>
     </tbody>
 </table>
 <script>
@@ -137,13 +146,13 @@
         $('#table').bootstrapTable()
     })
 </script>
-<script>
+<!--<script>-->
 
-    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="contractNumber")
-            window.open("editContract/"+$element.id,"_self");
-    });
-</script>
+<!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->
+<!--        if (value=="contractNumber")-->
+<!--            window.open("editContract/"+$element.id,"_self");-->
+<!--    });-->
+<!--</script>-->
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
