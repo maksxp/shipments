@@ -93,6 +93,7 @@
         <h4>Базова інформація</h4>
     </div>
 </div>
+<input th:name="contractId" id="${contract.id}" hidden required/>
 <table class="table table-hover table-bordered"
        data-pagination="true">
     <thead class="thead-light">
@@ -141,6 +142,14 @@
         <td th:text="${product.packaging}">Пакування</td>  </tr>
     </tbody>
 </table>
+<div class="container-fluid">
+    <div style="text-align: left">
+        <h4>Параметри відвантажень</h4>
+    </div>
+</div>
+<form autocomplete="off" action="#" th:action="@{/salesSupport/contractPreparation}"
+      th:object="${contract}" method="post" class="form-horizontal" role="form">
+
 <script>
     $(function() {
         $('#table').bootstrapTable()

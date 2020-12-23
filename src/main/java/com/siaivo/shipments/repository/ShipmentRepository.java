@@ -2,19 +2,16 @@ package com.siaivo.shipments.repository;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Shipment;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.util.List;
+
 
 @Repository("shipmentRepository")
-public interface ShipmentRepository {
+public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
 
     Shipment findById(int id);
-    Shipment findByContract(Contract contract);
-    Shipment findByPlannedLoadingDate (Date plannedLoadingDate);
-    Shipment findByActualLoadingDate (Date actualLoadingDate);
-    Shipment findByPlannedUnloadingDate (Date plannedUnloadingDate);
-    Shipment findByActualUnloadingDate (Date actualUnloadingDate);
-    Shipment findByLogisticInstructionStatus (String logisticInstructionStatus);
-    Shipment findByLabelsStatus (String labelsStatus);
+    List <Shipment> findByContract (Contract contract);
+
 }

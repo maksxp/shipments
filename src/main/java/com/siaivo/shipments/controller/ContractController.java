@@ -8,6 +8,7 @@ import com.siaivo.shipments.service.ContractService;
 import com.siaivo.shipments.service.CustomerService;
 import com.siaivo.shipments.service.ProductService;
 import com.siaivo.shipments.support.ProductForm;
+import com.siaivo.shipments.support.ShipmentsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,13 @@ public class ContractController {
     private CustomerService customerService;
     @Autowired
     private CommodityService commodityService;
+
+    @ModelAttribute ("shipmentsForm")
+    public ShipmentsForm getShipmentsForm() {
+        ShipmentsForm shipmentsForm = new ShipmentsForm();
+        shipmentsForm.setShipmentsForm(new ArrayList<>());
+        return shipmentsForm;
+    }
 
     @RequestMapping(value="/salesManagement/openContracts", method = RequestMethod.GET)
     public ModelAndView openContractsForSalesManagement (){
@@ -115,14 +123,24 @@ public class ContractController {
     }
 
     @RequestMapping(value="/salesSupport/contractPreparation/{id}", method = RequestMethod.GET)
-    public ModelAndView contractPreparationForSalesSupport (@PathVariable(value = "id") int id){
+    public ModelAndView getContractPreparationForSalesSupport (@PathVariable(value = "id") int id, @ModelAttribute("shipmentsForm") ShipmentsForm shipmentsForm){
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = contractService.findContractById(id);
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("contract", contract);
+        modelAndView.addObject("shipmentsForm", shipmentsForm);
         modelAndView.setViewName("/salesSupport/contractPreparation");
         return modelAndView;
     }
+
+    @RequestMapping(value="/salesSupport/contractPreparation", method = RequestMethod.POST)
+    public ModelAndView postContractPreparationForSalesSupport (@RequestParam("contractId") int contractId, @ModelAttribute("shipmentsForm") ShipmentsForm shipmentsForm){
+        Contract contract = contractService.findContractById(contractId);
+        ModelAndView modelAndView = getModelAndViewWithContractsForPreparation();
+        modelAndView.setViewName("/salesSupport/contractsForPreparation");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/salesManagement/contractRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewContractForSalesManagement (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = saveContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
