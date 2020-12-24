@@ -14,7 +14,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
-    <title>Contract registration</title>
+    <title>Request for new contract</title>
     <script>
     $( function() {
     let availableTerms = [
@@ -157,7 +157,10 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
+                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -185,10 +188,10 @@
 </nav>
 <div class="container-fluid">
     <div class="layerHeader">
-        <h3>Форма реєстрації нового контракту</h3>
+        <h3>Форма заявки на новий контракт</h3>
     </div>
 </div>
-<form autocomplete="off" action="#" th:action="@{/salesManagement/contractRegistration}"
+<form autocomplete="off" action="#" th:action="@{/salesSupport/requestForNewContract}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
     <div class="container-fluid">
         <div class="row row-flex">
@@ -213,7 +216,7 @@
                         <div class="ui-widget">
                             <p style="font-size: small; font-weight: bold">Умови доставки</p>
                             <select  th:field="*{deliveryTerms}" required>
-                                <option value="" >Оберіть</option>
+                                <option value="" style="font-size: small; font-weight: bold">Оберіть</option>
                                 <option th:value="DAP">DAP</option>
                                 <option th:value="FCA">FCA</option>
                                 <option th:value="CIF">CIF</option>
@@ -458,7 +461,7 @@
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">
-            <button type="submit" class="btn btn-primary btn-block">Зареєструвати новий контракт</button>
+            <button type="submit" class="btn btn-primary btn-block">Зареєструвати заявку</button>
             </div>
         </div>
     </div>

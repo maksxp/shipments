@@ -26,9 +26,13 @@
             padding: 70px 5px 5px;
             text-align: center;
         }
-        .editable {
-            color: blue;
-            width: 7em;
+        .layerBottom {
+            width: 20%;
+            padding: 20px;
+        }
+        .layerForm{
+            border: 4px solid cornflowerblue;
+            padding: 10px;
         }
     </style>
 </head>
@@ -70,7 +74,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../notSignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="../contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="../contractRegistration">Реєстрація нового контракту</a>
+                    <a class="dropdown-item" href="../requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
 
@@ -83,14 +87,12 @@
         </form>
     </div>
 </nav>
+
 <div class="container-fluid">
-        <div class="layerHeader">
-            <h3>Підготовка контракту</h3>
-        </div>
-</div>
-<div class="container-fluid">
-    <div style="text-align: left">
+    <div class="layerHeader">
+       <div style="text-align: left">
         <h4>Базова інформація</h4>
+      </div>
     </div>
 </div>
 <input th:name="contractId" id="${contract.id}" hidden required/>
@@ -142,13 +144,55 @@
         <td th:text="${product.packaging}">Пакування</td>  </tr>
     </tbody>
 </table>
-<div class="container-fluid">
-    <div style="text-align: left">
-        <h4>Параметри відвантажень</h4>
-    </div>
+<div class="row justify-content-md-center">
+        <h3>Реєстрація контракту</h3>
 </div>
 <form autocomplete="off" action="#" th:action="@{/salesSupport/contractPreparation}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="layerForm">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" style="font-size: 90%; font-weight: bold"> Номер контракту </th>
+                    <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість машин </th>
+                    <th scope="col" style="font-size: 90%; font-weight: bold"> Вага товарів в машині </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="text" th:field="*{contractNumber}" required style="width: 7em">
+                    </td>
+                    <td>
+                        <input type="number" th:name="numberOfTrucks" min="1" step="1" required style="width: 7em">
+                    </td>
+                    <td>
+                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+    <div class="container-fluid">
+        <div align="center">
+            <div class="layerBottom">
+                <button type="submit" class="btn btn-primary btn-block">Зареєструвати контракт</button>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <span font-size="3"
+              th:utext="${successMessage}">
+        </span>
+    </div>
+</form>
+
 
 <script>
     $(function() {

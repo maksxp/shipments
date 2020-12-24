@@ -18,6 +18,7 @@
     <script>
     $( function() {
     let availableTerms = [
+    let availableTerms = [
     "1 день по завантаженню",
     "1 день по прибуттю",
     "2 дні по прибуттю",
@@ -99,7 +100,7 @@
             let x = document.getElementById("id_" + id);
             x.style.display = "none";
             $(".prod" + id).attr('required', false);
-//            deleting commodity name to allow contractController to count only visible products when registering contract
+//            deleting commodity name to allow contractController to count only visible products
             let elem =document.getElementById("commodity"+id);
             elem.selectedIndex = 0;
             }
@@ -174,7 +175,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../notSignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="../contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="../contractRegistration">Реєстрація нового контракту</a>
+                    <a class="dropdown-item" href="../requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
 
