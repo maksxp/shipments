@@ -23,6 +23,10 @@ public class Contract {
     @NotEmpty(message = "*Необхідно вказати умови оплати")
     private String paymentTerms;
 
+    @Column(name = "delivery_terms")
+    @NotEmpty(message = "*Необхідно вказати умови оплати")
+    private String deliveryTerms;
+
     @Column(name = "comment")
     private String comment;
 
@@ -147,6 +151,14 @@ public class Contract {
         List <BigDecimal> costOfEachProduct = new ArrayList<>();
         contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
         return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public String getDeliveryTerms() {
+        return deliveryTerms;
+    }
+
+    public void setDeliveryTerms(String deliveryTerms) {
+        this.deliveryTerms = deliveryTerms;
     }
 
     @Override

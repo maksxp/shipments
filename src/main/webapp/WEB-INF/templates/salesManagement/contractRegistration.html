@@ -27,7 +27,7 @@
     "30 днів по прибуттю",
     "60 днів по прибуттю",
     "повна передоплата",
-    "часткова передоплата"
+    "оплата частинами"
     ];
     $( "#paymentTerms" ).autocomplete({
     minLength : 1,
@@ -207,6 +207,18 @@
                         <div class="ui-widget">
                             <p style="font-size: small; font-weight: bold">Умови оплати</p>
                             <input th:name="paymentTerms" id="paymentTerms" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="ui-widget">
+                            <p style="font-size: small; font-weight: bold">Умови доставки</p>
+                            <select  th:field="*{deliveryTerms}" required>
+                                <option value="" >Оберіть</option>
+                                <option th:value="DAP">DAP</option>
+                                <option th:value="FCA">FCA</option>
+                                <option th:value="CIF">CIF</option>
+                                <option th:value="CFR">CFR</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
