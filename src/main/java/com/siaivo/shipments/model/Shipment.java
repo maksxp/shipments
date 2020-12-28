@@ -20,34 +20,27 @@ public class Shipment {
     private Contract contract;
 
     @Column(name = "planned_loading_date")
-    @NotEmpty(message = "*Please provide planned loading date")
     private String plannedLoadingDate;
 
     @Column(name = "actual_loading_date")
-    @NotEmpty(message = "*Please provide actual loading date")
     private String actualLoadingDate;
 
     @Column(name = "planned_unloading_date")
-    @NotEmpty(message = "*Please provide planned unloading date")
     private String plannedUnloadingDate;
 
     @Column(name = "actual_unloading_date")
-    @NotEmpty(message = "*Please provide actual unloading date")
     private String actualUnloadingDate;
 
     @Column(name = "logistic_instruction_status")
-    @NotEmpty(message = "*Please provide logistic instruction status")
     private String logisticInstructionStatus;
 
     @Column(name = "labels_status")
-    @NotEmpty(message = "*Please provide labels status")
     private String labelsStatus;
 
     @Column(name = "comment")
     private String comment;
 
     @Column(name = "invoice_number")
-    @NotEmpty(message = "*Please provide invoice number")
     private String invoiceNumber;
 
     @Column(name = "invoice_first_part_sum")

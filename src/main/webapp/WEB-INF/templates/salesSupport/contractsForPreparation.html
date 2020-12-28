@@ -102,7 +102,7 @@
         <th data-sortable="true" data-field="customer" data-filter-control="input">Покупець</th>
         <th data-sortable="true" data-field="paymentTerms" data-filter-control="select">Умови оплати</th>
         <th data-sortable="true" data-field="deliveryTerms" data-filter-control="select">Умови доставки</th>
-        <th data-sortable="true" data-field="commodityNames" data-filter-control="select">Товари</th>
+        <th data-sortable="true" data-field="uniqueCommodityNames" data-filter-control="select">Товари</th>
         <th data-sortable="true" data-field="sumOfContract" data-filter-control="input">Сума контракту</th>
         <th data-sortable="true" data-field="startOfShipments" data-filter-control="input">Початок відвантажень</th>
         <th data-sortable="true" data-field="endOfShipments" data-filter-control="input">Завершення відвантажень</th>
@@ -126,7 +126,7 @@
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
         <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
         <td data-sortable="true" data-field="deliveryTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.deliveryTerms}">deliveryTerms</td>
-        <td data-sortable="true" data-field="commodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfCommodityNames(contract)}">commodityNames</td>
+        <td data-sortable="true" data-field="uniqueCommodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfUniqueCommodityNames(contract)}">commodityNames</td>
         <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${contract.getSumOfContract(contract)}">sumOfContract</td>
         <td data-sortable="true" data-field="startOfShipments" data-filter-control="input" th:text="${contract.startOfShipments}">startOfShipments</td>
         <td data-sortable="true" data-field="endOfShipments" data-filter-control="input" th:text="${contract.endOfShipments}">endOfShipments</td>
@@ -142,7 +142,7 @@
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
         if (value=="contractNumber") {
-            window.open("editContract/"+$element.id,"_self");
+            window.open("editRequestForContract/"+$element.id,"_self");
         }
         else {
             window.open("contractPreparation/"+$element.id,"_self");

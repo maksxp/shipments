@@ -21,6 +21,22 @@
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
     <title>Contract preparation</title>
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".datepicker").datepicker({
+                monthNames: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+                dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay: 1,
+                dateFormat: "dd.mm.yy",
+                // changeYear: true,
+                // changeMonth: true,
+                minDate: "0",
+                showWeek: true,
+                weekHeader: "тж",
+            });
+        });
+
+    </script>
     <style>
         .layerHeader {
             padding: 70px 5px 5px;
@@ -95,7 +111,8 @@
       </div>
     </div>
 </div>
-<input th:name="contractId" id="${contract.id}" hidden required/>
+<!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
+<!--<input type="hidden" th:field="*{id}"/>-->
 <table class="table table-hover table-bordered"
        data-pagination="true">
     <thead class="thead-light">
@@ -149,6 +166,7 @@
 </div>
 <form autocomplete="off" action="#" th:action="@{/salesSupport/contractPreparation}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
+    <input type="hidden" th:field="*{id}"/>
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="layerForm">
@@ -156,21 +174,24 @@
                 <thead>
                 <tr>
                     <th scope="col" style="font-size: 90%; font-weight: bold"> Номер контракту </th>
+                    <th scope="col" style="font-size: 90%; font-weight: bold"> Дата Контракту </th>
                     <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість машин </th>
-                    <th scope="col" style="font-size: 90%; font-weight: bold"> Вага товарів в машині </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>
-                        <input type="text" th:field="*{contractNumber}" required style="width: 7em">
+                        <input type="text" th:name="contractNumber" required style="width: 7em">
+                    </td>
+                    <td>
+                        <input type="text" th:name="contractDate" class="datepicker" style="width: 7em" required readonly>
                     </td>
                     <td>
                         <input type="number" th:name="numberOfTrucks" min="1" step="1" required style="width: 7em">
                     </td>
-                    <td>
-                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">
-                    </td>
+<!--                    <td>-->
+<!--                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">-->
+<!--                    </td>-->
                 </tr>
                 </tbody>
             </table>
@@ -209,5 +230,15 @@
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+<!-- jQuery datepicker and autocomplete-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"> </script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"> </script>
+
 </body>
 </html>

@@ -157,10 +157,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -191,7 +188,7 @@
         <h3>Форма заявки на новий контракт</h3>
     </div>
 </div>
-<form autocomplete="off" action="#" th:action="@{/salesSupport/requestForNewContract}"
+<form autocomplete="off" action="#" th:action="@{/salesManagement/requestForContract}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
     <div class="container-fluid">
         <div class="row row-flex">

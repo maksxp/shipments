@@ -17,7 +17,7 @@ public class Contract {
     private String contractNumber;
 
     @Column(name = "contract_date")
-    private Date contractDate;
+    private String contractDate;
 
     @Column(name = "payment_terms")
     @NotEmpty(message = "*Необхідно вказати умови оплати")
@@ -68,11 +68,11 @@ public class Contract {
         this.contractNumber = contractNumber;
     }
 
-    public Date getContractDate() {
+    public String getContractDate() {
         return contractDate;
     }
 
-    public void setContractDate(Date contractDate) {
+    public void setContractDate(String contractDate) {
         this.contractDate = contractDate;
     }
 
@@ -140,9 +140,17 @@ public class Contract {
         this.shipment = shipment;
     }
 
-    public String getStringOfCommodityNames (Contract contract) {
+    public String getStringOfAllCommodityNames (Contract contract) {
         StringBuilder str = new StringBuilder();
         contract.getProducts().stream().forEach(product -> str.append(product.getCommodity().getCommodityName()+"/"));
+        String stringOfCommodityNames = str.toString().trim().replaceAll(".$", "");
+        return stringOfCommodityNames.replaceAll("/","+");
+    }
+    public String getStringOfUniqueCommodityNames (Contract contract) {
+        StringBuilder str = new StringBuilder();
+        Set <String> setOfUniqueCommodityNamesInContract = new HashSet<>();
+        contract.getProducts().stream().forEach(product -> setOfUniqueCommodityNamesInContract.add(product.getCommodity().getCommodityName()));
+        setOfUniqueCommodityNamesInContract.stream().forEach(name -> str.append(name+"/"));
         String stringOfCommodityNames = str.toString().trim().replaceAll(".$", "");
         return stringOfCommodityNames.replaceAll("/","+");
     }

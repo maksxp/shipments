@@ -3,6 +3,7 @@ package com.siaivo.shipments.service;
 import com.siaivo.shipments.model.Commodity;
 import com.siaivo.shipments.repository.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

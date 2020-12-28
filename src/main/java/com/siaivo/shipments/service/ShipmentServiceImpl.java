@@ -22,4 +22,9 @@ public class ShipmentServiceImpl implements ShipmentService{
     public List<Shipment> findByContract(Contract contract) {
         return shipmentRepository.findByContract(contract);
     }
+
+    @Override
+    public void saveShipment(Shipment shipment) {
+        shipmentRepository.save(shipment);
+    }
 }
