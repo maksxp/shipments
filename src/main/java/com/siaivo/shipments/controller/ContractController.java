@@ -137,12 +137,19 @@ public class ContractController {
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
-        contractService.saveContract(contract);
         if (numberOfTrucks ==1) {
             Shipment shipment = new Shipment();
             shipment.setContract(contract);
             shipment.setInvoiceNumber(contractNumber+"."+1);
+            shipment.setTruckNumber(1);
+//            shipment.setProducts(contract.getProducts());
             shipmentService.saveShipment (shipment);
+//            shipment.setProducts(contract.getProducts());
+            contract.getProducts().stream().forEach(product -> product.setShipment(shipment));
+            contract.getProducts().stream().forEach(product -> productService.saveProduct(product));
+            System.out.println("size post "+contract.getProducts().size());
+            contract.getProducts().stream().forEach(product -> System.out.println("currency "+product.getCurrency()+" "));
+            contract.getProducts().stream().forEach(product -> System.out.println(product.getShipment()));
             ModelAndView modelAndView = getModelAndViewWithContractsForPreparation();
             modelAndView.setViewName("/salesSupport/contractsForPreparation");
             return modelAndView;
@@ -194,7 +201,7 @@ public class ContractController {
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
-        contractService.saveContractAfterRequest(contract);
+        contractService.saveContractAfterEditRequest(contract);
         products.stream().filter(product -> product.getCommodity()!=null).forEach(product -> productService.saveProduct(product));
         modelAndView.addObject("successMessage", "Готово");
         return getRequestForContractModelAndView(new Contract(), new ProductForm(), modelAndView);

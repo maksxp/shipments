@@ -27,4 +27,9 @@ public class ShipmentServiceImpl implements ShipmentService{
     public void saveShipment(Shipment shipment) {
         shipmentRepository.save(shipment);
     }
+
+    @Override
+    public List<Shipment> allShipments() {
+        return shipmentRepository.findAll();
+    }
 }

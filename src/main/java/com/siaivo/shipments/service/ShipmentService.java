@@ -10,4 +10,5 @@ public interface ShipmentService {
     Shipment findById(int id) ;
     List<Shipment> findByContract (Contract contract);
     void saveShipment (Shipment shipment);
+    List<Shipment> allShipments();
 }

@@ -20,11 +20,9 @@ public class Contract {
     private String contractDate;
 
     @Column(name = "payment_terms")
-    @NotEmpty(message = "*Необхідно вказати умови оплати")
     private String paymentTerms;
 
     @Column(name = "delivery_terms")
-    @NotEmpty(message = "*Необхідно вказати умови оплати")
     private String deliveryTerms;
 
     @Column(name = "comment")
@@ -38,11 +36,9 @@ public class Contract {
     private Customer customer;
 
     @Column(name = "start_of_shipments")
-    @NotEmpty(message = "*Необхідно вказати початок відвантажень")
     private String startOfShipments;
 
     @Column(name = "end_of_shipments")
-    @NotEmpty(message = "*Необхідно вказати завершення відвантажень")
     private String endOfShipments;
 
     @Column(name = "state")
@@ -132,11 +128,11 @@ public class Contract {
         this.state = state;
     }
 
-    public List<Shipment> getShipment() {
+    public List<Shipment> getShipments() {
         return shipment;
     }
 
-    public void setShipment(List<Shipment> shipment) {
+    public void setShipments(List<Shipment> shipment) {
         this.shipment = shipment;
     }
 

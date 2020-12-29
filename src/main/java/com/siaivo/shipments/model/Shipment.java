@@ -3,8 +3,7 @@ package com.siaivo.shipments.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "shipment")
@@ -43,6 +42,9 @@ public class Shipment {
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
+    @Column(name = "truck_number")
+    private int truckNumber;
+
     @Column(name = "invoice_first_part_sum")
     private BigDecimal invoiceFirstPartSum;
 
@@ -66,6 +68,9 @@ public class Shipment {
 
     @Column(name = "actual_payment_date_of_whole_sum")
     private String actualPaymentDateOfWholeSum;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipment")
+    private List<Product> products;
 
 
     public int getId() {
@@ -211,6 +216,28 @@ public class Shipment {
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public int getTruckNumber() {
+        return truckNumber;
+    }
+
+    public void setTruckNumber(int truckNumber) {
+        this.truckNumber = truckNumber;
+    }
+
+   public List<String> getListOfGoodsPerShipment (Shipment shipment) {
+        List <String> listOfGoodsPerShipment = new ArrayList<>();
+        shipment.getProducts().stream().forEach(product -> listOfGoodsPerShipment.add(product.getCommodity().getCommodityName()+" ( "+product.getQuantity()+" тонн"+" ) "+product.getPackaging()));
+        return listOfGoodsPerShipment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -224,5 +251,10 @@ public class Shipment {
         return Objects.hash(id);
     }
 
-
+    @Override
+    public String toString() {
+        return "Shipment{" +
+                "contract=" + contract +
+                '}';
+    }
 }

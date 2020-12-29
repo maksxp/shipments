@@ -16,7 +16,7 @@ public class ContractServiceImpl implements ContractService{
     private ContractService contractService;
 
     @Override
-    public void saveContractAfterRequest(Contract contract) {
+    public void saveContractAfterEditRequest(Contract contract) {
         contract.setState("готується");
         contractRepository.save(contract);
     }

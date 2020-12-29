@@ -1,9 +1,6 @@
 package com.siaivo.shipments.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -24,27 +21,26 @@ public class Product {
     @JoinColumn(name="contract_id")
     private Contract contract;
 
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name="shipment_id")
+    private Shipment shipment;
+
     @Column(name = "product_price")
-    @NotNull
     private BigDecimal price;
 
     @Column(name = "currency")
-    @NotEmpty(message = "*Please provide currency")
     private String currency;
 
     @Column(name = "product_packaging")
-    @NotEmpty(message = "*Please provide packaging")
     private String packaging;
 
     @Column(name = "is_product_on_pallets")
     private Boolean isProductOnPallets;
 
     @Column(name = "product_quantity")
-    @NotNull
     private BigDecimal quantity;
 
     @Column(name = "product_batch")
-    @NotEmpty(message = "*Please provide batch")
     private String batch;
 
     public int getId() {
@@ -113,6 +109,14 @@ public class Product {
 
     public void setProductOnPallets(Boolean productOnPallets) {
         isProductOnPallets = productOnPallets;
+    }
+
+    public Shipment getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(Shipment shipment) {
+        this.shipment = shipment;
     }
 
     @Override
