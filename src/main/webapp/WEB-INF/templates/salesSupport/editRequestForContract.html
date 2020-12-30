@@ -84,7 +84,6 @@
             });
         });
         function addRow() {
-            alert("add: "+id);
             if (id<5){
                 let x = document.getElementById("id_" + id);
                 x.style.display = "table-row";
@@ -93,7 +92,6 @@
             }
         }
         function deleteRow() {
-            alert("delete: "+id);
             if (id > 1) {
             id-=1;
             let x = document.getElementById("id_" + id);

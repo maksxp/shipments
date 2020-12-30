@@ -6,6 +6,8 @@ import com.siaivo.shipments.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("productService")
@@ -31,6 +33,13 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> findProductsByContract(Contract contract) {
         return productRepository.findProductsByContract(contract);
+    }
+
+    @Override
+    public BigDecimal findWeightOfAllProductsByContract(Contract contract) {
+        List <BigDecimal> listOfEachProductWeight = new ArrayList<>();
+        findProductsByContract(contract).forEach(product -> listOfEachProductWeight.add(product.getQuantity()));
+        return listOfEachProductWeight.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

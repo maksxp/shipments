@@ -36,6 +36,20 @@
         });
 
     </script>
+    <script>
+
+        function currencyFormatter() {
+            return 'Total'
+        }
+        function weightFormatter (data) {
+            var field = this.field
+            return data.map(function (row) {
+                return +row[field]
+            }).reduce(function (sum, i) {
+                return sum + i
+            }, 0)
+        }
+    </script>
     <style>
         .layerHeader {
             padding: 70px 5px 5px;
@@ -139,14 +153,16 @@
     </div>
 </div>
 <table class="table table-hover table-bordered"
-       data-pagination="true">
+       id="table"
+       data-pagination="true"
+       data-show-footer="true">
     <thead class="thead-light">
     <tr>
         <th data-field="id">Товар</th>
         <th data-field="customer">Партія</th>
         <th data-field="paymentTerms">Ціна</th>
-        <th data-field="startOfShipments">Валюта</th>
-        <th data-field="endOfShipments">Кількість</th>
+        <th data-footer-formatter="currencyFormatter" data-field="currency">Валюта</th>
+        <th data-footer-formatter="weightFormatter" data-field="endOfShipments">Кількість</th>
         <th data-field="comment">Пакування</th>
     </tr>
     </thead>
@@ -155,9 +171,14 @@
         <td th:text="${product.commodity.commodityName}">Товар</td>
         <td th:text="${product.batch}">Партія</td>
         <td th:text="${product.price}">Ціна</td>
-        <td th:text="${product.currency}">Валюта</td>
-        <td th:text="${product.quantity}">Кількість</td>
-        <td th:text="${product.packaging}">Пакування</td>  </tr>
+        <td data-footer-formatter="currencyFormatter" th:text="${product.currency}">Валюта</td>
+        <td data-footer-formatter="weightFormatter" th:text="${product.quantity}">Кількість</td>
+        <td th:text="${product.packaging}">Пакування</td>
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align: right; font-weight: bold">Загальна вага:</td>
+        <td colspan="2" style="text-align: left; font-weight: bold" th:text="${weightOfAllProductsByContract}"></td>
+    </tr>
     </tbody>
 </table>
 <div class="row justify-content-md-center">
@@ -219,6 +240,7 @@
         $('#table').bootstrapTable()
     })
 </script>
+
 <!--<script>-->
 
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->

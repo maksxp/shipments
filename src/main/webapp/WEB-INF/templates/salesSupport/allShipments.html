@@ -26,10 +26,10 @@
             padding: 70px 5px 5px;
             text-align: center;
         }
-        .editable {
-            color: blue;
-            width: 7em;
+        .notOdd {
+            text-decoration: underline;
         }
+
     </style>
 </head>
 <body>
@@ -92,7 +92,6 @@
             data-show-columns="true"
             data-pagination="true"
             data-page-list="[10, 25, 50, 100, усі]"
-            data-show-footer="true"
             data-show-jump-to="true"
             data-side-pagination="client"
             data-toggle="table"
@@ -101,11 +100,11 @@
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
-        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
 <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
-        <th data-sortable="true" data-footer-formatter="commodityFormatter" data-field="commodityName" data-filter-control="input">Товар</th>
-        <th style="width: 7em"   data-footer-formatter="totalWeightFormatter" data-sortable="true" data-field="commodityWeigh" data-filter-control="input">Вага</th>
+        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
+        <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
         <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>
         <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>
         <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (факт)</th>
@@ -137,25 +136,25 @@
 <!--            </p>-->
 <!--        </td>-->
         <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
-            <p th:each="product : ${shipment.getProducts()}">
+            <p th:each="product, iterStat  : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span th:text="${product.getCommodity().getCommodityName()}"> Товар</span>
             </p>
         </td>
-        <td data-sortable="true" data-footer-formatter="totalWeightFormatter" data-field="commodityWeigh" data-filter-control="input" >
-            <p th:each="product : ${shipment.getProducts()}">
+        <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
+            <p th:each="product, iterStat : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span style="width: 7em" th:text="${product.getQuantity()}"> Вага</span>
             </p>
         </td>
         <td data-sortable="true" data-field="packaging" data-filter-control="input" >
-            <p th:each="product : ${shipment.getProducts()}">
+            <p th:each="product, iterStat : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span th:text="${product.getPackaging()}"> Пакування</span>
             </p>
         </td>
         <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Дата завантаження (план)</td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.comment}">Коментар</td>
+        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>
+        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>
+        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>
+        <td data-sortable="true" data-field="comment" data-filter-control="input" th:text="${shipment.comment}">Коментар</td>
     </tr>
     </tbody>
 </table>
@@ -171,26 +170,7 @@
             window.open("editShipment/"+$element.id,"_self");
     });
 
-    function detailFormatter(index, row) {
-        let html = []
-        $.each(row, function (key, value) {
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-        })
-        return html.join('')
-    }
 
-    function totalWeightFormatter(data) {
-        let field = this.field
-        return data.map(function (row) {
-            return +row[field].substring(1)
-        }).reduce(function (sum, i) {
-            return sum + i
-        }, 0)
-    }
-
-    function commodityFormatter(data) {
-       return "Загалом:"
-    }
 </script>
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

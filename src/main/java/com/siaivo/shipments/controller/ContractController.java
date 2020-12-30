@@ -125,6 +125,7 @@ public class ContractController {
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = contractService.findContractById(id);
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
+        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("shipmentsForm", shipmentsForm);
         modelAndView.setViewName("/salesSupport/contractPreparation");
