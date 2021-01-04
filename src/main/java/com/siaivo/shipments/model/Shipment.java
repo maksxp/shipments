@@ -70,7 +70,7 @@ public class Shipment {
     private String actualPaymentDateOfWholeSum;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipment")
-    private List<Product> products;
+    private List<ProductForShipment> productsForShipment;
 
 
     public int getId() {
@@ -216,17 +216,19 @@ public class Shipment {
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<ProductForShipment> getProductsForShipment() {
+        return productsForShipment;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductsForShipment(List<ProductForShipment> productsForShipment) {
+        this.productsForShipment = productsForShipment;
     }
 
     public int getTruckNumber() {
         return truckNumber;
     }
+
+
 
     public void setTruckNumber(int truckNumber) {
         this.truckNumber = truckNumber;
@@ -234,7 +236,8 @@ public class Shipment {
 
    public List<String> getListOfGoodsPerShipment (Shipment shipment) {
         List <String> listOfGoodsPerShipment = new ArrayList<>();
-        shipment.getProducts().stream().forEach(product -> listOfGoodsPerShipment.add(product.getCommodity().getCommodityName()+" ( "+product.getQuantity()+" тонн"+" ) "+product.getPackaging()));
+        shipment.getProductsForShipment().stream().forEach(productForShipment -> listOfGoodsPerShipment.add(productForShipment.getProduct().getCommodity().getCommodityName()+" ( "+productForShipment.getQuantity()+" тонн"+" ) "+productForShipment.getProduct().getPackaging()));
+
         return listOfGoodsPerShipment;
     }
 

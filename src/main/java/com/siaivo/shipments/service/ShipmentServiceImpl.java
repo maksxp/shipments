@@ -19,11 +19,6 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
-    public List<Shipment> findByContract(Contract contract) {
-        return shipmentRepository.findByContract(contract);
-    }
-
-    @Override
     public void saveShipment(Shipment shipment) {
         shipmentRepository.save(shipment);
     }
@@ -31,5 +26,10 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public List<Shipment> allShipments() {
         return shipmentRepository.findAll();
+    }
+
+    @Override
+    public List<Shipment> allShipmentsPerContract(Contract contract) {
+        return shipmentRepository.findByContract(contract);
     }
 }

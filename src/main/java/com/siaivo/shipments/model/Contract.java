@@ -1,13 +1,16 @@
 package com.siaivo.shipments.model;
 
+import com.siaivo.shipments.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
 @Table(name = "contract")
 public class Contract {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "contract_id")
@@ -134,6 +137,10 @@ public class Contract {
 
     public void setShipments(List<Shipment> shipment) {
         this.shipment = shipment;
+    }
+
+    public List<Shipment> getShipment() {
+        return shipment;
     }
 
     public String getStringOfAllCommodityNames (Contract contract) {

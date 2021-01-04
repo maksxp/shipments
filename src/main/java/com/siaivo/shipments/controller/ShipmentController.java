@@ -1,5 +1,6 @@
 package com.siaivo.shipments.controller;
 
+import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,12 @@ public class ShipmentController {
     private ModelAndView getModelAndViewWithAllShipments (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allShipments", shipmentService.allShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
         return modelAndView;
     }
 }

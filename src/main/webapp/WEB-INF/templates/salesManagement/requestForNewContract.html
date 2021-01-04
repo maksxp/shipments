@@ -14,7 +14,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
-    <title>Contract editing</title>
+    <title>Request for new contract</title>
     <script>
     $( function() {
     let availableTerms = [
@@ -59,8 +59,8 @@
                 dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
                 firstDay: 1,
                 dateFormat: "dd.mm.yy",
-                changeYear: true,
-                changeMonth: true,
+                // changeYear: true,
+                // changeMonth: true,
                 minDate: "0",
                 showWeek: true,
                 weekHeader: "тж",
@@ -69,13 +69,13 @@
 
     </script>
 
-    <script th:inline="javascript">
-        let id =/*[[${numberOfProducts}]]*/'noValue';
+    <script>
+        let id=0;
         $(document).ready(function () {
-            for (let i=id;i<5;i++){
-                $(".prod"+i).attr('required', false);
-                document.getElementById("id_" + i).style.display ="none";
-            }
+            $(".prod1").attr('required', false);
+            $(".prod2").attr('required', false);
+            $(".prod3").attr('required', false);
+            $(".prod4").attr('required', false);
             $("button[id='addRow']").click(function(){
                 addRow();
             });
@@ -84,22 +84,21 @@
             });
         });
         function addRow() {
-            if (id<5){
+            if (id<4){
+                id+=1;
                 let x = document.getElementById("id_" + id);
                 x.style.display = "table-row";
                 $(".prod" + id).attr('required', true);
-                id+=1;
             }
         }
         function deleteRow() {
-            if (id > 1) {
-            id-=1;
+            if (id > 0) {
             let x = document.getElementById("id_" + id);
             x.style.display = "none";
             $(".prod" + id).attr('required', false);
-//            deleting commodity name to allow contractController to count only visible products when registering contract
             let elem =document.getElementById("commodity"+id);
             elem.selectedIndex = 0;
+            id-=1;
             }
         }
     </script>
@@ -157,11 +156,8 @@
                     Покупці та товари
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="../allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="../customerRegistration">Реєстрація нового покупця</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="../allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="../commodityRegistration">Реєстрація нового товару</a>
+                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -169,13 +165,12 @@
                     Контракти
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="../allContracts">Усі контракти</a>
-                    <a class="dropdown-item" href="../openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="../fulfilledContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="../notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="../contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="../requestForNewContract">Заявка на новий контракт</a>
+                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
                 </div>
             </li>
 
@@ -188,18 +183,13 @@
         </form>
     </div>
 </nav>
-
 <div class="container-fluid">
-        <div class="layerHeader">
-            <h3>Форма редагування контракту</h3>
-        </div>
+    <div class="layerHeader">
+        <h3>Форма заявки на новий контракт</h3>
+    </div>
 </div>
-
-<form autocomplete="off" action="#" th:action="@{/salesSupport/editRequestForContract}"
+<form autocomplete="off" action="#" th:action="@{/salesManagement/requestForNewContract}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
-
-    <input type="hidden" th:field="*{id}"/>
-
     <div class="container-fluid">
         <div class="row row-flex">
             <div  align="center" class=" col-md-3 col-xs-12 col-sm-3 col-lg-3" >
@@ -207,23 +197,23 @@
                     <div class="ui-widget">
                     <div class="form-group">
 <!--                    <div class="col-sm-9">-->
-                        <p style="font-size: medium; font-weight: bold">Покупець</p>
-                        <input th:name="customerName" id="nameInput" th:value="*{customer.customerName}" required/>
+                        <p style="font-size: small; font-weight: bold">Покупець</p>
+                        <input th:name="customerName" id="nameInput" required/>
 <!--                        <p id="nameOutput" style="color:dodgerblue;"></p>-->
                         <label th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}" class="validation_error"> </label>
                     </div>
                     </div>
                     <div class="form-group">
                         <div class="ui-widget">
-                            <p style="font-size: medium; font-weight: bold">Умови оплати</p>
-                            <input th:name="paymentTerms" id="paymentTerms" th:value="*{paymentTerms}" required/>
+                            <p style="font-size: small; font-weight: bold">Умови оплати</p>
+                            <input th:name="paymentTerms" id="paymentTerms" required/>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="ui-widget">
                             <p style="font-size: small; font-weight: bold">Умови доставки</p>
                             <select  th:field="*{deliveryTerms}" required>
-                                <option value="" >Оберіть</option>
+                                <option value="" style="font-size: small; font-weight: bold">Оберіть</option>
                                 <option th:value="DAP">DAP</option>
                                 <option th:value="FCA">FCA</option>
                                 <option th:value="CIF">CIF</option>
@@ -233,21 +223,21 @@
                     </div>
                     <div class="form-group">
                         <div class="ui-widget">
-                            <p style="font-size: medium; font-weight: bold">Початок відвантажень</p>
+                            <p style="font-size: small; font-weight: bold">Початок відвантажень</p>
                             <input type="text" th:field="*{startOfShipments}" class="datepicker" required readonly/>
                             <label th:if="${#fields.hasErrors('startOfShipments')}" th:errors="*{startOfShipments}" class="validation_error"> </label>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="ui-widget">
-                            <p style="font-size: medium; font-weight: bold">Завершення відвантажень</p>
+                            <p style="font-size: small; font-weight: bold">Завершення відвантажень</p>
                             <input type="text" th:field="*{endOfShipments}" class="datepicker" required readonly/>
                             <label th:if="${#fields.hasErrors('endOfShipments')}" th:errors="*{endOfShipments}" class="validation_error"> </label>
                         </div>
                     </div>
                 <div class="form-group">
                     <div class="ui-widget">
-                        <p style="font-size: medium; font-weight: bold">Коментар</p>
+                        <p style="font-size: small; font-weight: bold">Коментар</p>
                         <textarea th:field="*{comment}" class="form-control"> </textarea>
                     </div>
                 </div>
@@ -258,18 +248,18 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col"> Товар </th>
-                        <th scope="col"> Партія </th>
-                        <th scope="col"> Ціна </th>
-                        <th scope="col"> Валюта </th>
-                        <th scope="col"> Кількість </th>
-                        <th scope="col"> Пакування </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Товар </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Партія </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Ціна </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Валюта </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Пакування </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="id_0" style="display:table-row;">
+                    <tr id="id_0">
                         <td>
-                        <select th:field="*{products[__${0}__].commodity}" class="prod0" id="commodity0" required>
+                        <select th:field="*{products[__${0}__].commodity}" class="prod0" id="commodity0"required>
                            <option value="" >Оберіть товар</option>
                            <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
                         </select>
@@ -294,18 +284,18 @@
                         <td>
                             <select th:field="*{products[__${0}__].packaging}" class="prod0" required>
                                 <option value="" >Оберіть</option>
-                                <option th:value="big-bags_on_pallets">біг-беги на піддонах</option>
-                                <option th:value="big-bags_without_Pallets">біг-беги без піддонів</option>
-                                <option th:value="pp_bags_25kg_on_pallets">п/п мішки 25кг на піддонах</option>
-                                <option th:value="pp_bags_25kg_without_pallets">п/п мішки 25кг без піддонів</option>
-                                <option th:value="paper_bags_on_pallets">паперові мішки на піддонах</option>
-                                <option th:value="paper_bags_without_pallets">паперові мішки без піддонів</option>
-                                <option th:value="pp_bags_20kg_on_pallets">п/п мішки 20кг на піддонах</option>
-                                <option th:value="pp_bags_20kg_without_pallets">п/п мішки 20кг без піддонів</option>
+                                <option value="біг-беги на піддонах">біг-беги на піддонах</option>
+                                <option value="біг-беги без піддонів">біг-беги без піддонів</option>
+                                <option value="п/п мішки 25кг на піддонах">п/п мішки 25кг на піддонах</option>
+                                <option value="п/п мішки 25кг без піддонів">п/п мішки 25кг без піддонів</option>
+                                <option value="паперові мішки на піддонах">паперові мішки на піддонах</option>
+                                <option value="паперові мішки без піддонів">паперові мішки без піддонів</option>
+                                <option value="п/п мішки 20кг на піддонах">п/п мішки 20кг на піддонах</option>
+                                <option value="п/п мішки 20кг без піддонів">п/п мішки 20кг без піддонів</option>
                             </select>
                         </td>
                     </tr>
-                    <tr id="id_1" style="display:table-row;">
+                    <tr id="id_1" style="display:none;">
                         <td>
                             <select th:field="*{products[__${1}__].commodity}" class="prod1" id="commodity1" required>
                                 <option value="" >Оберіть товар</option>
@@ -332,18 +322,18 @@
                         <td>
                             <select th:field="*{products[__${1}__].packaging}" class="prod4" required>
                                 <option value="" >Оберіть</option>
-                                <option th:value="big-bags_on_pallets">біг-беги на піддонах</option>
-                                <option th:value="big-bags_without_Pallets">біг-беги без піддонів</option>
-                                <option th:value="pp_bags_25kg_on_pallets">п/п мішки 25кг на піддонах</option>
-                                <option th:value="pp_bags_25kg_without_pallets">п/п мішки 25кг без піддонів</option>
-                                <option th:value="paper_bags_on_pallets">паперові мішки на піддонах</option>
-                                <option th:value="paper_bags_without_pallets">паперові мішки без піддонів</option>
-                                <option th:value="pp_bags_20kg_on_pallets">п/п мішки 20кг на піддонах</option>
-                                <option th:value="pp_bags_20kg_without_pallets">п/п мішки 20кг без піддонів</option>
+                                <option value="біг-беги на піддонах">біг-беги на піддонах</option>
+                                <option value="біг-беги без піддонів">біг-беги без піддонів</option>
+                                <option value="п/п мішки 25кг на піддонах">п/п мішки 25кг на піддонах</option>
+                                <option value="п/п мішки 25кг без піддонів">п/п мішки 25кг без піддонів</option>
+                                <option value="паперові мішки на піддонах">паперові мішки на піддонах</option>
+                                <option value="паперові мішки без піддонів">паперові мішки без піддонів</option>
+                                <option value="п/п мішки 20кг на піддонах">п/п мішки 20кг на піддонах</option>
+                                <option value="п/п мішки 20кг без піддонів">п/п мішки 20кг без піддонів</option>
                             </select>
                         </td>
                     </tr>
-                    <tr id="id_2" style="display:table-row;">
+                    <tr id="id_2" style="display:none;">
                         <td>
                             <select th:field="*{products[__${2}__].commodity}" class="prod2" id="commodity2"required>
                                 <option value="" >Оберіть товар</option>
@@ -370,18 +360,18 @@
                         <td>
                             <select th:field="*{products[__${2}__].packaging}" class="prod4" required>
                                 <option value="" >Оберіть</option>
-                                <option th:value="big-bags_on_pallets">біг-беги на піддонах</option>
-                                <option th:value="big-bags_without_Pallets">біг-беги без піддонів</option>
-                                <option th:value="pp_bags_25kg_on_pallets">п/п мішки 25кг на піддонах</option>
-                                <option th:value="pp_bags_25kg_without_pallets">п/п мішки 25кг без піддонів</option>
-                                <option th:value="paper_bags_on_pallets">паперові мішки на піддонах</option>
-                                <option th:value="paper_bags_without_pallets">паперові мішки без піддонів</option>
-                                <option th:value="pp_bags_20kg_on_pallets">п/п мішки 20кг на піддонах</option>
-                                <option th:value="pp_bags_20kg_without_pallets">п/п мішки 20кг без піддонів</option>
+                                <option value="біг-беги на піддонах">біг-беги на піддонах</option>
+                                <option value="біг-беги без піддонів">біг-беги без піддонів</option>
+                                <option value="п/п мішки 25кг на піддонах">п/п мішки 25кг на піддонах</option>
+                                <option value="п/п мішки 25кг без піддонів">п/п мішки 25кг без піддонів</option>
+                                <option value="паперові мішки на піддонах">паперові мішки на піддонах</option>
+                                <option value="паперові мішки без піддонів">паперові мішки без піддонів</option>
+                                <option value="п/п мішки 20кг на піддонах">п/п мішки 20кг на піддонах</option>
+                                <option value="п/п мішки 20кг без піддонів">п/п мішки 20кг без піддонів</option>
                             </select>
                         </td>
                     </tr>
-                    <tr id="id_3" style="display:table-row;">
+                    <tr id="id_3" style="display:none;">
                         <td>
                             <select th:field="*{products[__${3}__].commodity}" class="prod3" id="commodity3" required>
                                 <option value="" >Оберіть товар</option>
@@ -408,18 +398,18 @@
                         <td>
                             <select th:field="*{products[__${3}__].packaging}" class="prod4" required>
                                 <option value="" >Оберіть</option>
-                                <option th:value="big-bags_on_pallets">біг-беги на піддонах</option>
-                                <option th:value="big-bags_without_Pallets">біг-беги без піддонів</option>
-                                <option th:value="pp_bags_25kg_on_pallets">п/п мішки 25кг на піддонах</option>
-                                <option th:value="pp_bags_25kg_without_pallets">п/п мішки 25кг без піддонів</option>
-                                <option th:value="paper_bags_on_pallets">паперові мішки на піддонах</option>
-                                <option th:value="paper_bags_without_pallets">паперові мішки без піддонів</option>
-                                <option th:value="pp_bags_20kg_on_pallets">п/п мішки 20кг на піддонах</option>
-                                <option th:value="pp_bags_20kg_without_pallets">п/п мішки 20кг без піддонів</option>
+                                <option value="біг-беги на піддонах">біг-беги на піддонах</option>
+                                <option value="біг-беги без піддонів">біг-беги без піддонів</option>
+                                <option value="п/п мішки 25кг на піддонах">п/п мішки 25кг на піддонах</option>
+                                <option value="п/п мішки 25кг без піддонів">п/п мішки 25кг без піддонів</option>
+                                <option value="паперові мішки на піддонах">паперові мішки на піддонах</option>
+                                <option value="паперові мішки без піддонів">паперові мішки без піддонів</option>
+                                <option value="п/п мішки 20кг на піддонах">п/п мішки 20кг на піддонах</option>
+                                <option value="п/п мішки 20кг без піддонів">п/п мішки 20кг без піддонів</option>
                             </select>
                         </td>
                     </tr>
-                    <tr id="id_4" style="display:table-row;">
+                    <tr id="id_4" style="display:none;">
                         <td>
                             <select th:field="*{products[__${4}__].commodity}" class="prod4" id="commodity4" required>
                                 <option value="" >Оберіть товар</option>
@@ -446,14 +436,14 @@
                         <td>
                             <select th:field="*{products[__${4}__].packaging}" class="prod4" required>
                                 <option value="" >Оберіть</option>
-                                <option th:value="big-bags_on_pallets">біг-беги на піддонах</option>
-                                <option th:value="big-bags_without_Pallets">біг-беги без піддонів</option>
-                                <option th:value="pp_bags_25kg_on_pallets">п/п мішки 25кг на піддонах</option>
-                                <option th:value="pp_bags_25kg_without_pallets">п/п мішки 25кг без піддонів</option>
-                                <option th:value="paper_bags_on_pallets">паперові мішки на піддонах</option>
-                                <option th:value="paper_bags_without_pallets">паперові мішки без піддонів</option>
-                                <option th:value="pp_bags_20kg_on_pallets">п/п мішки 20кг на піддонах</option>
-                                <option th:value="pp_bags_20kg_without_pallets">п/п мішки 20кг без піддонів</option>
+                                <option value="біг-беги на піддонах">біг-беги на піддонах</option>
+                                <option value="біг-беги без піддонів">біг-беги без піддонів</option>
+                                <option value="п/п мішки 25кг на піддонах">п/п мішки 25кг на піддонах</option>
+                                <option value="п/п мішки 25кг без піддонів">п/п мішки 25кг без піддонів</option>
+                                <option value="паперові мішки на піддонах">паперові мішки на піддонах</option>
+                                <option value="паперові мішки без піддонів">паперові мішки без піддонів</option>
+                                <option value="п/п мішки 20кг на піддонах">п/п мішки 20кг на піддонах</option>
+                                <option value="п/п мішки 20кг без піддонів">п/п мішки 20кг без піддонів</option>
                             </select>
                         </td>
                     </tr>
@@ -468,7 +458,7 @@
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">
-            <button type="submit" class="btn btn-primary btn-block">Внести зміни</button>
+            <button type="submit" class="btn btn-primary btn-block">Зареєструвати заявку</button>
             </div>
         </div>
     </div>
@@ -479,7 +469,6 @@
     </div>
 </form>
 </div>
-
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

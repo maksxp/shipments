@@ -2,6 +2,7 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,9 +22,12 @@ public class Product {
     @JoinColumn(name="contract_id")
     private Contract contract;
 
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name="shipment_id")
-    private Shipment shipment;
+//    @ManyToOne (fetch = FetchType.LAZY)
+//    @JoinColumn(name="shipment_id")
+//    private Shipment shipment;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<ProductForShipment> productsForShipments;
 
     @Column(name = "product_price")
     private BigDecimal price;
@@ -42,6 +46,9 @@ public class Product {
 
     @Column(name = "product_batch")
     private String batch;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<ProductForShipment> productsForShipment;
 
     public int getId() {
         return id;
@@ -111,12 +118,12 @@ public class Product {
         isProductOnPallets = productOnPallets;
     }
 
-    public Shipment getShipment() {
-        return shipment;
+    public List<ProductForShipment> getProductsForShipments() {
+        return productsForShipments;
     }
 
-    public void setShipment(Shipment shipment) {
-        this.shipment = shipment;
+    public void setProductsForShipments(List<ProductForShipment> productsForShipments) {
+        this.productsForShipments = productsForShipments;
     }
 
     @Override

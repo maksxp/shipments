@@ -36,20 +36,6 @@
         });
 
     </script>
-    <script>
-
-        function currencyFormatter() {
-            return 'Total'
-        }
-        function weightFormatter (data) {
-            var field = this.field
-            return data.map(function (row) {
-                return +row[field]
-            }).reduce(function (sum, i) {
-                return sum + i
-            }, 0)
-        }
-    </script>
     <style>
         .layerHeader {
             padding: 70px 5px 5px;
@@ -67,19 +53,19 @@
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-<!--    <a class="navbar-brand" href="#">Navbar</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
+    <!--    <a class="navbar-brand" href="#">Navbar</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Link</a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item active">-->
+            <!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+            <!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="#">Link</a>-->
+            <!--            </li>-->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Покупці та товари
@@ -107,9 +93,9 @@
                 </div>
             </li>
 
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link disabled" href="#">Disabled</a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+            <!--            </li>-->
         </ul>
         <form th:action="@{/logout}" method="get">
             <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
@@ -119,9 +105,9 @@
 
 <div class="container-fluid">
     <div class="layerHeader">
-       <div style="text-align: left">
-        <h4>Базова інформація</h4>
-      </div>
+        <div style="text-align: left">
+            <h4>Базова інформація</h4>
+        </div>
     </div>
 </div>
 <!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
@@ -135,6 +121,7 @@
         <th data-field="paymentTerms">Умови оплати</th>
         <th data-field="startOfShipments">Початок відвантажень</th>
         <th data-field="endOfShipments">Завершення відвантажень</th>
+        <th data-field="totalWeightOfAllGoods">Загальна вага</th>
         <th data-field="comment">Коментар</th>
     </tr>
     </thead>
@@ -144,6 +131,7 @@
     <td th:text="${contract.paymentTerms}">Умови оплати</td>
     <td th:text="${contract.startOfShipments}">Початок відвантажень</td>
     <td th:text="${contract.endOfShipments}">Завершення відвантажень</td>
+    <td th:text="${weightOfAllProductsByContract}">Загальна вага</td>
     <td th:text="${contract.comment}">Коментар</td>
     </tbody>
 </table>
@@ -153,16 +141,14 @@
     </div>
 </div>
 <table class="table table-hover table-bordered"
-       id="table"
-       data-pagination="true"
-       data-show-footer="true">
+       data-pagination="true">
     <thead class="thead-light">
     <tr>
         <th data-field="id">Товар</th>
         <th data-field="customer">Партія</th>
         <th data-field="paymentTerms">Ціна</th>
-        <th data-footer-formatter="currencyFormatter" data-field="currency">Валюта</th>
-        <th data-footer-formatter="weightFormatter" data-field="endOfShipments">Кількість</th>
+        <th data-field="startOfShipments">Валюта</th>
+        <th data-field="endOfShipments">Кількість</th>
         <th data-field="comment">Пакування</th>
     </tr>
     </thead>
@@ -171,55 +157,50 @@
         <td th:text="${product.commodity.commodityName}">Товар</td>
         <td th:text="${product.batch}">Партія</td>
         <td th:text="${product.price}">Ціна</td>
-        <td data-footer-formatter="currencyFormatter" th:text="${product.currency}">Валюта</td>
-        <td data-footer-formatter="weightFormatter" th:text="${product.quantity}">Кількість</td>
-        <td th:text="${product.packaging}">Пакування</td>
-    </tr>
-    <tr>
-        <td colspan="4" style="text-align: right; font-weight: bold">Загальна вага:</td>
-        <td colspan="2" style="text-align: left; font-weight: bold" th:text="${weightOfAllProductsByContract}"></td>
-    </tr>
+        <td th:text="${product.currency}">Валюта</td>
+        <td th:text="${product.quantity}">Кількість</td>
+        <td th:text="${product.packaging}">Пакування</td>  </tr>
     </tbody>
 </table>
 <div class="row justify-content-md-center">
-        <h3>Реєстрація контракту</h3>
+    <h3>Реєстрація контракту</h3>
 </div>
 <form autocomplete="off" action="#" th:action="@{/salesSupport/contractPreparation}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
     <input type="hidden" th:field="*{id}"/>
-<div class="container">
-    <div class="row justify-content-md-center">
-        <div class="layerForm">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col" style="font-size: 90%; font-weight: bold"> Номер контракту </th>
-                    <th scope="col" style="font-size: 90%; font-weight: bold"> Дата Контракту </th>
-                    <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість машин </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <input type="text" th:name="contractNumber" required style="width: 7em">
-                    </td>
-                    <td>
-                        <input type="text" th:name="contractDate" class="datepicker" style="width: 7em" required readonly>
-                    </td>
-                    <td>
-                        <input type="number" th:name="numberOfTrucks" min="1" step="1" required style="width: 7em">
-                    </td>
-<!--                    <td>-->
-<!--                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">-->
-<!--                    </td>-->
-                </tr>
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="layerForm">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Номер контракту </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Дата Контракту </th>
+                        <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість машин </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" th:name="contractNumber" required style="width: 7em">
+                        </td>
+                        <td>
+                            <input type="text" th:name="contractDate" class="datepicker" style="width: 7em" required readonly>
+                        </td>
+                        <td>
+                            <input type="number" th:name="numberOfTrucks" min="1" step="1" required style="width: 7em">
+                        </td>
+                        <!--                    <td>-->
+                        <!--                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">-->
+                        <!--                    </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
 
         </div>
-
     </div>
-</div>
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">
@@ -240,7 +221,6 @@
         $('#table').bootstrapTable()
     })
 </script>
-
 <!--<script>-->
 
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->

@@ -14,7 +14,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
-    <title>Contract editing</title>
+    <title>Request for contract editing</title>
     <script>
     $( function() {
     let availableTerms = [
@@ -189,11 +189,11 @@
 
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Форма редагування контракту</h3>
+            <h3>Форма редагування заявки контракт</h3>
         </div>
 </div>
 
-<form autocomplete="off" action="#" th:action="@{/salesManagement/editRequestForContract}"
+<form autocomplete="off" action="#" th:action="@{/salesManagement/editRequestForNewContract}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
 
     <input type="hidden" th:field="*{id}"/>
