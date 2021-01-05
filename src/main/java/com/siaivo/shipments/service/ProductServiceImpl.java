@@ -4,6 +4,7 @@ import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service("productService")
 public class ProductServiceImpl implements ProductService{
+    @Qualifier("productRepository")
     @Autowired
     private ProductRepository productRepository;
 
@@ -25,14 +27,14 @@ public class ProductServiceImpl implements ProductService{
 //        products.stream().forEach(product -> productRepository.save(product));
 //    }
 
-    @Override
-    public Product findProductById(int id) {
-        return productRepository.findById(id);
-    }
+//    @Override
+//    public Product findById(int id) {
+//        return productRepository.findById(id);
+//    }
 
     @Override
     public List<Product> findProductsByContract(Contract contract) {
-        return productRepository.findProductsByContract(contract);
+        return productRepository.findByContract(contract);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void deleteProductsByContract(Contract contract) {
-        productRepository.deleteAll(productRepository.findProductsByContract(contract));
+        productRepository.deleteAll(productRepository.findByContract(contract));
     }
 
 }

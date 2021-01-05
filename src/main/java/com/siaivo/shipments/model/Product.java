@@ -38,9 +38,6 @@ public class Product {
     @Column(name = "product_packaging")
     private String packaging;
 
-    @Column(name = "is_product_on_pallets")
-    private Boolean isProductOnPallets;
-
     @Column(name = "product_quantity")
     private BigDecimal quantity;
 
@@ -108,14 +105,6 @@ public class Product {
 
     public void setContract(Contract contract) {
         this.contract = contract;
-    }
-
-    public Boolean getProductOnPallets() {
-        return isProductOnPallets;
-    }
-
-    public void setProductOnPallets(Boolean productOnPallets) {
-        isProductOnPallets = productOnPallets;
     }
 
     public List<ProductForShipment> getProductsForShipments() {

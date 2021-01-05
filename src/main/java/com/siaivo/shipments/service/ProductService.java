@@ -10,13 +10,9 @@ public interface ProductService {
 
     void saveProduct(Product product);
 
-//    void saveProduct(List<Product> products);
-
-    public Product findProductById(int id);
-
     List <Product> findProductsByContract (Contract contract);
 
     BigDecimal findWeightOfAllProductsByContract (Contract contract);
 
-    public void deleteProductsByContract (Contract contract);
+    void deleteProductsByContract(Contract contract);
 }

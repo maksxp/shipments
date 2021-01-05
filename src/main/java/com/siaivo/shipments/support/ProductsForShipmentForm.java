@@ -20,6 +20,5 @@ public class ProductsForShipmentForm {
 
     public ProductsForShipmentForm (int numberOfTrucks) {
         this.productsForShipment = IntStream.range(0, numberOfTrucks).mapToObj(truck -> new ProductForShipment()).collect(Collectors.toList());
-
     }
 }

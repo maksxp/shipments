@@ -144,12 +144,12 @@
        data-pagination="true">
     <thead class="thead-light">
     <tr>
-        <th data-field="id">Товар</th>
-        <th data-field="customer">Партія</th>
-        <th data-field="paymentTerms">Ціна</th>
-        <th data-field="startOfShipments">Валюта</th>
-        <th data-field="endOfShipments">Кількість</th>
-        <th data-field="comment">Пакування</th>
+        <th data-field="commodityName">Товар</th>
+        <th data-field="batch">Партія</th>
+        <th data-field="price">Ціна</th>
+        <th data-field="currency">Валюта</th>
+        <th data-field="quantity">Кількість</th>
+        <th data-field="packaging">Пакування</th>
     </tr>
     </thead>
     <tbody>
@@ -159,7 +159,8 @@
         <td th:text="${product.price}">Ціна</td>
         <td th:text="${product.currency}">Валюта</td>
         <td th:text="${product.quantity}">Кількість</td>
-        <td th:text="${product.packaging}">Пакування</td>  </tr>
+        <td th:text="${product.packaging}">Пакування</td>
+    </tr>
     </tbody>
 </table>
 <div class="row justify-content-md-center">

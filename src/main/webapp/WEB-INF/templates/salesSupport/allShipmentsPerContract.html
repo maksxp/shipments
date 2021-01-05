@@ -85,7 +85,7 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі відправлення по контракту <span th:text="${contract.contractNumber}"></span></h3>
+            <h3>Усі відправлення по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h3>
         </div>
 </div>
     <table  class="table table-hover table-bordered"
@@ -126,7 +126,7 @@
 <!--    </tr>-->
 <!--    </tfoot>-->
     <tbody>
-    <tr th:each="shipment : ${allShipments}">
+    <tr th:each="shipment : ${allShipmentsPerContract}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
         <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
         <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>

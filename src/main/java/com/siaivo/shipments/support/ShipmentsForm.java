@@ -1,24 +1,36 @@
 package com.siaivo.shipments.support;
 
+import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ShipmentsForm {
-    private List <Shipment> shipmentsForm;
+    private List <Shipment> shipments;
 
-    public List<Shipment> ShipmentsForm() {
-        return shipmentsForm;
+    public List<Shipment> getShipments() {
+        return shipments;
     }
 
-    public void setShipmentsForm(List<Shipment> shipmentsForm) {
-        this.shipmentsForm = shipmentsForm;
+    public void setShipments(List<Shipment> shipments) {
+        this.shipments = shipments;
+    }
+
+    public ShipmentsForm (){
+        shipments = new ArrayList<>();
+    }
+
+    public ShipmentsForm (int numberOfTrucks) {
+        this.shipments = IntStream.range(0, numberOfTrucks).mapToObj(truck -> new Shipment()).collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
         return "ShipmentsForm{" +
-                "shipmentsForm=" + shipmentsForm +
+                "shipmentsForm=" + shipments +
                 '}';
     }
 }

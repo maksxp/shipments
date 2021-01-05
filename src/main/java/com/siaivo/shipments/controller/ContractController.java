@@ -23,6 +23,8 @@ public class ContractController {
     @Autowired
     private ProductService productService;
     @Autowired
+    private ProductForShipmentService productForShipmentService;
+    @Autowired
     private CustomerService customerService;
     @Autowired
     private CommodityService commodityService;
@@ -32,7 +34,7 @@ public class ContractController {
     @ModelAttribute ("shipmentsForm")
     public ShipmentsForm getShipmentsForm() {
         ShipmentsForm shipmentsForm = new ShipmentsForm();
-        shipmentsForm.setShipmentsForm(new ArrayList<>());
+        shipmentsForm.setShipments(new ArrayList<>());
         return shipmentsForm;
     }
 
@@ -139,19 +141,31 @@ public class ContractController {
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
+        contractService.saveContract(contract);
         ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(numberOfTrucks);
-        productsForShipmentForm.getProductsForShipment().stream().forEach(productForShipment -> System.out.println("test "));
-//        productsForShipmentForm.setProductsForShipment();
-//        if (numberOfTrucks ==1) {
-//            Shipment shipment = new Shipment();
-//            shipment.setContract(contract);
-//            shipment.setInvoiceNumber(contractNumber+"."+1);
-//            shipment.setTruckNumber(1);
-////            shipment.setProducts(contract.getProducts());
-//            shipmentService.saveShipment (shipment);
-////            shipment.setProducts(contract.getProducts());
-//            contract.getProducts().stream().forEach(product -> product.setShipment(shipment));
-//            contract.getProducts().stream().forEach(product -> productService.saveProduct(product));
+        System.out.println(productsForShipmentForm.getProductsForShipment().size());
+        if (numberOfTrucks ==1) {
+            List <Product> products = contract.getProducts();
+            Shipment shipment = new Shipment();
+            for (int i=0; i<productsForShipmentForm.getProductsForShipment().size(); i++) {
+                productsForShipmentForm.getProductsForShipment().get(i).setShipment(shipment);
+                productsForShipmentForm.getProductsForShipment().get(i).setProduct(products.get(i));
+                productsForShipmentForm.getProductsForShipment().get(i).setQuantity(products.get(i).getQuantity());
+            }
+            productsForShipmentForm.getProductsForShipment().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
+            shipment.setContract(contract);
+            shipment.setInvoiceNumber(contractNumber+"."+1);
+            shipment.setTruckNumber(1);
+            shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
+            shipmentService.saveShipment(shipment);
+            ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+            modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
+            return modelAndView;
+
+        } else if (contract.getProducts().size()==1){
+
+
+        }
             ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
             modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
             return modelAndView;
