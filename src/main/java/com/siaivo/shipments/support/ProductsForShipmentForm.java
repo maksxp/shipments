@@ -18,7 +18,7 @@ public class ProductsForShipmentForm {
         this.productsForShipment = productsForShipment;
     }
 
-    public ProductsForShipmentForm (int numberOfTrucks) {
-        this.productsForShipment = IntStream.range(0, numberOfTrucks).mapToObj(truck -> new ProductForShipment()).collect(Collectors.toList());
+    public ProductsForShipmentForm (int numberOfProductsForShipments) {
+        this.productsForShipment = IntStream.range(0, numberOfProductsForShipments).mapToObj(productForShipment -> new ProductForShipment()).collect(Collectors.toList());
     }
 }

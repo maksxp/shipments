@@ -29,6 +29,10 @@
         .notOdd {
             text-decoration: underline;
         }
+        p {
+            margin-top: 0.2em; /* Отступ сверху */
+            margin-bottom: 0.2em; /* Отступ снизу */
+        }
 
     </style>
 </head>
@@ -88,7 +92,7 @@
             <h3>Усі відправлення</h3>
         </div>
 </div>
-    <table  class="table table-hover table-bordered"
+    <table  class="table table-hover table-bordered table-sm table-responsive"
             id="table"
             data-show-columns="true"
             data-pagination="true"
@@ -137,18 +141,18 @@
 <!--            </p>-->
 <!--        </td>-->
         <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
-            <p th:each="product, iterStat  : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span th:text="${product.getCommodity().getCommodityName()}"> Товар</span>
+            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
             </p>
         </td>
         <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
-            <p th:each="product, iterStat : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="width: 7em" th:text="${product.getQuantity()}"> Вага</span>
+            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span style="width: 7em" th:text="${productForShipment.getQuantity()}"> Вага</span>
             </p>
         </td>
         <td data-sortable="true" data-field="packaging" data-filter-control="input" >
-            <p th:each="product, iterStat : ${shipment.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span th:text="${product.getPackaging()}"> Пакування</span>
+            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>
             </p>
         </td>
         <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Дата завантаження (план)</td>

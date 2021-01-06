@@ -2,6 +2,7 @@ package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
+import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
 import com.siaivo.shipments.service.*;
 import com.siaivo.shipments.support.ProductForm;
@@ -13,7 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
+
+import static java.math.BigDecimal.ROUND_UP;
 
 
 @Controller
@@ -142,30 +147,44 @@ public class ContractController {
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
         contractService.saveContract(contract);
-        ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(numberOfTrucks);
-        System.out.println(productsForShipmentForm.getProductsForShipment().size());
-        if (numberOfTrucks ==1) {
-            List <Product> products = contract.getProducts();
-            Shipment shipment = new Shipment();
-            for (int i=0; i<productsForShipmentForm.getProductsForShipment().size(); i++) {
-                productsForShipmentForm.getProductsForShipment().get(i).setShipment(shipment);
-                productsForShipmentForm.getProductsForShipment().get(i).setProduct(products.get(i));
-                productsForShipmentForm.getProductsForShipment().get(i).setQuantity(products.get(i).getQuantity());
-            }
-            productsForShipmentForm.getProductsForShipment().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
-            shipment.setContract(contract);
-            shipment.setInvoiceNumber(contractNumber+"."+1);
-            shipment.setTruckNumber(1);
-            shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
-            shipmentService.saveShipment(shipment);
-            ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
-            modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
-            return modelAndView;
+        List <Product> products = contract.getProducts();
+//        if (numberOfTrucks ==1) {
+//            ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
+//            Shipment shipment = new Shipment();
+//            for (int i=0; i<productsForShipmentForm.getProductsForShipment().size(); i++) {
+//                productsForShipmentForm.getProductsForShipment().get(i).setShipment(shipment);
+//                productsForShipmentForm.getProductsForShipment().get(i).setProduct(products.get(i));
+//                productsForShipmentForm.getProductsForShipment().get(i).setQuantity(products.get(i).getQuantity());
+//            }
+//            productsForShipmentForm.getProductsForShipment().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
+//            shipment.setContract(contract);
+//            shipment.setInvoiceNumber(contractNumber+"."+1);
+//            shipment.setTruckNumber(1);
+//            shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
+//            shipmentService.saveShipment(shipment);
+//            ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+//            modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
+//            return modelAndView;
+//
+//        } else {
+            for (int i=0;i<numberOfTrucks;i++){
+                ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
+                Shipment shipment = new Shipment();
+                shipment.setContract(contract);
+                shipment.setInvoiceNumber(contractNumber+"."+(i+1));
+                shipment.setTruckNumber(i+1);
+                for (int j=0; j<productsForShipmentForm.getProductsForShipment().size(); j++) {
+                    productsForShipmentForm.getProductsForShipment().get(j).setShipment(shipment);
+                    productsForShipmentForm.getProductsForShipment().get(j).setProduct(products.get(j));
+                    productsForShipmentForm.getProductsForShipment().get(j).setQuantity((products.get(j).getQuantity()).divide(BigDecimal.valueOf(numberOfTrucks),3, RoundingMode.UP));
+                }
+                shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
+                shipmentService.saveShipment(shipment);
+                productsForShipmentForm.getProductsForShipment().stream().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
+           }
 
-        } else if (contract.getProducts().size()==1){
-
-
-        }
+//
+//            }
             ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
             modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
             return modelAndView;
