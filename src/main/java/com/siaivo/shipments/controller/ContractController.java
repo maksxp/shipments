@@ -18,8 +18,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-import static java.math.BigDecimal.ROUND_UP;
-
 
 @Controller
 public class ContractController {
@@ -114,6 +112,19 @@ public class ContractController {
         modelAndView.setViewName("/salesSupport/requestForNewContract");
         return getRequestForNewContractModelAndView(contract, productForm, modelAndView);
     }
+
+    @RequestMapping(value="/salesSupport/contract/{id}", method = RequestMethod.GET)
+    public ModelAndView getContractForSalesSupport(@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = contractService.findContractById(id);
+        modelAndView.addObject("contract", contract);
+        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
+        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
+        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
+        modelAndView.setViewName("/salesSupport/contract");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesManagement/editRequestForNewContract/{id}", method = RequestMethod.GET)
     public ModelAndView editRequestForNewContractForSalesManagement (@PathVariable(value = "id") int id){
         ModelAndView modelAndView = getEditRequestForNewContractModelAndView(id);
@@ -148,25 +159,6 @@ public class ContractController {
         contract.setState("підготовлений");
         contractService.saveContract(contract);
         List <Product> products = contract.getProducts();
-//        if (numberOfTrucks ==1) {
-//            ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
-//            Shipment shipment = new Shipment();
-//            for (int i=0; i<productsForShipmentForm.getProductsForShipment().size(); i++) {
-//                productsForShipmentForm.getProductsForShipment().get(i).setShipment(shipment);
-//                productsForShipmentForm.getProductsForShipment().get(i).setProduct(products.get(i));
-//                productsForShipmentForm.getProductsForShipment().get(i).setQuantity(products.get(i).getQuantity());
-//            }
-//            productsForShipmentForm.getProductsForShipment().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
-//            shipment.setContract(contract);
-//            shipment.setInvoiceNumber(contractNumber+"."+1);
-//            shipment.setTruckNumber(1);
-//            shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
-//            shipmentService.saveShipment(shipment);
-//            ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
-//            modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
-//            return modelAndView;
-//
-//        } else {
             for (int i=0;i<numberOfTrucks;i++){
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
@@ -182,9 +174,6 @@ public class ContractController {
                 shipmentService.saveShipment(shipment);
                 productsForShipmentForm.getProductsForShipment().stream().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
            }
-
-//
-//            }
             ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
             modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
             return modelAndView;
