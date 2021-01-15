@@ -1,8 +1,5 @@
 package com.siaivo.shipments.model;
 
-import com.siaivo.shipments.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
@@ -48,7 +45,7 @@ public class Contract {
     private String state;
 
     @OneToMany
-    @JoinColumn(name="shipment_id")
+    @JoinColumn(name= "id")
     private List<Shipment> shipment;
 
     public int getId() {

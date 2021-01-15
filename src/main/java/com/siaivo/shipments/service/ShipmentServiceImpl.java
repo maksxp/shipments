@@ -24,6 +24,11 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public Shipment getOne(int id) {
+        return shipmentRepository.getOne(id);
+    }
+
+    @Override
     public List<Shipment> allShipments() {
         return shipmentRepository.findAll();
     }

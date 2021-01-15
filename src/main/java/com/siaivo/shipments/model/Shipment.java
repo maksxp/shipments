@@ -11,7 +11,7 @@ public class Shipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "shipment_id")
+    @Column(name = "id")
     private int id;
 
     @ManyToOne
