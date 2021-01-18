@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class ShipmentController {
@@ -43,12 +45,20 @@ public class ShipmentController {
     }
     @Transactional
     @RequestMapping(value="/salesSupport/shipment", method = RequestMethod.POST)
-    public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment){
+    public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment, @RequestParam(value="productForShipment[]") List <BigDecimal> productsForShipment){
           int id = shipment.getId();
           Shipment shipment1 = shipmentService.findById(id);
           System.out.println("number: "+shipment1.getContract().getContractNumber());
-          Field [] fields = shipment.getClass().getDeclaredFields();
+          System.out.println("weight: "+productsForShipment.get(0));
+          System.out.println("weight: "+productsForShipment.get(1));
+          System.out.println("weight: "+productsForShipment.get(2));
+
+        //          shipment.getProductsForShipment().forEach(productForShipment -> System.out.println("prodForShipment: "+productForShipment.getQuantity()));
+
+        Field [] fields = shipment.getClass().getDeclaredFields();
           Arrays.stream(fields).forEach(field -> field.setAccessible(true));
+        Field [] fields1 = shipment1.getClass().getDeclaredFields();
+        Arrays.stream(fields).forEach(field -> field.setAccessible(true));
           Arrays.stream(fields).forEach(field -> {
               try {
                   System.out.println(field.getName()+": "+field.get(shipment));
@@ -56,6 +66,13 @@ public class ShipmentController {
                   e.printStackTrace();
               }
           });
+        Arrays.stream(fields).forEach(field -> {
+            try {
+                System.out.println(field.getName()+"11: "+field.get(shipment1));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
 
 
 //          String comment = shipment.getComment();
