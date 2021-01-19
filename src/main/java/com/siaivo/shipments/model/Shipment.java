@@ -51,6 +51,9 @@ public class Shipment {
     @Column(name = "invoice_second_part_sum")
     private BigDecimal invoiceSecondPartSum;
 
+    @Column(name = "invoice_whole_sum")
+    private BigDecimal invoiceWholeSum;
+
     @Column(name = "planned_payment_date_of_first_part_sum")
     private String plannedPaymentDateOfFirstPartSum;
 

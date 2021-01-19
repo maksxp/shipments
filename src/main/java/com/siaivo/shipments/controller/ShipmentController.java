@@ -39,56 +39,41 @@ public class ShipmentController {
         modelAndView.addObject("allProductsForShipment", productForShipmentService.findByShipment(shipment));
         modelAndView.addObject("contractDate", shipmentService.findById(id).getContract().getContractDate());
         modelAndView.addObject("customerName", shipmentService.findById(id).getContract().getCustomer().getCustomerName());
+        modelAndView.addObject("paymentTerms", shipmentService.findById(id).getContract().getPaymentTerms());
         modelAndView.addObject("shipment", shipment);
         modelAndView.setViewName("/salesSupport/shipment");
         return modelAndView;
     }
     @Transactional
     @RequestMapping(value="/salesSupport/shipment", method = RequestMethod.POST)
-    public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment, @RequestParam(value="productForShipment[]") List <BigDecimal> productsForShipment){
-          int id = shipment.getId();
-          Shipment shipment1 = shipmentService.findById(id);
-          System.out.println("number: "+shipment1.getContract().getContractNumber());
-          System.out.println("weight: "+productsForShipment.get(0));
-          System.out.println("weight: "+productsForShipment.get(1));
-          System.out.println("weight: "+productsForShipment.get(2));
+    public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipmentFromView, @RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
+          int id = shipmentFromView.getId();
+          Shipment shipmentFromDataBase = shipmentService.findById(id);
+          for (int i=0; i<productsForShipmentWeight.size(); i++){
+              shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
+              productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
+          }
 
-        //          shipment.getProductsForShipment().forEach(productForShipment -> System.out.println("prodForShipment: "+productForShipment.getQuantity()));
-
-        Field [] fields = shipment.getClass().getDeclaredFields();
+        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
           Arrays.stream(fields).forEach(field -> field.setAccessible(true));
-        Field [] fields1 = shipment1.getClass().getDeclaredFields();
-        Arrays.stream(fields).forEach(field -> field.setAccessible(true));
+        Field [] fields1 = shipmentFromDataBase.getClass().getDeclaredFields();
+        Arrays.stream(fields1).forEach(field -> field.setAccessible(true));
           Arrays.stream(fields).forEach(field -> {
               try {
-                  System.out.println(field.getName()+": "+field.get(shipment));
+                  System.out.println(field.getName()+": "+field.get(shipmentFromView));
               } catch (IllegalAccessException e) {
                   e.printStackTrace();
               }
           });
-        Arrays.stream(fields).forEach(field -> {
+        Arrays.stream(fields1).forEach(field -> {
             try {
-                System.out.println(field.getName()+"11: "+field.get(shipment1));
+                System.out.println(field.getName()+"11: "+field.get(shipmentFromDataBase));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
 
-
-//          String comment = shipment.getComment();
-//          shipment = shipmentService.findById(id);
-//          shipment.setComment(comment);
-//          shipment = shipmentService.findById(id);
-//          shipmentService.saveShipment(shipment);
-//        shipment = shipmentService.findById(id);
-//        System.out.println("id: "+id);
-//        System.out.println("comment: "+shipment.getComment());
-//        System.out.println("invoice: "+shipment.getInvoiceNumber());
-//        System.out.println("truck: "+shipment.getTruckNumber());
-//        System.out.println("customer: "+shipment.getContract().getCustomer().getCustomerName());
-//        shipmentService.saveShipment(shipment);
-        //        modelAndView.addObject("successMessage", "Готово");
-        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipment1.getContract());
+        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
         modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
         return modelAndView;
     }
