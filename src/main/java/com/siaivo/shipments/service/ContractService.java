@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ContractService {
 
-    void saveContractAfterEditRequest(Contract contract);
+    void saveRequest(Contract contract);
     void saveContract (Contract contract);
     List<Contract> allContracts();
     List<Contract> openContracts();

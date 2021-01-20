@@ -120,22 +120,11 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id;
+        return commodity.equals(product.commodity) && price.equals(product.price) && currency.equals(product.currency) && packaging.equals(product.packaging) && quantity.equals(product.quantity) && batch.equals(product.batch);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", commodity=" + commodity +
-                ", contract=" + contract +
-                ", packaging='" + packaging + '\'' +
-                ", quantity=" + quantity +
-                '}';
+        return Objects.hash(commodity, price, currency, packaging, quantity, batch);
     }
 }

@@ -49,4 +49,10 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteAll(productRepository.findByContract(contract));
     }
 
+    @Override
+    public void deleteProduct(Product product) {
+        productRepository.delete(product);
+    }
+
+
 }

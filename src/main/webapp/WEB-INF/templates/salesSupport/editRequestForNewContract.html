@@ -97,7 +97,7 @@
             let x = document.getElementById("id_" + id);
             x.style.display = "none";
             $(".prod" + id).attr('required', false);
-//            deleting commodity name to allow contractController to count only visible products when registering contract
+//            deleting commodity name to allow contractController to count only visible products when saving changes
             let elem =document.getElementById("commodity"+id);
             elem.selectedIndex = 0;
             }
@@ -258,6 +258,7 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th style="display: none" scope="col"> Id </th>
                         <th scope="col"> Товар </th>
                         <th scope="col"> Партія </th>
                         <th scope="col"> Ціна </th>
@@ -268,6 +269,10 @@
                     </thead>
                     <tbody>
                     <tr id="id_0" style="display:table-row;">
+<!--                        <td th:field="*{products[__${0}__].id}" class="prod0">Id</td>-->
+                        <td style="display: none">
+                            <input type="hidden" th:field="*{products[__${0}__].id}" class="prod0" style="width: 7em">
+                        </td>
                         <td>
                         <select th:field="*{products[__${0}__].commodity}" class="prod0" id="commodity0" required>
                            <option value="" >Оберіть товар</option>
@@ -308,6 +313,9 @@
                         </td>
                     </tr>
                     <tr id="id_1" style="display:table-row;">
+                        <td style="display: none">
+                            <input type="hidden" th:field="*{products[__${1}__].id}" class="prod1" style="width: 7em">
+                        </td>
                         <td>
                             <select th:field="*{products[__${1}__].commodity}" class="prod1" id="commodity1" required>
                                 <option value="" >Оберіть товар</option>
@@ -348,6 +356,9 @@
                         </td>
                     </tr>
                     <tr id="id_2" style="display:table-row;">
+                        <td style="display: none">
+                            <input type="hidden" th:field="*{products[__${2}__].id}" class="prod2" style="width: 7em">
+                        </td>
                         <td>
                             <select th:field="*{products[__${2}__].commodity}" class="prod2" id="commodity2"required>
                                 <option value="" >Оберіть товар</option>
@@ -388,6 +399,9 @@
                         </td>
                     </tr>
                     <tr id="id_3" style="display:table-row;">
+                        <td style="display: none">
+                            <input type="hidden" th:field="*{products[__${3}__].id}" class="prod3" style="width: 7em">
+                        </td>
                         <td>
                             <select th:field="*{products[__${3}__].commodity}" class="prod3" id="commodity3" required>
                                 <option value="" >Оберіть товар</option>
@@ -428,6 +442,9 @@
                         </td>
                     </tr>
                     <tr id="id_4" style="display:table-row;">
+                        <td style="display: none">
+                            <input type="hidden" th:field="*{products[__${4}__].id}" class="prod4" style="width: 7em">
+                        </td>
                         <td>
                             <select th:field="*{products[__${4}__].commodity}" class="prod4" id="commodity4" required>
                                 <option value="" >Оберіть товар</option>

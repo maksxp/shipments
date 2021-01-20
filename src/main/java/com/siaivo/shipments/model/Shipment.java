@@ -231,13 +231,19 @@ public class Shipment {
         return truckNumber;
     }
 
-
-
     public void setTruckNumber(int truckNumber) {
         this.truckNumber = truckNumber;
     }
 
-   public List<String> getListOfGoodsPerShipment (Shipment shipment) {
+    public BigDecimal getInvoiceWholeSum() {
+        return invoiceWholeSum;
+    }
+
+    public void setInvoiceWholeSum(BigDecimal invoiceWholeSum) {
+        this.invoiceWholeSum = invoiceWholeSum;
+    }
+
+    public List<String> getListOfGoodsPerShipment (Shipment shipment) {
         List <String> listOfGoodsPerShipment = new ArrayList<>();
         shipment.getProductsForShipment().stream().forEach(productForShipment -> listOfGoodsPerShipment.add(productForShipment.getProduct().getCommodity().getCommodityName()+" ( "+productForShipment.getQuantity()+" тонн"+" ) "+productForShipment.getProduct().getPackaging()));
 

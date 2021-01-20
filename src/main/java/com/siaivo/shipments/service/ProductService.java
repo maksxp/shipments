@@ -15,4 +15,6 @@ public interface ProductService {
     BigDecimal findWeightOfAllProductsByContract (Contract contract);
 
     void deleteProductsByContract(Contract contract);
+
+    void deleteProduct (Product product);
 }
