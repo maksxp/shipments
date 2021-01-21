@@ -151,18 +151,16 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: center">
-            <h4>Відправлення № <span th:text="${shipment.truckNumber}"></span> по контракту № <span th:text="${contractNumber}"></span> від <span th:text="${contractDate}"></span> для <span th:text="${customerName}"></span></h4>
+            <h4>Відправлення № <span th:text="${shipment.truckNumber}"></span> по контракту № <span th:text="${contractNumber}"></span> від <span th:text="${contractDate}"></span> для <span style="color: blueviolet" th:text="${customerName}"></span></h4>
         </div>
     </div>
 </div>
 <!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
 <!--<input type="hidden" th:field="*{id}"/>-->
 <div class="container-fluid">
-    <div class="layerHeader">
         <div style="text-align: left">
             <h4>Базова інформація</h4>
         </div>
-    </div>
 </div>
 <form autocomplete="off" action="#" th:action="@{/salesSupport/shipment}"
       th:object="${shipment}" method="post" class="form-horizontal" role="form">
@@ -170,9 +168,7 @@
     <input type="hidden" th:field="*{id}"/>
 
 <table  class="table table-hover table-bordered"
-        id="table"
-        data-toggle="table"
-        data-pagination="true">
+        data-toggle="table">
 
     <thead class="thead-light">
     <tr>
@@ -181,6 +177,7 @@
         <th data-field="actualLoadingDate" >Завантаження <br> (факт)</th>
         <th data-field="plannedUnloadingDate" >Розвантаження <br> (план)</th>
         <th data-field="actualUnloadingDate" >Розвантаження <br> (факт)</th>
+        <th data-field="paymentTerms" >Умови оплати</th>
         <th class="twoPayments" data-field="plannedPaymentDateOfFirstPartSum" >Передплата <br> (план)</th>
         <th class="twoPayments" data-field="actualPaymentDateOfFirstPartSum" >Передплата <br> (факт)</th>
         <th class="twoPayments" data-field="plannedPaymentDateOfSecondPartSum" >Доплата <br> (план)</th>
@@ -196,6 +193,7 @@
     <td> <input type="text" th:field="*{actualLoadingDate}" th:value="#{actualLoadingDate}"class="datepicker" required readonly/> </td>
     <td> <input type="text" th:field="*{plannedUnloadingDate}" th:value="#{plannedUnloadingDate}"class="datepicker" required readonly/> </td>
     <td> <input type="text" th:field="*{actualUnloadingDate}" th:value="#{actualUnloadingDate}"class="datepicker" required readonly/> </td>
+    <td  th:text="${paymentTerms}"></td>
     <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" readonly/> </td>
     <td> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" readonly/> </td>
     <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" readonly/> </td>
@@ -207,7 +205,7 @@
 </table>
 
     <div class="container-fluid">
-        <div style="text-align: left">
+        <div style="text-align: left; margin-top: 3%;">
             <h4>Товари та ціни</h4>
         </div>
     </div>
@@ -232,6 +230,49 @@
             <td> <input type="text" th:name="productForShipmentWeight[]" th:value="${productForShipment.quantity}"></td>
             <td th:text="${productForShipment.getProduct().getPackaging()}"></td>
         </tr>
+        </tbody>
+    </table>
+
+    <div class="container-fluid">
+        <div style="text-align: left; margin-top: 3%;">
+            <h4>Оплата</h4>
+        </div>
+    </div>
+
+    <table  class="table table-hover table-bordered"
+            data-toggle="table">
+
+        <thead class="thead-light">
+        <tr>
+            <th style="width: 7em" data-field="invoiceNumber">Рахунок</th>
+            <th data-field="paymentTerms" >Умови оплати</th>
+            <th class="twoPayments" data-field="invoiceFirstPartAndSecondPartTotalSum" > Повна вартість <br> (сума)</th>
+            <th class="twoPayments" data-field="invoiceFirstPartSum" >Передплата <br> (сума)</th>
+            <th class="twoPayments" data-field="plannedPaymentDateOfFirstPartSum" >Передплата <br> (план)</th>
+            <th class="twoPayments" data-field="actualPaymentDateOfFirstPartSum" >Передплата <br> (факт)</th>
+            <th class="twoPayments" data-field="invoiceSecondPartSum" >Доплата <br> (сума)</th>
+            <th class="twoPayments" data-field="plannedPaymentDateOfSecondPartSum" >Доплата <br> (план)</th>
+            <th class="twoPayments" data-field="actualPaymentDateOfSecondPartSum" >Доплата <br> (факт)</th>
+            <th class="onePayment" data-field="invoiceWholeSum" >Повна вартість <br> (сума)</th>
+            <th class="onePayment" data-field="plannedPaymentDateOfWholeSum" >Оплата <br> (план)</th>
+            <th class="onePayment" data-field="actualPaymentDateOfWholeSum" >Оплата <br> (факт)</th>
+            <th data-field="comment" >Коментар</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td th:text="${invoiceNumber}"></td>
+        <td  th:text="${paymentTerms}"></td>
+        <td  th:text="${invoiceFirstPartAndSecondPartTotalSum}"></td>
+        <td> <input class="twoPayments" type="text" th:field="*{invoiceFirstPartSum}" th:value="#{invoiceFirstPartSum}"/> </td>
+        <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" readonly/> </td>
+        <td> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" readonly/> </td>
+        <td> <input class="twoPayments" type="text" th:field="*{invoiceSecondPartSum}" th:value="#{invoiceSecondPartSum}"/> </td>
+        <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" readonly/> </td>
+        <td> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfSecondPartSum}" th:value="#{actualPaymentDateOfSecondPartSum}" readonly/> </td>
+        <td  th:text="${invoiceWholeSum}"></td>
+        <td> <input class="onePayment datepicker" type="text" th:field="*{plannedPaymentDateOfWholeSum}" th:value="#{plannedPaymentDateOfWholeSum}" readonly/> </td>
+        <td> <input class="onePayment datepicker" type="text" th:field="*{actualPaymentDateOfWholeSum}" th:value="#{actualPaymentDateOfWholeSum}" readonly/> </td>
+        <td> <input type="text" th:field="*{comment}" th:value="#{comment}"/></td>
         </tbody>
     </table>
 

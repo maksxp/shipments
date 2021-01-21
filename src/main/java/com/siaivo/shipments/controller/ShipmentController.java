@@ -53,25 +53,36 @@ public class ShipmentController {
               shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
               productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
           }
-
-        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
-          Arrays.stream(fields).forEach(field -> field.setAccessible(true));
-        Field [] fields1 = shipmentFromDataBase.getClass().getDeclaredFields();
-        Arrays.stream(fields1).forEach(field -> field.setAccessible(true));
-          Arrays.stream(fields).forEach(field -> {
-              try {
-                  System.out.println(field.getName()+": "+field.get(shipmentFromView));
-              } catch (IllegalAccessException e) {
-                  e.printStackTrace();
-              }
-          });
-        Arrays.stream(fields1).forEach(field -> {
-            try {
-                System.out.println(field.getName()+"11: "+field.get(shipmentFromDataBase));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
+          shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
+          shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
+          shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
+          shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
+          shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
+          shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
+          shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
+          shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
+          shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
+          shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
+          shipmentFromDataBase.setComment(shipmentFromView.getComment());
+          shipmentService.saveShipment(shipmentFromDataBase);
+//        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
+//          Arrays.stream(fields).forEach(field -> field.setAccessible(true));
+//        Field [] fields1 = shipmentFromDataBase.getClass().getDeclaredFields();
+//        Arrays.stream(fields1).forEach(field -> field.setAccessible(true));
+//          Arrays.stream(fields).forEach(field -> {
+//              try {
+//                  System.out.println(field.getName()+": "+field.get(shipmentFromView));
+//              } catch (IllegalAccessException e) {
+//                  e.printStackTrace();
+//              }
+//          });
+//        Arrays.stream(fields1).forEach(field -> {
+//            try {
+//                System.out.println(field.getName()+"11: "+field.get(shipmentFromDataBase));
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        });
 
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
         modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
