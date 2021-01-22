@@ -1,5 +1,8 @@
 package com.siaivo.shipments.model;
 
+import com.siaivo.shipments.service.ProductForShipmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
@@ -36,8 +39,11 @@ public class Shipment {
     @Column(name = "labels_status")
     private String labelsStatus;
 
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "shipment_comment")
+    private String shipmentComment;
+
+    @Column(name = "invoice_comment")
+    private String invoiceComment;
 
     @Column(name = "invoice_number")
     private String invoiceNumber;
@@ -139,12 +145,20 @@ public class Shipment {
         this.labelsStatus = labelsStatus;
     }
 
-    public String getComment() {
-        return comment;
+    public String getShipmentComment() {
+        return shipmentComment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setShipmentComment(String shipmentComment) {
+        this.shipmentComment = shipmentComment;
+    }
+
+    public String getInvoiceComment() {
+        return invoiceComment;
+    }
+
+    public void setInvoiceComment(String invoiceComment) {
+        this.invoiceComment = invoiceComment;
     }
 
     public String getInvoiceNumber() {
@@ -235,7 +249,12 @@ public class Shipment {
         this.truckNumber = truckNumber;
     }
 
-    public BigDecimal getInvoiceWholeSum() {
+//    public BigDecimal getInvoiceWholeSum() {
+//        return invoiceWholeSum;
+//    }
+    public BigDecimal getInvoiceWholeSum(Shipment shipment) {
+//        shipment.getProductsForShipment().stream().forEach(productForShipment -> productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice()));
+        shipment.getProductsForShipment().stream().reduce()forEach(productForShipment -> productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice()));
         return invoiceWholeSum;
     }
 

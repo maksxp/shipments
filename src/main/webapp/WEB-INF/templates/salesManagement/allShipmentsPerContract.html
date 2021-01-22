@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All Shipments</title>
+    <title>All shipments per contract</title>
 
     <style>
         .layerHeader {
@@ -32,10 +32,6 @@
         p {
             margin-top: 0.2em; /* Отступ сверху */
             margin-bottom: 0.2em; /* Отступ снизу */
-        }
-        .editable {
-            color: blue;
-            width: 7em;
         }
     </style>
 </head>
@@ -92,10 +88,10 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі відправлення</h3>
+            <h3>Усі відправлення по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h3>
         </div>
 </div>
-    <table  class="table table-hover table-bordered table-sm table-responsive"
+    <table  class="table table-hover table-bordered"
             id="table"
             data-show-columns="true"
             data-pagination="true"
@@ -107,9 +103,8 @@
     <thead class="thead-light">
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input"data-visible="false" data-field="contractId">contractId</th>
-        <th class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
-        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
+        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
 <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
         <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
@@ -134,10 +129,9 @@
 <!--    </tr>-->
 <!--    </tfoot>-->
     <tbody>
-    <tr th:each="shipment : ${allShipments}">
+    <tr th:each="shipment : ${allShipmentsPerContract}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
-        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().id}">contractId</td>
-        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
+        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
         <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
 <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
@@ -147,7 +141,7 @@
 <!--        </td>-->
         <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
             <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
+                <span th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
             </p>
         </td>
         <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
@@ -176,11 +170,8 @@
 <script>
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="contractNumber") {
-            window.open("contract/"+$element.contractId,"_self");
-        }
-        else {
-            window.open("shipment/"+$element.id,"_self");}
+        if (value=="truckNumber")
+            window.open("/salesManagement/shipment/"+$element.id,"_self");
     });
 
 

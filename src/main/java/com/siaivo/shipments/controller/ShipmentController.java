@@ -2,6 +2,7 @@ package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Shipment;
+import com.siaivo.shipments.service.ContractService;
 import com.siaivo.shipments.service.ProductForShipmentService;
 import com.siaivo.shipments.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,31 @@ public class ShipmentController {
     private ShipmentService shipmentService;
 
     @Autowired
+    private ContractService contractService;
+
+    @Autowired
     private ProductForShipmentService productForShipmentService;
 
     @RequestMapping(value="/salesSupport/allShipments", method = RequestMethod.GET)
     public ModelAndView allContractsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.setViewName("/salesSupport/allShipments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/allShipmentsPerContract/{id}", method = RequestMethod.GET)
+    public ModelAndView allShipmentsPerContractForSalesSupport(@PathVariable(value = "id") int id){
+        Contract contract = contractService.findContractById(id);
+        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+        modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesManagement/allShipmentsPerContract/{id}", method = RequestMethod.GET)
+    public ModelAndView allShipmentsPerContractForSalesManagement(@PathVariable(value = "id") int id){
+        Contract contract = contractService.findContractById(id);
+        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+        modelAndView.setViewName("/salesManagement/allShipmentsPerContract");
         return modelAndView;
     }
 
@@ -40,6 +60,7 @@ public class ShipmentController {
         modelAndView.addObject("contractDate", shipmentService.findById(id).getContract().getContractDate());
         modelAndView.addObject("customerName", shipmentService.findById(id).getContract().getCustomer().getCustomerName());
         modelAndView.addObject("paymentTerms", shipmentService.findById(id).getContract().getPaymentTerms());
+        modelAndView.addObject("deliveryTerms", shipmentService.findById(id).getContract().getDeliveryTerms());
         modelAndView.addObject("shipment", shipment);
         modelAndView.setViewName("/salesSupport/shipment");
         return modelAndView;
@@ -63,7 +84,10 @@ public class ShipmentController {
           shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
           shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
           shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
-          shipmentFromDataBase.setComment(shipmentFromView.getComment());
+          shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
+          shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
+          shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
+          shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
           shipmentService.saveShipment(shipmentFromDataBase);
 //        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
 //          Arrays.stream(fields).forEach(field -> field.setAccessible(true));

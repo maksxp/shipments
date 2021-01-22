@@ -163,8 +163,8 @@ public class ContractController {
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
                 shipment.setContract(contract);
-                shipment.setLogisticInstructionStatus("не готово");
-                shipment.setLabelsStatus("не готово");
+                shipment.setLogisticInstructionStatus("готується");
+                shipment.setLabelsStatus("готується");
                 shipment.setInvoiceNumber(contractNumber+"."+(i+1));
                 shipment.setTruckNumber(i+1);
                 for (int j=0; j<productsForShipmentForm.getProductsForShipment().size(); j++) {
