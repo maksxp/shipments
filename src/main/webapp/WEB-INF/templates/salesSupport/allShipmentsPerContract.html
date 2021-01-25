@@ -55,11 +55,11 @@
                     Покупці та товари
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
+                    <a class="dropdown-item" href="/salesSupport/allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="/salesSupport/customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+                    <a class="dropdown-item" href="/salesSupport/allCommodities">Усі товари</a>
+                    <a class="dropdown-item" href="/salesSupport/commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -67,13 +67,13 @@
                     Контракти
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
-                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="/salesSupport/allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="/salesSupport/openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="/salesSupport/fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="requestForNewContract">Заявка на новий контракт</a>
+                    <a class="dropdown-item" href="/salesSupport/notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="/salesSupport/contractsForPreparation">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="/salesSupport/requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
 
@@ -146,7 +146,7 @@
         </td>
         <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
             <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="width: 7em" th:text="${productForShipment.getQuantity()}"> Вага</span>
+                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>
             </p>
         </td>
         <td data-sortable="true" data-field="packaging" data-filter-control="input" >

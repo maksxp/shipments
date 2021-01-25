@@ -61,6 +61,14 @@ public class ShipmentController {
         modelAndView.addObject("customerName", shipmentService.findById(id).getContract().getCustomer().getCustomerName());
         modelAndView.addObject("paymentTerms", shipmentService.findById(id).getContract().getPaymentTerms());
         modelAndView.addObject("deliveryTerms", shipmentService.findById(id).getContract().getDeliveryTerms());
+        modelAndView.addObject("invoiceWholeSum", shipment.getInvoiceWholeSum(shipment));
+        if (shipment.getContract().getPaymentTerms().equals("оплата частинами")) {
+            modelAndView.addObject("strippedInvoiceFirstPartSum", shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString());
+            modelAndView.addObject("strippedInvoiceSecondPartSum", shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString());
+        } else {
+            modelAndView.addObject("strippedInvoiceFirstPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
+            modelAndView.addObject("strippedInvoiceSecondPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
+        }
         modelAndView.addObject("shipment", shipment);
         modelAndView.setViewName("/salesSupport/shipment");
         return modelAndView;
@@ -88,6 +96,8 @@ public class ShipmentController {
           shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
           shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
           shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
+          shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
+          shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
           shipmentService.saveShipment(shipmentFromDataBase);
 //        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
 //          Arrays.stream(fields).forEach(field -> field.setAccessible(true));

@@ -63,9 +63,7 @@ public class Product {
         this.commodity = commodity;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+    public BigDecimal getPrice() { return price; }
 
     public void setPrice(BigDecimal price) {
         this.price = price;

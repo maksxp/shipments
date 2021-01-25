@@ -57,9 +57,6 @@ public class Shipment {
     @Column(name = "invoice_second_part_sum")
     private BigDecimal invoiceSecondPartSum;
 
-    @Column(name = "invoice_whole_sum")
-    private BigDecimal invoiceWholeSum;
-
     @Column(name = "planned_payment_date_of_first_part_sum")
     private String plannedPaymentDateOfFirstPartSum;
 
@@ -249,17 +246,10 @@ public class Shipment {
         this.truckNumber = truckNumber;
     }
 
-//    public BigDecimal getInvoiceWholeSum() {
-//        return invoiceWholeSum;
-//    }
     public BigDecimal getInvoiceWholeSum(Shipment shipment) {
-//        shipment.getProductsForShipment().stream().forEach(productForShipment -> productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice()));
-        shipment.getProductsForShipment().stream().reduce()forEach(productForShipment -> productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice()));
-        return invoiceWholeSum;
-    }
-
-    public void setInvoiceWholeSum(BigDecimal invoiceWholeSum) {
-        this.invoiceWholeSum = invoiceWholeSum;
+        List <BigDecimal> costOfEachProduct = new ArrayList<>();
+        shipment.getProductsForShipment().stream().forEach(productForShipment -> costOfEachProduct.add(productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice())));
+        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public List<String> getListOfGoodsPerShipment (Shipment shipment) {
