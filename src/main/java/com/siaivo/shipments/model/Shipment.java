@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.*;
 
+
 @Entity
 @Table(name = "shipment")
 public class Shipment {

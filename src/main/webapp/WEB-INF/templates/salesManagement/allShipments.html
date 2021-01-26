@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All shipments per contract</title>
+    <title>All Shipments</title>
 
     <style>
         .layerHeader {
@@ -32,6 +32,10 @@
         p {
             margin-top: 0.2em; /* Отступ сверху */
             margin-bottom: 0.2em; /* Отступ снизу */
+        }
+        .editable {
+            color: blue;
+            width: 7em;
         }
     </style>
 </head>
@@ -55,25 +59,23 @@
                     Покупці та товари
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/salesSupport/allCustomers">Усі покупці</a>
-                    <a class="dropdown-item" href="/salesSupport/customerRegistration">Реєстрація нового покупця</a>
+                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/salesSupport/allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="/salesSupport/commodityRegistration">Реєстрація нового товару</a>
-                </div>
+                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
+                               </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Контракти
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/salesSupport/allContracts">Усі контракти</a>
-                    <a class="dropdown-item" href="/salesSupport/openContracts">Відкриті контракти</a>
-                    <a class="dropdown-item" href="/salesSupport/fulfilledContracts">Виконані контракти</a>
+                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/salesSupport/notSignedContracts">Непідписані контракти</a>
-                    <a class="dropdown-item" href="/salesSupport/contractsForPreparation">Контракти в процесі підготовки</a>
-                    <a class="dropdown-item" href="/salesSupport/requestForNewContract">Заявка на новий контракт</a>
+                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -81,14 +83,14 @@
                     Відправлення
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/salesSupport/allShipments">Усі відправлення</a>
-                    <a class="dropdown-item" href="/salesSupport/openShipments">Відправлення в роботі</a>
-                    <a class="dropdown-item" href="/salesSupport/fulfilledShipments">Виконані відправлення</a>
+                    <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
+                    <a class="dropdown-item" href="fulfilledShipments">Виконані відправлення</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/salesSupport/thisWeekShipments">Відправлення цього тижня</a>
-                    <a class="dropdown-item" href="/salesSupport/nextWeekShipments">Відправлення наступного тижня</a>
+                    <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
+                    <a class="dropdown-item" href="nextWeekShipments">Відправлення наступного тижня</a>
                 </div>
             </li>
+
 <!--            <li class="nav-item">-->
 <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
 <!--            </li>-->
@@ -100,10 +102,10 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі відправлення по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h3>
+            <h3>Усі відправлення</h3>
         </div>
 </div>
-    <table  class="table table-hover table-bordered"
+    <table  class="table table-hover table-bordered table-sm table-responsive"
             id="table"
             data-show-columns="true"
             data-pagination="true"
@@ -115,8 +117,9 @@
     <thead class="thead-light">
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
-        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input"data-visible="false" data-field="contractId">contractId</th>
+        <th class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
+        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
 <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
         <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
@@ -141,9 +144,10 @@
 <!--    </tr>-->
 <!--    </tfoot>-->
     <tbody>
-    <tr th:each="shipment : ${allShipmentsPerContract}">
+    <tr th:each="shipment : ${allShipments}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
-        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
+        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().id}">contractId</td>
+        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
         <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
 <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
@@ -153,7 +157,7 @@
 <!--        </td>-->
         <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
             <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
+                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
             </p>
         </td>
         <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
@@ -182,8 +186,11 @@
 <script>
 
     $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="truckNumber")
-            window.open("/salesSupport/shipment/"+$element.id,"_self");
+        if (value=="contractNumber") {
+            window.open("contract/"+$element.contractId,"_self");
+        }
+        else {
+            window.open("shipment/"+$element.id,"_self");}
     });
 
 

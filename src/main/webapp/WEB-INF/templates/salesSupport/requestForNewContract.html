@@ -35,6 +35,7 @@
     });
     } );
     </script>
+
     <script th:inline="javascript">
         const allCustomersNames = /*[[${allCustomersNames}]]*/'noValue';
         $(document).ready(function () {
@@ -174,6 +175,19 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Відправлення
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allShipments">Усі відправлення</a>
+                    <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
+                    <a class="dropdown-item" href="fulfilledShipments">Виконані відправлення</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
+                    <a class="dropdown-item" href="nextWeekShipments">Відправлення наступного тижня</a>
                 </div>
             </li>
 

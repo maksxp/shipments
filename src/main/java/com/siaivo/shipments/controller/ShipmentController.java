@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class ShipmentController {
@@ -29,9 +30,16 @@ public class ShipmentController {
     private ProductForShipmentService productForShipmentService;
 
     @RequestMapping(value="/salesSupport/allShipments", method = RequestMethod.GET)
-    public ModelAndView allContractsForSalesSupport(){
+    public ModelAndView allShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.setViewName("/salesSupport/allShipments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesManagement/allShipments", method = RequestMethod.GET)
+    public ModelAndView allShipmentsForSalesManagement(){
+        ModelAndView modelAndView = getModelAndViewWithAllShipments();
+        modelAndView.setViewName("/salesManagement/allShipments");
         return modelAndView;
     }
 
