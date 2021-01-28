@@ -37,7 +37,7 @@ public class ContractServiceImpl implements ContractService{
         List <Contract> canceledContracts = new ArrayList<>();
         List <Contract> contractsToReturn = contractService.allContracts();
         closedContracts.addAll(contractRepository.findByStateLike("виконаний"));
-        canceledContracts.addAll(contractRepository.findByStateLike("відмінений"));
+        canceledContracts.addAll(contractRepository.findByStateLike("скасований"));
         contractsToReturn.removeAll(closedContracts);
         contractsToReturn.removeAll(canceledContracts);
         return contractsToReturn;

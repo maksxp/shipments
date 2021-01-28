@@ -46,7 +46,7 @@ public class Contract {
 
     @OneToMany
     @JoinColumn(name= "id")
-    private List<Shipment> shipment;
+    private List<Shipment> shipments;
 
     public int getId() {
         return id;
@@ -129,15 +129,11 @@ public class Contract {
     }
 
     public List<Shipment> getShipments() {
-        return shipment;
+        return shipments;
     }
 
     public void setShipments(List<Shipment> shipment) {
-        this.shipment = shipment;
-    }
-
-    public List<Shipment> getShipment() {
-        return shipment;
+        this.shipments = shipment;
     }
 
     public String getStringOfAllCommodityNames (Contract contract) {

@@ -11,7 +11,9 @@ public interface ShipmentService {
 
     void saveShipment (Shipment shipment);
 
-    Shipment getOne (int id);
+    void deleteShipment (Shipment shipment);
+
+//    Shipment getOne (int id);
 
     List<Shipment> allShipments();
     List<Shipment> allShipmentsPerContract(Contract contract);

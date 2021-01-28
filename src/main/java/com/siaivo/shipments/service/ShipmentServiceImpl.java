@@ -1,6 +1,7 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.model.Shipment;
 import com.siaivo.shipments.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,16 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
-    public Shipment getOne(int id) {
-        return shipmentRepository.getOne(id);
+    public void deleteShipment(Shipment shipment) {
+        shipmentRepository.delete(shipment);
     }
+
+//    @Override
+//    public Shipment getOne(int id) {
+//        return shipmentRepository.getOne(id);
+//    }
+
+
 
     @Override
     public List<Shipment> allShipments() {

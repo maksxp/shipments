@@ -56,6 +56,34 @@
             margin-top: 0.2em; /* Отступ сверху */
             margin-bottom: 0.2em; /* Отступ снизу */
         }
+
+        td {
+            position: relative;
+        }
+        /*input[type="text"],*/
+        select {
+            position: absolute;
+            background: #e3fcff;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            resize: none;
+
+            /* for full width without spacing */
+            width: 100%;
+            border: none;
+            /* for full width without spacing */
+
+            /* for column with internal spacing */
+            /*
+            width: 85%;
+            padding: 0.3rem;
+            margin: 0.2rem 0.5rem;
+            border: 1px solid #ddd;
+            */
+            /* for column with internal spacing */
+        }
     </style>
 </head>
 <body>
@@ -130,10 +158,13 @@
         </div>
     </div>
 </div>
-<!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
-<!--<input type="hidden" th:field="*{id}"/>-->
-<table class="table table-hover table-bordered"
-       data-pagination="true">
+<form autocomplete="off" action="#" th:action="@{/salesSupport/contract}"
+      th:object="${contract}" method="post" class="form-horizontal" role="form">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <table  class="table table-hover table-bordered"
+            data-toggle="table">
     <thead class="thead-light">
     <tr>
         <th data-field="id">№</th>
@@ -142,6 +173,7 @@
         <th data-field="startOfShipments">Початок відвантажень</th>
         <th data-field="endOfShipments">Завершення відвантажень</th>
         <th data-field="totalWeightOfAllGoods">Загальна вага</th>
+        <th style="width: max-content" data-field="state">Статус</th>
         <th data-field="comment">Коментар</th>
     </tr>
     </thead>
@@ -151,10 +183,29 @@
     <td th:text="${contract.paymentTerms}">Умови оплати</td>
     <td th:text="${contract.startOfShipments}">Початок відвантажень</td>
     <td th:text="${contract.endOfShipments}">Завершення відвантажень</td>
-    <td th:text="${weightOfAllProductsByContract}">Загальна вага</td>
+    <td th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага</td>
+    <td style="width: max-content">
+            <select  style="width: max-content" th:field="*{state}" th:value="#{state}" required>
+                <option th:value="'готується'">готується</option>
+                <option th:value="'підготовлений'">підготовлений</option>
+                <option th:value="'підписаний'">підписаний</option>
+                <option th:value="'виконаний'">виконаний</option>
+                <option th:value="'скасований'">скасований</option>
+            </select>
+    </td>
+
     <td th:text="${contract.comment}">Коментар</td>
     </tbody>
 </table>
+
+    <div class="container-fluid">
+        <div align="center">
+            <div class="layerBottom">
+                <button type="submit" class="btn btn-primary btn-block">Змінити статус контракту</button>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="container-fluid">
     <div style="text-align: left">
         <h4>Товари та ціни</h4>
@@ -176,9 +227,9 @@
     <tr th:each="product : ${allProductsByContract}">
         <td th:text="${product.commodity.commodityName}">Товар</td>
         <td th:text="${product.batch}">Партія</td>
-        <td th:text="${product.price}">Ціна</td>
+        <td th:text="${product.price.stripTrailingZeros().toPlainString()}">Ціна</td>
         <td th:text="${product.currency}">Валюта</td>
-        <td th:text="${product.quantity}">Кількість</td>
+        <td th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Кількість</td>
         <td th:text="${product.packaging}">Пакування</td>
     </tr>
     </tbody>
@@ -191,27 +242,22 @@
 
 <table  class="table table-hover table-bordered"
         id="table"
-        data-show-columns="true"
-        data-pagination="true"
-        data-show-jump-to="true"
-        data-side-pagination="client"
-        data-toggle="table"
-        data-filter-control="true">
+        data-pagination="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
+        <th style="width: 7em" data-visible="false" data-field="id">id</th>
 <!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>-->
-        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
-        <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
+        <th style="width: 4em" data-field="truckNumber" >Авто</th>
+        <th data-field="customerName">Покупець</th>
         <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
-        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
-        <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
-        <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>
-        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>
-        <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (факт)</th>
-        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
-        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
-        <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
+        <th data-field="commodityName" >Товар</th>
+        <th style="width: 7em"   data-field="commodityWeight" >Вага</th>
+        <th data-field="packaging" >Пакування</th>
+        <th data-field="plannedLoadingDate" >Завантаження <br> (план)</th>
+        <th data-field="actualLoadingDate" >Завантаження <br> (факт)</th>
+        <th data-field="plannedUnloadingDate" >Розвантаження <br> (план)</th>
+        <th data-field="actualUnloadingDate" >Розвантаження <br> (факт)</th>
+        <th data-field="shipmentComment" >Коментар</th>
     </tr>
     </thead>
     <!--    <tfoot>-->
@@ -227,40 +273,38 @@
     <!--    </tfoot>-->
     <tbody>
     <tr th:each="shipment : ${allShipmentsPerContract}">
-        <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
+        <td style="width: 7em" data-visible="false" th:text="${shipment.id}">id</td>
 <!--        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>-->
-        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
-        <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
+        <td style="width: 4em"  data-field="truckNumber" th:text="${shipment.truckNumber}">Машина</td>
+        <td data-field="customerName" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
         <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
         <!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
         <!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
         <!--            </p>-->
         <!--        </td>-->
-        <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
+        <td data-field="commodityName"  >
             <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
             </p>
         </td>
-        <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
+        <td data-field="commodityWeight" >
             <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="width: 7em" th:text="${productForShipment.getQuantity()}"> Вага</span>
+                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>
             </p>
         </td>
-        <td data-sortable="true" data-field="packaging" data-filter-control="input" >
+        <td data-field="packaging" >
             <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>
             </p>
         </td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Дата завантаження (план)</td>
-        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>
-        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>
-        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>
-        <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
+        <td data-field="plannedLoadingDate" th:text="${shipment.plannedLoadingDate}">Дата завантаження (план)</td>
+        <td data-field="actualLoadingDate" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>
+        <td data-field="plannedUnloadingDate" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>
+        <td data-field="actualUnloadingDate" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>
+        <td data-field="shipmentComment" th:text="${shipment.shipmentComment}">Коментар</td>
     </tr>
     </tbody>
 </table>
-
-
 
 <script>
     $(function() {

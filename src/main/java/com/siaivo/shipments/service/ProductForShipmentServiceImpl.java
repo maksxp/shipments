@@ -36,4 +36,9 @@ public class ProductForShipmentServiceImpl implements ProductForShipmentService 
     public List<ProductForShipment> findByShipment(Shipment shipment) {
         return productForShipmentRepository.findByShipment(shipment);
     }
+
+    @Override
+    public void deleteProductForShipment(ProductForShipment productForShipment) {
+        productForShipmentRepository.delete(productForShipment);
+    }
 }

@@ -1,6 +1,5 @@
 package com.siaivo.shipments.service;
 
-import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
 
@@ -19,4 +18,6 @@ public interface ProductForShipmentService {
 //    BigDecimal findWeightOfAllProductsByContract (Contract contract);
 
 //    public void deleteProductsByContract (Contract contract);
+
+    void deleteProductForShipment (ProductForShipment productForShipment);
 }

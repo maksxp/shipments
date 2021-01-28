@@ -13,10 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -125,6 +128,17 @@ public class ContractController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/contract", method = RequestMethod.POST)
+    public ModelAndView changeContractStateForSalesSupport(@ModelAttribute("contract")Contract contractFromView){
+        int id = contractFromView.getId();
+        Contract contractFromDataBase = contractService.findContractById(id);
+        contractFromDataBase.setState(contractFromView.getState());
+        contractService.saveContract(contractFromDataBase);
+        ModelAndView modelAndView = getModelAndViewWithAllContracts();
+        modelAndView.setViewName("redirect:/salesSupport/allContracts");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesManagement/editRequestForNewContract/{id}", method = RequestMethod.GET)
     public ModelAndView editRequestForNewContractForSalesManagement (@PathVariable(value = "id") int id){
         ModelAndView modelAndView = getEditRequestForNewContractModelAndView(id);
@@ -154,12 +168,14 @@ public class ContractController {
     @RequestMapping(value="/salesSupport/contractPreparation", method = RequestMethod.POST)
     public ModelAndView postContractPreparationForSalesSupport (@RequestParam("id") int id, @RequestParam("contractDate") String contractDate, @RequestParam("contractNumber") String contractNumber, @RequestParam("numberOfTrucks") int numberOfTrucks){
         Contract contract = contractService.findContractById(id);
+        int numberOfLoadedTrucks = (int) contract.getShipments().stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
+        System.out.println("loaded trucks: "+numberOfLoadedTrucks);
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
         contractService.saveContract(contract);
         List <Product> products = contract.getProducts();
-            for (int i=0;i<numberOfTrucks;i++){
+            for (int i=0;i<numberOfTrucks-numberOfLoadedTrucks;i++){
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
                 shipment.setContract(contract);
@@ -222,7 +238,16 @@ public class ContractController {
     }
 
     private ModelAndView saveEditRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+        int id = contract.getId();
+        System.out.println("id: "+id);
         List<Product> products = productForm.getProducts();
+//        List <ProductForShipment> productForShipment =
+        List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
+        System.out.println("size all: "+allShipmentsPerContract.size());
+        List<Shipment> notLoadedShipments = allShipmentsPerContract.stream().filter(shipment -> shipment.getActualLoadingDate()==null || shipment.getActualLoadingDate().equals("")).collect(Collectors.toList());
+        System.out.println("size not loaded: "+notLoadedShipments.size());
+        notLoadedShipments.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
+        notLoadedShipments.forEach(shipment -> shipmentService.deleteShipment(shipment));
         if (bindingResult.hasErrors()) {
             return getModelAndViewWithContractsForPreparation();
         }
