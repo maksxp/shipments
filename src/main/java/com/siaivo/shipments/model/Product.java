@@ -2,8 +2,10 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "product")
@@ -21,10 +23,6 @@ public class Product {
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="contract_id")
     private Contract contract;
-
-//    @ManyToOne (fetch = FetchType.LAZY)
-//    @JoinColumn(name="shipment_id")
-//    private Shipment shipment;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<ProductForShipment> productsForShipments;
@@ -113,16 +111,41 @@ public class Product {
         this.productsForShipments = productsForShipments;
     }
 
+    public BigDecimal getLoadedQuantity (){
+        List <BigDecimal> quantityOfLoadedProductInEachShipment = new ArrayList<>();
+        getProductsForShipments()
+                .stream()
+                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null || productForShipment.getShipment().getActualLoadingDate().equals(""))
+                .collect(Collectors.toList())
+                .forEach(productForShipment -> quantityOfLoadedProductInEachShipment.add(productForShipment.getQuantity()));
+        return quantityOfLoadedProductInEachShipment
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return commodity.equals(product.commodity) && price.equals(product.price) && currency.equals(product.currency) && packaging.equals(product.packaging) && quantity.equals(product.quantity) && batch.equals(product.batch);
+        return commodity.equals(product.commodity) && price.equals(product.price) && currency.equals(product.currency) && packaging.equals(product.packaging)  && batch.equals(product.batch) && contract.equals(product.contract);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "commodity=" + commodity +
+                ", contract=" + contract +
+                ", price=" + price +
+                ", currency='" + currency + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", packaging='" + packaging + '\'' +
+                ", batch='" + batch + '\'' +
+                '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commodity, price, currency, packaging, quantity, batch);
+        return Objects.hash(commodity, price, currency, packaging, batch, contract);
     }
 }

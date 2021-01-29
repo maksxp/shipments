@@ -232,31 +232,61 @@ public class ContractController {
         products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
-        contractService.saveRequest(contract);
+        contractService.saveEditRequest(contract);
         products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> productService.saveProduct(product));
         return getModelAndViewWithContractsForPreparation ();
     }
 
     private ModelAndView saveEditRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         int id = contract.getId();
-        System.out.println("id: "+id);
-        List<Product> products = productForm.getProducts();
-//        List <ProductForShipment> productForShipment =
+        Contract contractFromDatabase = contractService.findContractById(id);
+        List<Product> productsFromView = productForm.getProducts().stream().filter(product -> product.getCommodity()!=null).collect(Collectors.toList());
+        System.out.println("size: "+productsFromView.size());
+        productsFromView.forEach(System.out::println);
+        List<Product> productsFromDatabase = contractFromDatabase.getProducts();
+        productsFromView.forEach(product -> product.setContract(contractFromDatabase));
+        productsFromDatabase.forEach(productFromDatabase -> {
+//            if (productsFromView.contains(productFromDatabase)&&productFromDatabase.getLoadedQuantity().compareTo(productsFromView.get(productsFromView.indexOf(productFromDatabase)).getQuantity())>0){
+            if (productsFromView.contains(productFromDatabase)){
+                System.out.println("loaded: "+productFromDatabase.getLoadedQuantity());
+                System.out.println("index: "+productsFromView.indexOf(productFromDatabase));
+                System.out.println("changed: "+productsFromView.get(productsFromView.indexOf(productFromDatabase)).getQuantity());
+                bindingResult
+                        .rejectValue("products", "error.contract",
+                                "Вже відвантажено товару більше, ніж в запиті на зміни");
+            }
+        });
+        System.out.println("after check");
+        if (contractFromDatabase.getContractNumber()!=null && !contractFromDatabase.getContractNumber().equals("")){
+            contract.setContractNumber(contractFromDatabase.getContractNumber());
+        }
+        contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
+        contract.setPaymentTerms(paymentTerms);
+        contractService.saveEditRequest(contract);
+        productsFromDatabase.forEach(productFromDatabase -> {
+            System.out.println("prod from database-commodity: "+productFromDatabase.getCommodity());
+            if (productsFromView.contains(productFromDatabase)){
+                System.out.println("inside if 1");
+                int indexOfProductInProductsFromView = productsFromView.indexOf(productFromDatabase);
+                productFromDatabase.setQuantity(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
+                System.out.println("inside if 2");
+            } else {
+                System.out.println("inside else 1");
+                productService.deleteProduct(productFromDatabase);
+                System.out.println("inside else 2");
+            }
+        });
         List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
-        System.out.println("size all: "+allShipmentsPerContract.size());
         List<Shipment> notLoadedShipments = allShipmentsPerContract.stream().filter(shipment -> shipment.getActualLoadingDate()==null || shipment.getActualLoadingDate().equals("")).collect(Collectors.toList());
-        System.out.println("size not loaded: "+notLoadedShipments.size());
         notLoadedShipments.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
         notLoadedShipments.forEach(shipment -> shipmentService.deleteShipment(shipment));
         if (bindingResult.hasErrors()) {
             return getModelAndViewWithContractsForPreparation();
         }
-        contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
-        contract.setPaymentTerms(paymentTerms);
-        contractService.saveRequest(contract);
-        products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
-        products.stream().filter(product -> (product.getCommodity())==null).forEach(product -> productService.deleteProduct(product));
-        products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> productService.saveProduct(product));
+
+        productsFromView.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
+        productsFromView.stream().filter(product -> (product.getCommodity())==null).forEach(product -> productService.deleteProduct(product));
+        productsFromView.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> productService.saveProduct(product));
         return getModelAndViewWithContractsForPreparation();
     }
 

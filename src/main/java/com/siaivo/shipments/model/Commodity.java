@@ -88,12 +88,12 @@ public class Commodity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Commodity commodity = (Commodity) o;
-        return id == commodity.id;
+        return commodityName.equals(commodity.commodityName) && commodityCode.equals(commodity.commodityCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(commodityName, commodityCode);
     }
 
     @Override
