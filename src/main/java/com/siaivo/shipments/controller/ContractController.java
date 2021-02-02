@@ -168,14 +168,15 @@ public class ContractController {
     @RequestMapping(value="/salesSupport/contractPreparation", method = RequestMethod.POST)
     public ModelAndView postContractPreparationForSalesSupport (@RequestParam("id") int id, @RequestParam("contractDate") String contractDate, @RequestParam("contractNumber") String contractNumber, @RequestParam("numberOfTrucks") int numberOfTrucks){
         Contract contract = contractService.findContractById(id);
-        int numberOfLoadedTrucks = (int) contract.getShipments().stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
-        System.out.println("loaded trucks: "+numberOfLoadedTrucks);
+        int numberOfLoadedTrucks = (int) shipmentService.allShipmentsPerContract(contract).stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
+        System.out.println("numberOfLoadedTrucks before: "+numberOfLoadedTrucks);
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
         contractService.saveContract(contract);
         List <Product> products = contract.getProducts();
-            for (int i=0;i<numberOfTrucks-numberOfLoadedTrucks;i++){
+        System.out.println("size before: "+contract.getProducts().size());
+            for (int i = numberOfLoadedTrucks; i<numberOfTrucks; i++){
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
                 shipment.setContract(contract);
@@ -186,11 +187,11 @@ public class ContractController {
                 for (int j=0; j<productsForShipmentForm.getProductsForShipment().size(); j++) {
                     productsForShipmentForm.getProductsForShipment().get(j).setShipment(shipment);
                     productsForShipmentForm.getProductsForShipment().get(j).setProduct(products.get(j));
-                    productsForShipmentForm.getProductsForShipment().get(j).setQuantity((products.get(j).getQuantity()).divide(BigDecimal.valueOf(numberOfTrucks),3, RoundingMode.UP));
+                    productsForShipmentForm.getProductsForShipment().get(j).setQuantity((products.get(j).getQuantity()).subtract(products.get(j).getLoadedQuantity()).divide(BigDecimal.valueOf(numberOfTrucks-numberOfLoadedTrucks),3, RoundingMode.UP));
                 }
                 shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
                 shipmentService.saveShipment(shipment);
-                productsForShipmentForm.getProductsForShipment().stream().forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
+                productsForShipmentForm.getProductsForShipment().stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
            }
             ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
             modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
@@ -232,7 +233,8 @@ public class ContractController {
         products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
-        contractService.saveEditRequest(contract);
+        contract.setState("готується");
+        contractService.saveContract(contract);
         products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> productService.saveProduct(product));
         return getModelAndViewWithContractsForPreparation ();
     }
@@ -241,39 +243,25 @@ public class ContractController {
         int id = contract.getId();
         Contract contractFromDatabase = contractService.findContractById(id);
         List<Product> productsFromView = productForm.getProducts().stream().filter(product -> product.getCommodity()!=null).collect(Collectors.toList());
-        System.out.println("size: "+productsFromView.size());
         productsFromView.forEach(System.out::println);
         List<Product> productsFromDatabase = contractFromDatabase.getProducts();
         productsFromView.forEach(product -> product.setContract(contractFromDatabase));
-        productsFromDatabase.forEach(productFromDatabase -> {
-//            if (productsFromView.contains(productFromDatabase)&&productFromDatabase.getLoadedQuantity().compareTo(productsFromView.get(productsFromView.indexOf(productFromDatabase)).getQuantity())>0){
-            if (productsFromView.contains(productFromDatabase)){
-                System.out.println("loaded: "+productFromDatabase.getLoadedQuantity());
-                System.out.println("index: "+productsFromView.indexOf(productFromDatabase));
-                System.out.println("changed: "+productsFromView.get(productsFromView.indexOf(productFromDatabase)).getQuantity());
-                bindingResult
-                        .rejectValue("products", "error.contract",
-                                "Вже відвантажено товару більше, ніж в запиті на зміни");
-            }
-        });
-        System.out.println("after check");
         if (contractFromDatabase.getContractNumber()!=null && !contractFromDatabase.getContractNumber().equals("")){
             contract.setContractNumber(contractFromDatabase.getContractNumber());
         }
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
         contract.setPaymentTerms(paymentTerms);
+        if (contractFromDatabase.getContractDate()!=null && !contractFromDatabase.getContractDate().equals("")){
+            contract.setContractDate(contractFromDatabase.getContractDate());
+        }
+
         contractService.saveEditRequest(contract);
         productsFromDatabase.forEach(productFromDatabase -> {
-            System.out.println("prod from database-commodity: "+productFromDatabase.getCommodity());
             if (productsFromView.contains(productFromDatabase)){
-                System.out.println("inside if 1");
                 int indexOfProductInProductsFromView = productsFromView.indexOf(productFromDatabase);
                 productFromDatabase.setQuantity(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
-                System.out.println("inside if 2");
             } else {
-                System.out.println("inside else 1");
                 productService.deleteProduct(productFromDatabase);
-                System.out.println("inside else 2");
             }
         });
         List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);

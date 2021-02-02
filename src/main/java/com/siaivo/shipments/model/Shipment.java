@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -231,8 +232,13 @@ public class Shipment {
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
+//    public List<ProductForShipment> getProductsForShipment() {
+//        return productsForShipment;
+//    }
+
     public List<ProductForShipment> getProductsForShipment() {
-        return productsForShipment;
+
+        return productsForShipment.stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).collect(Collectors.toList());
     }
 
     public void setProductsForShipment(List<ProductForShipment> productsForShipment) {

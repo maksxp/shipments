@@ -132,8 +132,8 @@ public class Contract {
         return shipments;
     }
 
-    public void setShipments(List<Shipment> shipment) {
-        this.shipments = shipment;
+    public void setShipments(List<Shipment> shipments) {
+        this.shipments = shipments;
     }
 
     public String getStringOfAllCommodityNames (Contract contract) {
