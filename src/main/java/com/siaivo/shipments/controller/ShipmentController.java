@@ -13,9 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class ShipmentController {
@@ -33,6 +31,13 @@ public class ShipmentController {
     public ModelAndView allShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.setViewName("/salesSupport/allShipments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/thisWeekShipments", method = RequestMethod.GET)
+    public ModelAndView thisWeekShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithThisWeekShipments();
+        modelAndView.setViewName("/salesSupport/thisWeekShipments");
         return modelAndView;
     }
 
@@ -211,10 +216,25 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithThisWeekShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        int currentWeekNumber = getCurrentWeekNumber();
+        modelAndView.addObject("currentWeekNumber", currentWeekNumber);
+        modelAndView.addObject("thisWeekShipments", shipmentService.thisWeekShipments());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
         return modelAndView;
+    }
+
+    private int getCurrentWeekNumber () {
+        Calendar calendar = new GregorianCalendar();
+        Date trialTime = new Date();
+        calendar.setTime(trialTime);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 }

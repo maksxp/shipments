@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -232,9 +234,15 @@ public class Shipment {
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
-//    public List<ProductForShipment> getProductsForShipment() {
-//        return productsForShipment;
-//    }
+    public int getWeekOfPlannedLoadingDate() throws ParseException {
+        String format = "dd.MM.yyyy";
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        Date date = df.parse(getPlannedLoadingDate());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
+        return cal.get(Calendar.WEEK_OF_YEAR);
+    }
 
     public List<ProductForShipment> getProductsForShipment() {
 

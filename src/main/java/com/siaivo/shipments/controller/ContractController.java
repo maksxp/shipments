@@ -243,7 +243,6 @@ public class ContractController {
         int id = contract.getId();
         Contract contractFromDatabase = contractService.findContractById(id);
         List<Product> productsFromView = productForm.getProducts().stream().filter(product -> product.getCommodity()!=null).collect(Collectors.toList());
-        productsFromView.forEach(System.out::println);
         List<Product> productsFromDatabase = contractFromDatabase.getProducts();
         productsFromView.forEach(product -> product.setContract(contractFromDatabase));
         if (contractFromDatabase.getContractNumber()!=null && !contractFromDatabase.getContractNumber().equals("")){
@@ -254,27 +253,22 @@ public class ContractController {
         if (contractFromDatabase.getContractDate()!=null && !contractFromDatabase.getContractDate().equals("")){
             contract.setContractDate(contractFromDatabase.getContractDate());
         }
-
         contractService.saveEditRequest(contract);
         productsFromDatabase.forEach(productFromDatabase -> {
             if (productsFromView.contains(productFromDatabase)){
                 int indexOfProductInProductsFromView = productsFromView.indexOf(productFromDatabase);
-                productFromDatabase.setQuantity(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
+                productFromDatabase.setQuantityAfterChangeRequest(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
+                productService.saveProduct(productFromDatabase);
+
             } else {
-                productService.deleteProduct(productFromDatabase);
+                productService.deleteNotLoadedProduct(productFromDatabase);
             }
         });
         List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
         List<Shipment> notLoadedShipments = allShipmentsPerContract.stream().filter(shipment -> shipment.getActualLoadingDate()==null || shipment.getActualLoadingDate().equals("")).collect(Collectors.toList());
         notLoadedShipments.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
         notLoadedShipments.forEach(shipment -> shipmentService.deleteShipment(shipment));
-        if (bindingResult.hasErrors()) {
-            return getModelAndViewWithContractsForPreparation();
-        }
-
-        productsFromView.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
-        productsFromView.stream().filter(product -> (product.getCommodity())==null).forEach(product -> productService.deleteProduct(product));
-        productsFromView.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> productService.saveProduct(product));
+        productsFromView.stream().filter(product -> !productsFromDatabase.contains(product)).forEach(product -> productService.saveProduct(product));
         return getModelAndViewWithContractsForPreparation();
     }
 

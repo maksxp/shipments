@@ -13,7 +13,7 @@ public interface ShipmentService {
 
     void deleteShipment (Shipment shipment);
 
-//    Shipment getOne (int id);
+    List<Shipment>thisWeekShipments();
 
     List<Shipment> allShipments();
     List<Shipment> allShipmentsPerContract(Contract contract);

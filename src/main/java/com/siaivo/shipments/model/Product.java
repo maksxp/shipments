@@ -91,6 +91,15 @@ public class Product {
         this.quantity = quantity;
     }
 
+    public void setQuantityAfterChangeRequest (BigDecimal quantity) {
+        BigDecimal loadedQuantity = getLoadedQuantity();
+        if (loadedQuantity.compareTo(quantity)<0) {
+        this.quantity = quantity;}
+        else {
+            this.quantity = loadedQuantity;
+        }
+    }
+
     public String getBatch() { return batch; }
 
     public void setBatch(String batch) { this.batch = batch; }
@@ -115,7 +124,7 @@ public class Product {
         List <BigDecimal> quantityOfLoadedProductInEachShipment = new ArrayList<>();
         getProductsForShipments()
                 .stream()
-                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null || productForShipment.getShipment().getActualLoadingDate().equals(""))
+                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
                 .collect(Collectors.toList())
                 .forEach(productForShipment -> quantityOfLoadedProductInEachShipment.add(productForShipment.getQuantity()));
         return quantityOfLoadedProductInEachShipment

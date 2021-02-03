@@ -105,16 +105,16 @@
         style="width: max-content">
     <thead class="thead-light">
     <tr>
-        <th data-field="commodityCode" >Код товару</th>
+        <th data-field="commodityCode" data-visible="false">Код товару</th>
         <th data-field="commodityName" >Назва товару</th>
         <th data-field="shipped" >Відвантажено</th>
-        <th data-field="contracted" >Законтрактовано</th>
+        <th data-field="contracted" >Законтрактовано <br> (не відвантажено)</th>
     </tr>
     </thead>
 
     <tbody>
     <tr th:each="commodity : ${allCommodities}">
-        <td data-field="commodityCode"  th:text="${commodity.commodityCode}">Код товару</td>
+        <td data-field="commodityCode"  data-visible="false" th:text="${commodity.commodityCode}">Код товару</td>
         <td data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
         <td data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Відвантажено</td>
         <td data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Законтрактовано</td>

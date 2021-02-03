@@ -54,5 +54,12 @@ public class ProductServiceImpl implements ProductService{
         productRepository.delete(product);
     }
 
+    @Override
+    public void deleteNotLoadedProduct(Product product) {
+        if (product.getLoadedQuantity().compareTo(BigDecimal.ZERO)==0){
+            productRepository.delete(product);
+        }
+    }
+
 
 }

@@ -29,6 +29,11 @@ public class ShipmentServiceImpl implements ShipmentService{
         shipmentRepository.delete(shipment);
     }
 
+    @Override
+    public List<Shipment> thisWeekShipments() {
+        return shipmentRepository.findByPlannedLoadingDate();
+    }
+
 //    @Override
 //    public Shipment getOne(int id) {
 //        return shipmentRepository.getOne(id);

@@ -17,4 +17,6 @@ public interface ProductService {
     void deleteProductsByContract(Contract contract);
 
     void deleteProduct (Product product);
+
+    void deleteNotLoadedProduct (Product product);
 }

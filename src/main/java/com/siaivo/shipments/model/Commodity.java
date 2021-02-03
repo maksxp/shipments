@@ -79,7 +79,7 @@ public class Commodity {
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         allNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
         List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
-        allNotLoadedProductsForShipmentFromThisCommodity.forEach(loadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(loadedProductForShipment.getQuantity()));
+        allNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
