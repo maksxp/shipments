@@ -41,6 +41,13 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/nextWeekShipments", method = RequestMethod.GET)
+    public ModelAndView nextWeekShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithNextWeekShipments();
+        modelAndView.setViewName("/salesSupport/nextWeekShipments");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesManagement/allShipments", method = RequestMethod.GET)
     public ModelAndView allShipmentsForSalesManagement(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
@@ -224,6 +231,14 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithNextWeekShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        int nextWeekNumber = getNextWeekNumber();
+        modelAndView.addObject("nextWeekNumber", nextWeekNumber);
+        modelAndView.addObject("nextWeekShipments", shipmentService.nextWeekShipments());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("contract", contract);
@@ -232,9 +247,18 @@ public class ShipmentController {
     }
 
     private int getCurrentWeekNumber () {
-        Calendar calendar = new GregorianCalendar();
-        Date trialTime = new Date();
-        calendar.setTime(trialTime);
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
+
+    private int getNextWeekNumber () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, 7);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
 }

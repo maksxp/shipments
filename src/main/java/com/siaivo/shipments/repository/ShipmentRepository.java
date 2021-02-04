@@ -13,6 +13,6 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
 
     Shipment findById(int id);
     List <Shipment> findByContract (Contract contract);
-    List <Shipment> findByPlannedLoadingDate();
+    List <Shipment> findByPlannedLoadingDate(String date);
 
 }

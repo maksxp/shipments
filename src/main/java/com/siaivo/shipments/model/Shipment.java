@@ -1,11 +1,13 @@
 package com.siaivo.shipments.model;
 
 import com.siaivo.shipments.service.ProductForShipmentService;
+import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -235,10 +237,9 @@ public class Shipment {
     }
 
     public int getWeekOfPlannedLoadingDate() throws ParseException {
-        String format = "dd.MM.yyyy";
-        SimpleDateFormat df = new SimpleDateFormat(format);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         Date date = df.parse(getPlannedLoadingDate());
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
         cal.setTime(date);
         System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
         return cal.get(Calendar.WEEK_OF_YEAR);
