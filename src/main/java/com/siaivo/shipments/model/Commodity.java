@@ -1,12 +1,14 @@
 package com.siaivo.shipments.model;
 
 
+import com.siaivo.shipments.service.ShipmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.text.ParseException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -81,6 +83,35 @@ public class Commodity {
         List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
         allNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getQuantityOfThisWeekNotLoadedGoods (Commodity commodity) {
+        List <ProductForShipment> thisWeekNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+        thisWeekNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
+            try {
+                return getCurrentWeekNumber() == productForShipment.getShipment().getWeekOfPlannedLoadingDate();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
+        thisWeekNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
+        return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getQuantityOfNextWeekNotLoadedGoods (Commodity commodity){
+        return BigDecimal.ZERO;
+    }
+
+        private int getCurrentWeekNumber () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
     @Override

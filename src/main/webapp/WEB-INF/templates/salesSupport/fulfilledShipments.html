@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Tables -->
+    <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" rel="stylesheet">
+    <script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+    <title>Fulfilled Shipments</title>
+
+    <style>
+        .layerHeader {
+            padding: 70px 5px 5px;
+            text-align: center;
+        }
+        .notOdd {
+            text-decoration: underline;
+        }
+        p {
+            margin-top: 0.2em; /* Отступ сверху */
+            margin-bottom: 0.2em; /* Отступ снизу */
+        }
+        .editable {
+            color: blue;
+            width: 7em;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+<!--    <a class="navbar-brand" href="#">Navbar</a>-->
+<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="#">Link</a>-->
+<!--            </li>-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Покупці та товари
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
+                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Контракти
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allContracts">Усі контракти</a>
+                    <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
+                    <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
+                    <a class="dropdown-item" href="requestForNewContract">Заявка на новий контракт</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Відправлення
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allShipments">Усі відправлення</a>
+                    <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
+                    <a class="dropdown-item" href="nextWeekShipments">Відправлення наступного тижня</a>
+                </div>
+            </li>
+
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+<!--            </li>-->
+        </ul>
+        <form th:action="@{/logout}" method="get">
+            <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
+        </form>
+    </div>
+</nav>
+<div class="container-fluid">
+        <div class="layerHeader">
+            <h3>Виконані відправлення</h3>
+        </div>
+</div>
+    <table  class="table table-hover table-bordered table-sm table-responsive"
+            id="table"
+            data-show-columns="true"
+            data-pagination="true"
+            data-page-list="[10, 25, 50, 100, усі]"
+            data-show-jump-to="true"
+            data-side-pagination="client"
+            data-toggle="table"
+            data-filter-control="true">
+    <thead class="thead-light">
+    <tr>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input"data-visible="false" data-field="contractId">contractId</th>
+        <th class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
+        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+        <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
+<!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
+        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
+        <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
+        <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>
+        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (запланована дата)</th>
+        <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (фактична дата)</th>
+        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (запланована дата)</th>
+        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (фактична дата)</th>
+        <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
+    </tr>
+    </thead>
+<!--    <tfoot>-->
+<!--    <tr>-->
+<!--        <th>Номер</th>-->
+<!--        <th>Покупець</th>-->
+<!--        <th>Умови оплати</th>-->
+<!--        <th>Товари</th>-->
+<!--        <th>Сума контракту</th>-->
+<!--        <th>Початок відвантажень</th>-->
+<!--        <th>Завершення відвантажень</th>-->
+<!--    </tr>-->
+<!--    </tfoot>-->
+    <tbody>
+    <tr th:each="shipment : ${fulfilledShipments}">
+        <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
+        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().id}">contractId</td>
+        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
+        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
+        <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
+<!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
+<!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
+<!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
+<!--            </p>-->
+<!--        </td>-->
+        <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
+            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
+            </p>
+        </td>
+        <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
+            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>
+            </p>
+        </td>
+        <td data-sortable="true" data-field="packaging" data-filter-control="input" >
+            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>
+            </p>
+        </td>
+        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>
+        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
+        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>
+        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>
+        <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $(function() {
+        $('#table').bootstrapTable()
+    })
+</script>
+<script>
+
+    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
+        if (value=="contractNumber") {
+            window.open("contract/"+$element.contractId,"_self");
+        }
+        else {
+            window.open("shipment/"+$element.id,"_self");}
+    });
+
+
+</script>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+</body>
+</html>

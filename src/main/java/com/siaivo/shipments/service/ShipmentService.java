@@ -11,6 +11,8 @@ public interface ShipmentService {
 
     void saveShipment (Shipment shipment);
 
+    void fulfillShipment (Shipment shipment);
+
     void deleteShipment (Shipment shipment);
 
     List<Shipment>thisWeekShipments();
@@ -18,6 +20,10 @@ public interface ShipmentService {
     List<Shipment>nextWeekShipments();
 
     List<Shipment> allShipments();
+
+    List<Shipment> openShipments();
+
+    List<Shipment> fulfilledShipments();
 
     List<Shipment> allShipmentsPerContract(Contract contract);
 }

@@ -29,6 +29,12 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public void fulfillShipment(Shipment shipment) {
+        shipment.setIsFulfilled(true);
+        shipmentRepository.save(shipment);
+    }
+
+    @Override
     public void deleteShipment(Shipment shipment) {
         shipmentRepository.delete(shipment);
     }
@@ -66,9 +72,21 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public List<Shipment> openShipments() {
+        return shipmentRepository.findShipmentsByIsFulfilledIsFalse();
+    }
+
+    @Override
+    public List<Shipment> fulfilledShipments() {
+        return shipmentRepository.findShipmentsByIsFulfilledIsTrue();
+    }
+
+    @Override
     public List<Shipment> allShipmentsPerContract(Contract contract) {
         return shipmentRepository.findByContract(contract);
     }
+
+
 
 //    private int getCurrentWeekNumber () {
 //        Calendar calendar = new GregorianCalendar(Locale.FRANCE);

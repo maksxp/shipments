@@ -34,6 +34,33 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/openShipments", method = RequestMethod.GET)
+    public ModelAndView openShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithOpenShipments();
+        modelAndView.setViewName("/salesSupport/openShipments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/salesSupport/fulfillShipment/{id}", method = RequestMethod.GET)
+    public ModelAndView fulfillShipmentForSalesSupport(@PathVariable(value = "id") int id){
+        Shipment shipment =  shipmentService.findById(id);
+        shipmentService.fulfillShipment(shipment);
+        return new ModelAndView("redirect:/salesSupport/openShipments");
+    }
+
+    @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)
+    public ModelAndView fulfillShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+        shipmentService.fulfillShipment(shipment);
+        return new ModelAndView("redirect:/salesSupport/openShipments");
+    }
+
+    @RequestMapping(value="/salesSupport/fulfilledShipments", method = RequestMethod.GET)
+    public ModelAndView fulfilledShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithFulfilledShipments();
+        modelAndView.setViewName("/salesSupport/fulfilledShipments");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/thisWeekShipments", method = RequestMethod.GET)
     public ModelAndView thisWeekShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithThisWeekShipments();
@@ -220,6 +247,18 @@ public class ShipmentController {
     private ModelAndView getModelAndViewWithAllShipments (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allShipments", shipmentService.allShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithOpenShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("openShipments", shipmentService.openShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithFulfilledShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("fulfilledShipments", shipmentService.fulfilledShipments());
         return modelAndView;
     }
 

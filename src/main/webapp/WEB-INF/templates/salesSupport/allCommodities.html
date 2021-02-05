@@ -107,8 +107,10 @@
     <tr>
         <th data-field="commodityCode" data-visible="false">Код товару</th>
         <th data-field="commodityName" >Назва товару</th>
-        <th data-field="shipped" >Відвантажено</th>
-        <th data-field="contracted" >Законтрактовано <br> (не відвантажено)</th>
+        <th data-field="shipped" >Всьго відвантажено</th>
+        <th data-field="contracted" >До відвантаження <br> (всього)</th>
+        <th data-field="thisWeekNotLoaded" >До відвантаження <br> (на цьому тижні)</th>
+        <th data-field="nextWeekNotLoaded" >До відвантаження <br> (на наступному тижні)</th>
     </tr>
     </thead>
 
@@ -116,8 +118,10 @@
     <tr th:each="commodity : ${allCommodities}">
         <td data-field="commodityCode"  data-visible="false" th:text="${commodity.commodityCode}">Код товару</td>
         <td data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
-        <td data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Відвантажено</td>
-        <td data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Законтрактовано</td>
+        <td data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Всьго відвантажено</td>
+        <td data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (всього)</td>
+        <td data-field="thisWeekNotLoaded" th:text="*{commodity.getQuantityOfThisWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на цьому тижні)</td>
+        <td data-field="nextWeekNotLoaded" th:text="*{commodity.getQuantityOfNextWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на наступному тижні)</td>
     </tr>
     </tbody>
 </table>

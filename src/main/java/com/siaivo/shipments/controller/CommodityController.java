@@ -2,6 +2,7 @@ package com.siaivo.shipments.controller;
 
 import com.siaivo.shipments.model.Commodity;
 import com.siaivo.shipments.service.CommodityService;
+import com.siaivo.shipments.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,9 @@ import javax.validation.Valid;
 public class CommodityController {
     @Autowired
     private CommodityService commodityService;
+
+    @Autowired
+    private ShipmentService shipmentService;
 
     @RequestMapping(value="/salesSupport/allCommodities", method = RequestMethod.GET)
     public ModelAndView allCommoditiesForSalesSupport(){
@@ -64,4 +68,5 @@ public class CommodityController {
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         return modelAndView;
     }
+
 }

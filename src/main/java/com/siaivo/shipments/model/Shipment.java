@@ -1,6 +1,8 @@
 package com.siaivo.shipments.model;
 
+import com.siaivo.shipments.repository.ShipmentRepository;
 import com.siaivo.shipments.service.ProductForShipmentService;
+import com.siaivo.shipments.service.ShipmentService;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -83,6 +85,9 @@ public class Shipment {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipment")
     private List<ProductForShipment> productsForShipment;
+
+    @Column(name = "isFulfilled")
+    private Boolean isFulfilled;
 
 
     public int getId() {
@@ -236,6 +241,14 @@ public class Shipment {
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
+    public Boolean getIsFulfilled() {
+        return isFulfilled;
+    }
+
+    public void setIsFulfilled (Boolean isFulfilled) {
+        this.isFulfilled = isFulfilled;
+    }
+
     public int getWeekOfPlannedLoadingDate() throws ParseException {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         Date date = df.parse(getPlannedLoadingDate());
@@ -288,10 +301,4 @@ public class Shipment {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Shipment{" +
-                "contract=" + contract +
-                '}';
-    }
 }
