@@ -104,13 +104,35 @@ public class Commodity {
     }
 
     public BigDecimal getQuantityOfNextWeekNotLoadedGoods (Commodity commodity){
-        return BigDecimal.ZERO;
+        List <ProductForShipment> nextWeekNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+        nextWeekNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
+            try {
+                return getNextWeekNumber() == productForShipment.getShipment().getWeekOfPlannedLoadingDate();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
+        nextWeekNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
+        return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
         private int getCurrentWeekNumber () {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         Date today = new Date();
         calendar.setTime(today);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    private int getNextWeekNumber () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, 7);
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 

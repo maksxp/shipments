@@ -58,18 +58,25 @@
         $(document).ready(function() {
             $(".datepicker").datepicker({
                 monthNames: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
-                dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                firstDay: 1,
-                dateFormat: "dd.mm.yy",
-                // changeYear: true,
-                // changeMonth: true,
-                minDate: "0",
-                showWeek: true,
-                weekHeader: "тж",
+                monthNamesShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+                // dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                // firstDay: 1,
+                // dateFormat: "dd.mm.yy",
+                dateFormat: "MM yy",
+                changeYear: true,
+                changeMonth: true,
+                // minDate: "0",
+                // showWeek: true,
+                // weekHeader: "тж",
+                onClose: function() {
+                    var iMonth = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                    var iYear = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
+                },
             });
         });
-
     </script>
+
 
     <script>
         let id=0;
@@ -133,6 +140,9 @@
         }
         div {
             margin-bottom: 5px;
+        }
+        .ui-datepicker-calendar {
+            display: none;
         }
 
     </style>
@@ -246,6 +256,7 @@
                             <label th:if="${#fields.hasErrors('startOfShipments')}" th:errors="*{startOfShipments}" class="validation_error"> </label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <div class="ui-widget">
                             <p style="font-size: small; font-weight: bold">Завершення відвантажень</p>
@@ -253,6 +264,7 @@
                             <label th:if="${#fields.hasErrors('endOfShipments')}" th:errors="*{endOfShipments}" class="validation_error"> </label>
                         </div>
                     </div>
+
                 <div class="form-group">
                     <div class="ui-widget">
                         <p style="font-size: small; font-weight: bold">Коментар</p>

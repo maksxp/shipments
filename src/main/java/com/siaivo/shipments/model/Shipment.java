@@ -251,11 +251,15 @@ public class Shipment {
 
     public int getWeekOfPlannedLoadingDate() throws ParseException {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = df.parse(getPlannedLoadingDate());
-        Calendar cal = Calendar.getInstance(Locale.FRANCE);
-        cal.setTime(date);
-        System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
-        return cal.get(Calendar.WEEK_OF_YEAR);
+        if (getPlannedLoadingDate()!=null&&!getPlannedLoadingDate().equals("")) {
+            Date date = df.parse(getPlannedLoadingDate());
+            Calendar cal = Calendar.getInstance(Locale.FRANCE);
+            cal.setTime(date);
+            return cal.get(Calendar.WEEK_OF_YEAR);
+        } else {
+            return 0;
+        }
+
     }
 
     public List<ProductForShipment> getProductsForShipment() {

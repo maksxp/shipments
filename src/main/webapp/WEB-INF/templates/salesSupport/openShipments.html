@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:spring="http://java.sun.com/xml/ns/javaee">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -36,6 +36,9 @@
         .editable {
             color: blue;
             width: 7em;
+        }
+        .table th, td {
+            text-align: center;
         }
     </style>
 </head>
@@ -131,7 +134,7 @@
         <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (фактична дата)</th>
         <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (запланована дата)</th>
         <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (фактична дата)</th>
-        <th data-sortable="true" data-field="fulfillShipment" data-filter-control="input">Статус</th>
+        <th data-field="fulfillShipment" data-filter-control="input">Дії</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
@@ -177,7 +180,18 @@
         <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
         <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>
         <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>
-        <td><a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}">Позначити виконаним</a></td>
+        <td>
+<!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
+            <a th:href="${'/salesSupport/shipment/' + shipment.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Редагувати</a>
+            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Позначити виконаним</a>
+        </td>
+<!--        <td>-->
+<!--            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" var="fulfillShipment"></a>-->
+<!--&lt;!&ndash;            <spring:url th:value="${'/salesSupport/fulfillShipment/' + shipment.id}" var="fulfillShipment" />&ndash;&gt;-->
+<!--            <button class="btn btn-primary"-->
+<!--                    onclick="this.disabled=true;post('${fulfillShipment}')">Позначити виконаним</button>-->
+<!--        </td>-->
+
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
     </tr>
     </tbody>
@@ -193,8 +207,8 @@
         if (value=="contractNumber") {
             window.open("contract/"+$element.contractId,"_self");
         }
-        else {
-            window.open("shipment/"+$element.id,"_self");}
+        // else {
+        //     window.open("shipment/"+$element.id,"_self");}
     });
 
 
