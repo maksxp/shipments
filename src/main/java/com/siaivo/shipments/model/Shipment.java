@@ -89,6 +89,11 @@ public class Shipment {
     @Column(name = "isFulfilled")
     private Boolean isFulfilled;
 
+    @Column(name = "destination_country")
+    private String destinationCountry;
+
+    @Column(name = "destination_place")
+    private String destinationPlace;
 
     public int getId() {
         return id;
@@ -247,6 +252,30 @@ public class Shipment {
 
     public void setIsFulfilled (Boolean isFulfilled) {
         this.isFulfilled = isFulfilled;
+    }
+
+    public Boolean getFulfilled() {
+        return isFulfilled;
+    }
+
+    public void setFulfilled(Boolean fulfilled) {
+        isFulfilled = fulfilled;
+    }
+
+    public String getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(String destinationCountry) {
+        this.destinationCountry = destinationCountry;
+    }
+
+    public String getDestinationPlace() {
+        return destinationPlace;
+    }
+
+    public void setDestinationPlace(String destinationPlace) {
+        this.destinationPlace = destinationPlace;
     }
 
     public int getWeekOfPlannedLoadingDate() throws ParseException {

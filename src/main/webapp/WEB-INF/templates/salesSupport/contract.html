@@ -57,8 +57,11 @@
             margin-bottom: 0.2em; /* Отступ снизу */
         }
 
-        td {
+        td, th {
             position: relative;
+        }
+        .basicInfo thead {
+            display: none;
         }
         /*input[type="text"],*/
         select {
@@ -154,7 +157,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: left">
-            <h4>Базова інформація по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h4>
+            <h4>Базова інформація по контракту з <span style="color: blueviolet" th:text="${contract.customer.customerName}"></span> № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h4>
         </div>
     </div>
 </div>
@@ -163,29 +166,31 @@
 
     <input type="hidden" th:field="*{id}"/>
 
-    <table  class="table table-hover table-bordered"
+    <table  class="table table-hover table-bordered basicInfo"
+            display
             data-toggle="table">
     <thead class="thead-light">
     <tr>
-        <th data-field="id">№</th>
-        <th data-field="customer">Покупець</th>
+<!--        <th data-field="customer">Покупець</th>-->
         <th data-field="paymentTerms">Умови оплати</th>
         <th data-field="startOfShipments">Початок відвантажень</th>
         <th data-field="endOfShipments">Завершення відвантажень</th>
         <th data-field="totalWeightOfAllGoods">Загальна вага</th>
-        <th style="width: max-content" data-field="state">Статус</th>
-        <th data-field="comment">Коментар</th>
+        <th style="width: auto" data-field="state">Статус</th>
+<!--        <th data-field="state">Статус</th>-->
+        <th style="width: 10em" data-field="comment">Коментар</th>
     </tr>
     </thead>
     <tbody>
-    <td th:text="${contract.contractNumber}">№</td>
-    <td th:text="${contract.customer.customerName}">Покупець</td>
+<!--    <td th:text="${contract.customer.customerName}">Покупець</td>-->
     <td th:text="${contract.paymentTerms}">Умови оплати</td>
     <td th:text="${contract.startOfShipments}">Початок відвантажень</td>
     <td th:text="${contract.endOfShipments}">Завершення відвантажень</td>
     <td th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага</td>
-    <td style="width: max-content">
-            <select  style="width: max-content" th:field="*{state}" th:value="#{state}" required>
+<!--    <td style="width: max-content">-->
+     <td style="width: 10em">
+<!--            <select  th:field="*{state}" th:value="#{state}" required>-->
+                <select  th:field="*{state}" th:value="#{state}" >
                 <option th:value="'готується'">готується</option>
                 <option th:value="'підготовлений'">підготовлений</option>
                 <option th:value="'підписаний'">підписаний</option>
@@ -193,8 +198,7 @@
                 <option th:value="'скасований'">скасований</option>
             </select>
     </td>
-
-    <td th:text="${contract.comment}">Коментар</td>
+    <td style="word-wrap: break-word" th:text="${contract.comment}">Коментар</td>
     </tbody>
 </table>
 
@@ -219,7 +223,7 @@
         <th data-field="batch">Партія</th>
         <th data-field="price">Ціна</th>
         <th data-field="currency">Валюта</th>
-        <th data-field="quantity">Кількість</th>
+        <th data-field="quantity">Вага</th>
         <th data-field="packaging">Пакування</th>
     </tr>
     </thead>
@@ -236,7 +240,7 @@
 </table>
 <div class="container-fluid">
     <div style="text-align: left">
-        <h4>Відправлення по контракту</h4>
+        <h4>Усі Відправлення по контракту</h4>
     </div>
 </div>
 

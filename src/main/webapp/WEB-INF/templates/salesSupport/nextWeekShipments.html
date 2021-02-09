@@ -102,7 +102,7 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Відправлення наступного тижня № <span th:text="${nextWeekNumber}"></span></span></h3>
+            <h3>Відправлення наступного тижня (№ <span th:text="${nextWeekNumber}"></span>)</span></h3>
         </div>
 </div>
     <table  class="table table-hover table-bordered"
@@ -117,17 +117,21 @@
     <thead class="thead-light">
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
-        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="invoiceNumber">Рахунок</th>
+        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="paymentTerms">Умови оплати</th>
+        <!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>-->
+        <!--        <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>-->
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
-<!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
+        <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
         <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
         <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
         <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>
-        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (запланована дата)</th>
-        <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (фактична дата)</th>
-        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (запланована дата)</th>
-        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (фактична дата)</th>
+        <!--        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (запланована дата)</th>-->
+<!--        <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (фактична дата)</th>-->
+        <!--        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (запланована дата)</th>-->
+        <!--        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (фактична дата)</th>-->
+        <th data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="input">Логістична <br> інструкція</th>
+        <th data-sortable="true" data-field="labelsStatus" data-filter-control="input">Етикетки</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
@@ -145,14 +149,16 @@
     <tbody>
     <tr th:each="shipment : ${nextWeekShipments}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
-        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
-        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
+        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.invoiceNumber}">Рахунок</td>
+        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().getPaymentTerms()}">Умови оплати</td>
+        <!--        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>-->
+        <!--        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>-->
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
-<!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
-<!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
-<!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
-<!--            </p>-->
-<!--        </td>-->
+        <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
+        <!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
+        <!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
+        <!--            </p>-->
+        <!--        </td>-->
         <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
             <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
                 <span th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
@@ -168,10 +174,12 @@
                 <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>
             </p>
         </td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>
-        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
-        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>
-        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>
+        <!--        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>-->
+<!--        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>-->
+        <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>-->
+        <!--        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>-->
+        <td data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="select" th:text="${shipment.logisticInstructionStatus}">Логістична <br> інструкція</td>
+        <td data-sortable="true" data-field="labelsStatus" data-filter-control="select" th:text="${shipment.labelsStatus}">Етикетки</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
     </tr>
     </tbody>
