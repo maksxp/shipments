@@ -175,7 +175,6 @@ public class ContractController {
         contract.setState("підготовлений");
         contractService.saveContract(contract);
         List <Product> products = contract.getProducts();
-        System.out.println("size before: "+contract.getProducts().size());
             for (int i = numberOfLoadedTrucks; i<numberOfTrucks; i++){
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
@@ -183,6 +182,9 @@ public class ContractController {
                 shipment.setLogisticInstructionStatus("готується");
                 shipment.setLabelsStatus("готується");
                 shipment.setInvoiceNumber(contractNumber+"."+(i+1));
+                shipment.setInvoiceFirstPartSum(BigDecimal.ZERO);
+                shipment.setInvoiceSecondPartSum(BigDecimal.ZERO);
+                shipment.setIsFulfilled(false);
                 shipment.setTruckNumber(i+1);
                 for (int j=0; j<productsForShipmentForm.getProductsForShipment().size(); j++) {
                     productsForShipmentForm.getProductsForShipment().get(j).setShipment(shipment);

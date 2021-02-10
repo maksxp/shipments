@@ -278,6 +278,15 @@ public class Shipment {
         this.destinationPlace = destinationPlace;
     }
 
+    public String getFullSettlementDate (){
+        String paymentTerms = this.contract.getPaymentTerms();
+        if (paymentTerms.equals("оплата частинами")){
+            return this.actualPaymentDateOfSecondPartSum;
+        } else {
+            return this.actualPaymentDateOfWholeSum;
+        }
+    }
+
     public int getWeekOfPlannedLoadingDate() throws ParseException {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (getPlannedLoadingDate()!=null&&!getPlannedLoadingDate().equals("")) {
