@@ -78,8 +78,9 @@
                     <a class="dropdown-item" href="openContracts">Відкриті контракти</a>
                     <a class="dropdown-item" href="fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="unsignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="contractsForPreparation">Контракти в процесі підготовки</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
@@ -135,7 +136,7 @@
         <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
         <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
         <th data-sortable="true" data-field="fullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
-        <th data-field="fulfillShipment" data-filter-control="input">Дії</th>
+        <th data-field="actions" data-filter-control="input">Дії</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
@@ -185,7 +186,7 @@
         <td>
 <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
             <a th:href="${'/salesSupport/shipment/' + shipment.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Редагувати</a>
-            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Позначити виконаним</a>
+            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Виконати</a>
         </td>
 <!--        <td>-->
 <!--            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" var="fulfillShipment"></a>-->

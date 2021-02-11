@@ -254,14 +254,6 @@ public class Shipment {
         this.isFulfilled = isFulfilled;
     }
 
-    public Boolean getFulfilled() {
-        return isFulfilled;
-    }
-
-    public void setFulfilled(Boolean fulfilled) {
-        isFulfilled = fulfilled;
-    }
-
     public String getDestinationCountry() {
         return destinationCountry;
     }
@@ -297,7 +289,42 @@ public class Shipment {
         } else {
             return 0;
         }
+    }
 
+    public int getWeekOfPlannedUnloadingDate() throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        if (getPlannedUnloadingDate()!=null&&!getPlannedUnloadingDate().equals("")) {
+            Date date = df.parse(getPlannedUnloadingDate());
+            Calendar cal = Calendar.getInstance(Locale.FRANCE);
+            cal.setTime(date);
+            return cal.get(Calendar.WEEK_OF_YEAR);
+        } else {
+            return 0;
+        }
+    }
+
+    public int getYearOfPlannedLoadingDate() throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        if (getPlannedLoadingDate()!=null&&!getPlannedLoadingDate().equals("")) {
+            Date date = df.parse(getPlannedLoadingDate());
+            Calendar cal = Calendar.getInstance(Locale.FRANCE);
+            cal.setTime(date);
+            return cal.get(Calendar.YEAR);
+        } else {
+            return 0;
+        }
+    }
+
+    public int getYearOfPlannedUnloadingDate() throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        if (getPlannedUnloadingDate()!=null&&!getPlannedUnloadingDate().equals("")) {
+            Date date = df.parse(getPlannedUnloadingDate());
+            Calendar cal = Calendar.getInstance(Locale.FRANCE);
+            cal.setTime(date);
+            return cal.get(Calendar.YEAR);
+        } else {
+            return 0;
+        }
     }
 
     public List<ProductForShipment> getProductsForShipment() {

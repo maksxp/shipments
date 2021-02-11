@@ -98,6 +98,20 @@ public class ContractController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesManagement/unsignedContracts", method = RequestMethod.GET)
+    public ModelAndView unsignedContractsForSalesManagement(){
+        ModelAndView modelAndView = getModelAndViewWithUnsignedContracts();
+        modelAndView.setViewName("/salesManagement/unsignedContracts");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/unsignedContracts", method = RequestMethod.GET)
+    public ModelAndView unsignedContractsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithUnsignedContracts();
+        modelAndView.setViewName("/salesSupport/unsignedContracts");
+        return modelAndView;
+    }
+
     @RequestMapping(value= "/salesManagement/requestForNewContract", method = RequestMethod.GET)
     public ModelAndView requestForNewContractFromSalesManagement (){
         ModelAndView modelAndView = new ModelAndView();
@@ -289,6 +303,8 @@ public class ContractController {
         ProductForm productForm =new ProductForm();
         productForm.setProductsForEdit(productService.findProductsByContract(contract));
         int numberOfProducts = contract.getProducts().size();
+        modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
+        modelAndView.addObject("contractNumber", contract.getContractNumber());
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contract", contract);
@@ -310,6 +326,11 @@ public class ContractController {
     private ModelAndView getModelAndViewWithOpenContracts (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("openContracts", contractService.openContracts());
+        return modelAndView;
+    }
+    private ModelAndView getModelAndViewWithUnsignedContracts (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("unsignedContracts", contractService.unsignedContracts());
         return modelAndView;
     }
     private ModelAndView getModelAndViewWithContractsForPreparation(){

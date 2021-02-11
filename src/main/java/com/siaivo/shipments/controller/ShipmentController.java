@@ -284,6 +284,7 @@ public class ShipmentController {
     private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("contract", contract);
+        modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
         return modelAndView;
     }

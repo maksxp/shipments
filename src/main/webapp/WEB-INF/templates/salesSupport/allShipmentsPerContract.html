@@ -74,8 +74,9 @@
                     <a class="dropdown-item" href="/salesSupport/openContracts">Відкриті контракти</a>
                     <a class="dropdown-item" href="/salesSupport/fulfilledContracts">Виконані контракти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/salesSupport/notSignedContracts">Непідписані контракти</a>
+                    <a class="dropdown-item" href="/salesSupport/unsignedContracts">Непідписані контракти</a>
                     <a class="dropdown-item" href="/salesSupport/contractsForPreparation">Контракти в процесі підготовки</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/salesSupport/requestForNewContract">Заявка на новий контракт</a>
                 </div>
             </li>
@@ -103,10 +104,10 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі відправлення по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h3>
+            <h3>Усі відправлення по контракту з <span style="color: blueviolet" th:text="${customerName}"></span> № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h3>
         </div>
 </div>
-    <table  class="table table-hover table-bordered"
+    <table  class="table table-hover table-bordered table-responsive"
             id="table"
             data-show-columns="true"
             data-pagination="true"
@@ -118,9 +119,9 @@
     <thead class="thead-light">
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
+<!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>-->
         <th style="width: 4em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
-        <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
+<!--        <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>-->
 <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
         <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
         <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
@@ -147,9 +148,9 @@
     <tbody>
     <tr th:each="shipment : ${allShipmentsPerContract}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
-        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
+<!--        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>-->
         <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
-        <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
+<!--        <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>-->
 <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
 <!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
 <!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
