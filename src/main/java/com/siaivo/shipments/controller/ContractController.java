@@ -112,6 +112,20 @@ public class ContractController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesManagement/cancelledContracts", method = RequestMethod.GET)
+    public ModelAndView cancelledContractsForSalesManagement(){
+        ModelAndView modelAndView = getModelAndViewWithCancelledContracts();
+        modelAndView.setViewName("/salesManagement/cancelledContracts");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/cancelledContracts", method = RequestMethod.GET)
+    public ModelAndView cancelledContractsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithCancelledContracts();
+        modelAndView.setViewName("/salesSupport/cancelledContracts");
+        return modelAndView;
+    }
+
     @RequestMapping(value= "/salesManagement/requestForNewContract", method = RequestMethod.GET)
     public ModelAndView requestForNewContractFromSalesManagement (){
         ModelAndView modelAndView = new ModelAndView();
@@ -328,11 +342,19 @@ public class ContractController {
         modelAndView.addObject("openContracts", contractService.openContracts());
         return modelAndView;
     }
+
     private ModelAndView getModelAndViewWithUnsignedContracts (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("unsignedContracts", contractService.unsignedContracts());
         return modelAndView;
     }
+
+    private ModelAndView getModelAndViewWithCancelledContracts (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("cancelledContracts", contractService.cancelledContracts());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithContractsForPreparation(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("contractsForPreparation", contractService.contractsForPreparation());
