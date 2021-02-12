@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -45,13 +44,13 @@ public class ShipmentController {
     public ModelAndView fulfillShipmentForSalesSupport(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
         shipmentService.fulfillShipment(shipment);
-        return new ModelAndView("redirect:/salesSupport/openShipments");
+        return new ModelAndView("redirect:../openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)
     public ModelAndView fulfillShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
         shipmentService.fulfillShipment(shipment);
-        return new ModelAndView("redirect:/salesSupport/openShipments");
+        return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
     @RequestMapping(value="/salesSupport/fulfilledShipments", method = RequestMethod.GET)

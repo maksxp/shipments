@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:spring="http://java.sun.com/xml/ns/javaee">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -37,26 +37,55 @@
             color: blue;
             width: 7em;
         }
-        .table th, td {
+        /*.table th, td {*/
+        /*    text-align: center;*/
+        /*}*/
+        th {
             text-align: center;
+        }
+        td, th {
+            position: relative;
+        }
+        #selectable {
+            position: absolute;
+            background: #e3fcff;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            resize: none;
+
+            /* for full width without spacing */
+            width: 100%;
+            border: none;
+            /* for full width without spacing */
+
+            /* for column with internal spacing */
+            /*
+            width: 85%;
+            padding: 0.3rem;
+            margin: 0.2rem 0.5rem;
+            border: 1px solid #ddd;
+            */
+            /* for column with internal spacing */
         }
     </style>
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-<!--    <a class="navbar-brand" href="#">Navbar</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
+    <!--    <a class="navbar-brand" href="#">Navbar</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Link</a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item active">-->
+            <!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+            <!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="#">Link</a>-->
+            <!--            </li>-->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Покупці та товари
@@ -97,7 +126,6 @@
                     <a class="dropdown-item" href="nextWeekShipments">Відправлення наступного тижня</a>
                 </div>
             </li>
-
 <!--            <li class="nav-item">-->
 <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
 <!--            </li>-->
@@ -113,6 +141,8 @@
         </div>
 </div>
     <table  class="table table-hover table-bordered table-sm table-responsive"
+            data-sort-name="weekOfPlannedLoadingDate"
+            data-sort-order="desc"
             id="table"
             data-show-columns="true"
             data-pagination="true"
@@ -125,20 +155,23 @@
     <tr>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
         <th style="width: 7em" data-sortable="true" data-filter-control="input"data-visible="false" data-field="contractId">contractId</th>
-        <th class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>
-        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
+<!--        <th class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>-->
+<!--        <th style="width: 4em" data-footer-formatter="truckFormatter" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>-->
+        <th style="width: 4em"  data-sortable="true" data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Покупець</th>
 <!--        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>-->
-        <th data-sortable="true" data-field="commodityName" data-filter-control="input">Товар</th>
-        <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>
-        <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>
-        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>
+        <th data-sortable="true" data-field="goods" data-filter-control="input">Товар</th>
+<!--        <th style="width: 7em"   data-sortable="true" data-field="commodityWeight" data-filter-control="input">Вага</th>-->
+<!--        <th data-sortable="true" data-field="packaging" data-filter-control="input">Пакування</th>-->
+<!--        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>-->
+        <th data-sortable="true" data-field="weekOfPlannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>
         <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (факт)</th>
-        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
+<!--        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>-->
+        <th data-sortable="true" data-field="weekOfPlannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
         <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
         <th data-sortable="true" data-field="fullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
-        <th data-field="actions" data-filter-control="input">Дії</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
+        <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити/ <br> Дії</th>
     </tr>
     </thead>
 <!--    <tfoot>-->
@@ -156,47 +189,55 @@
     <tr th:each="shipment : ${openShipments}">
         <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>
         <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().id}">contractId</td>
-        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>
-        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
+<!--        <td class="editable" style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>-->
+<!--        <td style="width: 4em"data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>-->
+        <td style="width: 4em"data-sortable="true" data-field="invoiceNumber" data-filter-control="input" th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>
 <!--        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >-->
 <!--            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">-->
 <!--                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>-->
 <!--            </p>-->
 <!--        </td>-->
-        <td data-sortable="true" data-field="commodityName" data-filter-control="input" >
-            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>
-            </p>
-        </td>
-        <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >
-            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>
-            </p>
-        </td>
-        <td data-sortable="true" data-field="packaging" data-filter-control="input" >
-            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>
-            </p>
-        </td>
-        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>
-        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
-        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>
-        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>
-        <td data-sortable="true" data-field="fullSettlementDate" data-filter-control="input" th:text="${shipment.getFullSettlementDate ()}">Повний <br> розрахунок</td>
-        <td>
-<!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
-            <a th:href="${'/salesSupport/shipment/' + shipment.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Редагувати</a>
-            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Виконати</a>
-        </td>
-<!--        <td>-->
-<!--            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" var="fulfillShipment"></a>-->
-<!--&lt;!&ndash;            <spring:url th:value="${'/salesSupport/fulfillShipment/' + shipment.id}" var="fulfillShipment" />&ndash;&gt;-->
-<!--            <button class="btn btn-primary"-->
-<!--                    onclick="this.disabled=true;post('${fulfillShipment}')">Позначити виконаним</button>-->
+<!--        <td data-sortable="true" data-field="commodityName" data-filter-control="input" >-->
+<!--            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
+<!--                <span style="" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>-->
+<!--            </p>-->
 <!--        </td>-->
-
+        <td data-sortable="true" data-field="goods" data-filter-control="input" >
+            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
+                <span style="white-space: nowrap" th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}+' ('+${productForShipment.quantity.stripTrailingZeros().toPlainString()}+' т)'"> Товар</span>
+            </p>
+        </td>
+<!--        <td data-sortable="true" data-field="commodityWeight" data-filter-control="input" >-->
+<!--            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
+<!--                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>-->
+<!--            </p>-->
+<!--        </td>-->
+<!--        <td data-sortable="true" data-field="packaging" data-filter-control="input" >-->
+<!--            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
+<!--                <span style="white-space: nowrap" th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>-->
+<!--            </p>-->
+<!--        </td>-->
+<!--        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>-->
+        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedLoadingDate" data-filter-control="input" th:text="W+${shipment.getWeekOfPlannedLoadingDate()}+', '+${shipment.getYearOfPlannedLoadingDate()}">Завантаження <br> (план)</td>
+        <td data-sortable="true" style="text-align: center" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (факт)</td>
+<!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (план)</td>-->
+        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()}">Розвантаження <br> (план)</td>
+        <td data-sortable="true" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
+        <td data-sortable="true" style="text-align: center" data-field="fullSettlementDate" data-filter-control="input" th:text="${shipment.getFullSettlementDate ()}">Повний <br> розрахунок</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
+        <td style="width: 7em">
+            <select id="selectable" onchange="location = this.value;">
+                <option  value="" >Оберіть</option>
+                <option th:value="${'/salesSupport/contract/' + shipment.getContract().id}">Контракт</option>
+                <!--                <option th:value="${'/salesSupport/allShipmentsPerContract/' + contract.id}">Відправлення</option>-->
+                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Відправлення</option>
+                <option th:value="${'/salesSupport/fulfillShipment/' + shipment.id}">Виконати</option>
+            </select>
+            <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
+            <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->
+            <!--            <a th:href="${'/salesSupport/allShipmentsPerContract/' + contract.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Відправлення</a>-->
+        </td>
     </tr>
     </tbody>
 </table>
@@ -205,18 +246,15 @@
         $('#table').bootstrapTable()
     })
 </script>
-<script>
-
-    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="contractNumber") {
-            window.open("contract/"+$element.contractId,"_self");
-        }
-        // else {
-        //     window.open("shipment/"+$element.id,"_self");}
-    });
-
-
-</script>
+<!--<script>-->
+<!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->
+<!--        if (value=="contractNumber") {-->
+<!--            window.open("contract/"+$element.contractId,"_self");-->
+<!--        }-->
+<!--        else {-->
+<!--            window.open("shipment/"+$element.id,"_self");}-->
+<!--    });-->
+<!--</script>-->
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
