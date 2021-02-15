@@ -536,31 +536,31 @@
         <thead class="thead-light">
         <tr>
             <th style="width: 7em" data-field="invoiceNumber">Рахунок</th>
-            <th data-field="paymentTerms" >Умови оплати</th>
-            <th data-field="invoiceWholeSum" > Повна вартість <br> (сума)</th>
-            <th class="twoPayments" data-field="invoiceFirstPartSum" >Передплата <br> (сума)</th>
-            <th class="twoPayments" data-field="plannedPaymentDateOfFirstPartSum" >Передплата <br> (запланована дата)</th>
-            <th class="twoPayments" data-field="actualPaymentDateOfFirstPartSum" >Передплата <br> (фактична дата)</th>
-            <th class="twoPayments" data-field="invoiceSecondPartSum" >Доплата <br> (сума)</th>
-            <th class="twoPayments" data-field="plannedPaymentDateOfSecondPartSum" >Доплата <br> (запланована дата)</th>
-            <th class="twoPayments" data-field="actualPaymentDateOfSecondPartSum" >Доплата <br> (фактична дата)</th>
-            <th class="onePayment" data-field="plannedPaymentDateOfWholeSum" >Оплата <br> (запланована дата)</th>
-            <th class="onePayment" data-field="actualPaymentDateOfWholeSum" >Оплата <br> (фактична дата)</th>
+            <th style="width: 7em" data-field="invoiceWholeSum" > Сума</th>
+            <th style="width: 15em" data-field="paymentTerms" >Умови оплати</th>
+            <th style="width: 7em" class="twoPayments" data-field="invoiceFirstPartSum" >Передплата <br> (сума)</th>
+            <th style="width: 7em" class="twoPayments" data-field="plannedPaymentDateOfFirstPartSum" >Передплата <br> (план)</th>
+            <th style="width: 7em" class="twoPayments" data-field="actualPaymentDateOfFirstPartSum" >Передплата <br> (факт)</th>
+            <th style="width: 7em" class="twoPayments" data-field="invoiceSecondPartSum" >Доплата <br> (сума)</th>
+            <th style="width: 7em" class="twoPayments" data-field="plannedPaymentDateOfSecondPartSum" >Доплата <br> (план)</th>
+            <th style="width: 7em" class="twoPayments" data-field="actualPaymentDateOfSecondPartSum" >Доплата <br> (факт)</th>
+            <th style="width: 7em" class="onePayment" data-field="plannedPaymentDateOfWholeSum" >Оплата <br> (план)</th>
+            <th style="width: 7em" class="onePayment" data-field="actualPaymentDateOfWholeSum" >Оплата <br> (факт)</th>
             <th data-field="invoiceComment" >Коментар</th>
         </tr>
         </thead>
         <tbody>
-        <td  th:text="*{invoiceNumber}"></td>
-        <td  th:text="${paymentTerms}"></td>
-        <td  th:text="${invoiceWholeSum.stripTrailingZeros().toPlainString()}"></td>
-        <td> <input class="twoPayments" type="text" th:name="invoiceFirstPartSum" th:value="${strippedInvoiceFirstPartSum}"/> </td>
-        <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" readonly/> </td>
-        <td> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" readonly/> </td>
-        <td> <input class="twoPayments" type="text" th:name="invoiceSecondPartSum" th:value="${strippedInvoiceSecondPartSum}"/> </td>
-        <td> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" readonly/> </td>
-        <td> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfSecondPartSum}" th:value="#{actualPaymentDateOfSecondPartSum}" readonly/> </td>
-        <td> <input class="onePayment datepicker" type="text" th:field="*{plannedPaymentDateOfWholeSum}" th:value="#{plannedPaymentDateOfWholeSum}" readonly/> </td>
-        <td> <input class="onePayment datepicker" type="text" th:field="*{actualPaymentDateOfWholeSum}" th:value="#{actualPaymentDateOfWholeSum}" readonly/> </td>
+        <td  style="width: 7em" th:text="*{invoiceNumber}"></td>
+        <td  style="width: 7em" th:text="${invoiceWholeSum.stripTrailingZeros().toPlainString()}"></td>
+        <td  style="width: 15em" th:text="${paymentTerms}"></td>
+        <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceFirstPartSum" th:value="${strippedInvoiceFirstPartSum}"/> </td>
+        <td style="width: 7em" > <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" readonly/> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" readonly/> </td>
+        <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceSecondPartSum" th:value="${strippedInvoiceSecondPartSum}"/> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" readonly/> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfSecondPartSum}" th:value="#{actualPaymentDateOfSecondPartSum}" readonly/> </td>
+        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{plannedPaymentDateOfWholeSum}" th:value="#{plannedPaymentDateOfWholeSum}" readonly/> </td>
+        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{actualPaymentDateOfWholeSum}" th:value="#{actualPaymentDateOfWholeSum}" readonly/> </td>
         <td> <input type="text" th:field="*{invoiceComment}" th:value="#{invoiceComment}"/></td>
         </tbody>
     </table>
