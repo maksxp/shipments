@@ -67,10 +67,24 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/thisMonthShipments", method = RequestMethod.GET)
+    public ModelAndView thisMonthShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithThisMonthShipments();
+        modelAndView.setViewName("/salesSupport/thisMonthShipments");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/nextWeekShipments", method = RequestMethod.GET)
     public ModelAndView nextWeekShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithNextWeekShipments();
         modelAndView.setViewName("/salesSupport/nextWeekShipments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/nextMonthShipments", method = RequestMethod.GET)
+    public ModelAndView nextMonthShipmentsForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithNextMonthShipments();
+        modelAndView.setViewName("/salesSupport/nextMonthShipments");
         return modelAndView;
     }
 
@@ -272,11 +286,23 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithThisMonthShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("thisMonthShipments", shipmentService.thisMonthShipments());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithNextWeekShipments (){
         ModelAndView modelAndView = new ModelAndView();
         int nextWeekNumber = getNextWeekNumber();
         modelAndView.addObject("nextWeekNumber", nextWeekNumber);
         modelAndView.addObject("nextWeekShipments", shipmentService.nextWeekShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithNextMonthShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("nextMonthShipments", shipmentService.nextMonthShipments());
         return modelAndView;
     }
 

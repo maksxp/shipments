@@ -1,6 +1,7 @@
 package com.siaivo.shipments.repository;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository("contractRepository")
 public interface ContractRepository extends JpaRepository<Contract, Long> {
     Contract findById(int id);
-    List<Contract> findByCustomer(String customer);
+    List<Contract> findByCustomer(Customer customer);
     List<Contract> findByContractNumber(String contractNumber);
     List<Contract> findByProducts(Product products);
     List<Contract> findByState (String state);

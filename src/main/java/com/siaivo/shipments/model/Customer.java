@@ -3,8 +3,11 @@ package com.siaivo.shipments.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "customer")
@@ -78,6 +81,12 @@ public class Customer {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public BigDecimal getDebt () {
+        List <Contract> allContracts = getContracts();
+        List <Contract> openContracts = allContracts.stream().filter(contract -> !contract.getState().equals("виконаний")&&!contract.getState().equals("скасований")).collect(Collectors.toList());
+        return BigDecimal.ZERO;
     }
 
     @Override

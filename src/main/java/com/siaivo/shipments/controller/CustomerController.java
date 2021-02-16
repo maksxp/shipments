@@ -98,6 +98,7 @@ public class CustomerController {
 //        }
         customerService.saveCustomer(customer);
         modelAndView.addObject("successMessage", "Зміни успішно внесено");
+        modelAndView.setViewName("redirect:/salesSupport/allCustomers");
         return modelAndView;
     }
     private ModelAndView getModelAndViewWithAllCustomers (){

@@ -291,6 +291,18 @@ public class Shipment {
         }
     }
 
+    public int getMonthOfPlannedLoadingDate() throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        if (getPlannedLoadingDate()!=null&&!getPlannedLoadingDate().equals("")) {
+            Date date = df.parse(getPlannedLoadingDate());
+            Calendar cal = Calendar.getInstance(Locale.FRANCE);
+            cal.setTime(date);
+            return cal.get(Calendar.MONTH);
+        } else {
+            return 0;
+        }
+    }
+
     public int getWeekOfPlannedUnloadingDate() throws ParseException {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (getPlannedUnloadingDate()!=null&&!getPlannedUnloadingDate().equals("")) {

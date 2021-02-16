@@ -337,6 +337,9 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/salesSupport/thisWeekShipments">Відправлення цього тижня</a>
                     <a class="dropdown-item" href="/salesSupport/nextWeekShipments">Відправлення наступного тижня</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/salesSupport/thisMonthShipments">Відправлення цього місяця</a>
+                    <a class="dropdown-item" href="/salesSupport/nextMonthShipments">Відправлення наступного місяця</a>
                 </div>
             </li>
 
@@ -375,7 +378,7 @@
                         <p>Країна покупця</p>
                         <label th:if="${#fields.hasErrors('customerCountry')}" th:errors="*{customerCountry}"
                                class="validation-message"></label>
-                        <input th:name="country" id="country" class="form-control" required/>
+                        <input th:name="country" id="country" th:value="*{customerCountry}" class="form-control" required/>
                         <!--                        <input type="text" th:field="*{customerCountry}" class="form-control" />-->
                     </div>
                 </div>

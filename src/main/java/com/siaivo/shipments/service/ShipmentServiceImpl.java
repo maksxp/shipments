@@ -50,6 +50,28 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public List<Shipment> thisMonthShipments() {
+        List <Shipment> thisMonthShipments = new ArrayList<>();
+        String [] allDatesOfMonth = getAllDatesOfCurrentMonth();
+        for (int i=0;i<allDatesOfMonth.length;i++){
+            thisMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
+        }
+        System.out.println(Arrays.toString(allDatesOfMonth));
+        return thisMonthShipments;
+    }
+
+    @Override
+    public List<Shipment> nextMonthShipments() {
+        List <Shipment> nextMonthShipments = new ArrayList<>();
+        String [] allDatesOfMonth = getAllDatesOfNextMonth();
+        for (int i=0;i<allDatesOfMonth.length;i++){
+            nextMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
+        }
+        System.out.println(Arrays.toString(allDatesOfMonth));
+        return nextMonthShipments;
+    }
+
+    @Override
     public List<Shipment> nextWeekShipments() {
         List <Shipment> nextWeekShipments = new ArrayList<>();
         String [] allDatesOfWeek = getAllDatesOfNextWeek();
@@ -58,6 +80,8 @@ public class ShipmentServiceImpl implements ShipmentService{
         }
         return nextWeekShipments;
     }
+
+
 
 //    @Override
 //    public Shipment getOne(int id) {
@@ -110,6 +134,21 @@ public class ShipmentServiceImpl implements ShipmentService{
         return df.format(calendar.getTime());
     }
 
+    private String getFirstDateOfCurrentMonth () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        return df.format(calendar.getTime());
+    }
+
+    private String getFirstDateOfNextMonth () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.MONTH, 1);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        return df.format(calendar.getTime());
+    }
+
     private String getFirstDateOfNextWeek () {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -129,6 +168,35 @@ public class ShipmentServiceImpl implements ShipmentService{
             allDatesOfCurrentWeek[i] = df.format(calendar.getTime());
         }
         return allDatesOfCurrentWeek;
+    }
+
+    private String [] getAllDatesOfCurrentMonth () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        calendar.set(Calendar.MONTH, 1);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        String [] allDatesOfCurrentMonth = new String[maxDay];
+        allDatesOfCurrentMonth[0] = getFirstDateOfCurrentMonth();
+        for (int i=1;i<maxDay;i++){
+            calendar.set(Calendar.DAY_OF_MONTH, i+1);
+            allDatesOfCurrentMonth[i] = df.format(calendar.getTime());
+        }
+        return allDatesOfCurrentMonth;
+    }
+
+    private String [] getAllDatesOfNextMonth () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        calendar.set(Calendar.MONTH, 1);
+        calendar.add(Calendar.MONTH, 1);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        String [] allDatesOfNextMonth = new String[maxDay];
+        allDatesOfNextMonth[0] = getFirstDateOfNextMonth();
+        for (int i=1;i<maxDay;i++){
+            calendar.set(Calendar.DAY_OF_MONTH, i+1);
+            allDatesOfNextMonth[i] = df.format(calendar.getTime());
+        }
+        return allDatesOfNextMonth;
     }
 
     private String [] getAllDatesOfNextWeek () {

@@ -117,6 +117,9 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
                     <a class="dropdown-item" href="nextWeekShipments">Відправлення наступного тижня</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="thisMonthShipments">Відправлення цього місяця</a>
+                    <a class="dropdown-item" href="nextMonthShipments">Відправлення наступного місяця</a>
                 </div>
             </li>
 
@@ -189,7 +192,7 @@
         <td data-sortable="true" data-field="comment" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.comment}">comment</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
-                <option  value="" >Оберіть</option>
+                <option value="" disabled selected hidden>Оберіть</option>
                 <option th:value="${'/salesSupport/editRequestForNewContract/' + contract.id}">Заявку</option>
                 <option th:value="${'/salesSupport/allShipmentsPerContract/' + contract.id}">Відправлення</option>
                 <option th:value="${'/salesSupport/contract/' + contract.id}">Контракт</option>

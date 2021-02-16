@@ -17,6 +17,10 @@ public interface ShipmentService {
 
     List<Shipment>thisWeekShipments();
 
+    List<Shipment>thisMonthShipments();
+
+    List<Shipment>nextMonthShipments();
+
     List<Shipment>nextWeekShipments();
 
     List<Shipment> allShipments();
