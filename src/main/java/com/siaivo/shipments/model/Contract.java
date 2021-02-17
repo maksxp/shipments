@@ -44,8 +44,7 @@ public class Contract {
     @Column(name = "state")
     private String state;
 
-    @OneToMany
-    @JoinColumn(name= "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract")
     private List<Shipment> shipments;
 
     public int getId() {

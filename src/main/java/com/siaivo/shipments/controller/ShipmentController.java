@@ -205,7 +205,7 @@ public class ShipmentController {
 //        });
 
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
-        modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
+        modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+shipmentFromDataBase.getContract().getId());
         return modelAndView;
     }
 

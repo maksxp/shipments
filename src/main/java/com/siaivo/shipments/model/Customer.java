@@ -4,6 +4,7 @@ package com.siaivo.shipments.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,10 +84,20 @@ public class Customer {
         this.comment = comment;
     }
 
-    public BigDecimal getDebt () {
+    public BigDecimal getArrears () {
+        List <BigDecimal> arrearsSums = new ArrayList<>();
         List <Contract> allContracts = getContracts();
-        List <Contract> openContracts = allContracts.stream().filter(contract -> !contract.getState().equals("виконаний")&&!contract.getState().equals("скасований")).collect(Collectors.toList());
-        return BigDecimal.ZERO;
+        List <Shipment> allShipments = new ArrayList<>();
+        allContracts.forEach(contract -> allShipments.addAll(contract.getShipments()));
+        allShipments.forEach(shipment -> {
+            try {
+                System.out.println("shipment id: "+shipment.getId()+"arrears is: "+shipment.getArrears());
+                arrearsSums.add(shipment.getArrears());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        return arrearsSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

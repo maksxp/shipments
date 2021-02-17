@@ -272,7 +272,7 @@ public class Shipment {
 
     public String getFullSettlementDate (){
         String paymentTerms = this.contract.getPaymentTerms();
-        if (paymentTerms.equals("оплата частинами")){
+        if (paymentTerms.equals("оплата частинами")&&(actualPaymentDateOfFirstPartSum!=null&&!actualPaymentDateOfFirstPartSum.equals(""))){
             return this.actualPaymentDateOfSecondPartSum;
         } else {
             return this.actualPaymentDateOfWholeSum;
@@ -362,11 +362,39 @@ public class Shipment {
         return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getInvoiceWholeSum() {
+        List <BigDecimal> costOfEachProduct = new ArrayList<>();
+        getProductsForShipment().stream().forEach(productForShipment -> costOfEachProduct.add(productForShipment.getQuantity().multiply(productForShipment.getProduct().getPrice())));
+        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public List<String> getListOfGoodsPerShipment (Shipment shipment) {
         List <String> listOfGoodsPerShipment = new ArrayList<>();
         shipment.getProductsForShipment().stream().forEach(productForShipment -> listOfGoodsPerShipment.add(productForShipment.getProduct().getCommodity().getCommodityName()+" ( "+productForShipment.getQuantity()+" тонн"+" ) "+productForShipment.getProduct().getPackaging()));
 
         return listOfGoodsPerShipment;
+    }
+
+    public BigDecimal getArrears () throws ParseException {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        List <BigDecimal> arrearsSums = new ArrayList<>();
+        if (getContract().getPaymentTerms().equals("оплата частинами")){
+            Date plannedPaymentDateOfFirstPartSum = df.parse(this.plannedPaymentDateOfFirstPartSum);
+            Date plannedPaymentDateOfSecondPartSum = df.parse(this.plannedPaymentDateOfSecondPartSum);
+            if (calendar.getTime().compareTo(plannedPaymentDateOfFirstPartSum)>0&&(actualPaymentDateOfFirstPartSum==null||actualPaymentDateOfFirstPartSum.equals(""))){
+                arrearsSums.add(this.invoiceFirstPartSum);
+            }
+            if (calendar.getTime().compareTo(plannedPaymentDateOfSecondPartSum)>0&&(actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals(""))){
+                arrearsSums.add(this.invoiceSecondPartSum);
+            }
+        } else {
+            Date plannedPaymentDateOfWholeSum = df.parse(this.plannedPaymentDateOfWholeSum);
+            if (calendar.getTime().compareTo(plannedPaymentDateOfWholeSum)>0&&(actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals(""))){
+                arrearsSums.add(getInvoiceWholeSum());
+            }
+        }
+        return arrearsSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
