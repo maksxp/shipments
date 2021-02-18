@@ -91,13 +91,27 @@ public class Customer {
         allContracts.forEach(contract -> allShipments.addAll(contract.getShipments()));
         allShipments.forEach(shipment -> {
             try {
-                System.out.println("shipment id: "+shipment.getId()+"arrears is: "+shipment.getArrears());
                 arrearsSums.add(shipment.getArrears());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         });
         return arrearsSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getUnpaidSumOfOpenContracts () {
+        List <BigDecimal> unpaidSums = new ArrayList<>();
+        List <Contract> allContracts = getContracts();
+        List <Shipment> allShipments = new ArrayList<>();
+        allContracts.forEach(contract -> allShipments.addAll(contract.getShipments()));
+        allShipments.forEach(shipment -> {
+            try {
+                unpaidSums.add(shipment.getUnpaidSum());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        return unpaidSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

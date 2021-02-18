@@ -538,6 +538,7 @@
 
         <thead class="thead-light">
         <tr>
+            <th style="width: 4em" data-field="truckNumber">Авто</th>
             <th style="width: 7em" data-field="invoiceNumber">Рахунок</th>
             <th style="width: 7em" data-field="invoiceWholeSum" > Сума</th>
             <th style="width: 15em" data-field="paymentTerms" >Умови оплати</th>
@@ -553,7 +554,8 @@
         </tr>
         </thead>
         <tbody>
-        <td  style="width: 7em" th:text="*{invoiceNumber}"></td>
+        <td  style="width: 4em"> <input type="text" th:field="*{truckNumber}" th:value="#{truckNumber}"/></td>
+        <td  style="width: 7em"> <input type="text" th:field="*{invoiceNumber}" th:value="#{invoiceNumber}"/></td>
         <td  style="width: 7em" th:text="${invoiceWholeSum.stripTrailingZeros().toPlainString()}"></td>
         <td  style="width: 15em" th:text="${paymentTerms}"></td>
         <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceFirstPartSum" th:value="${strippedInvoiceFirstPartSum}"/> </td>

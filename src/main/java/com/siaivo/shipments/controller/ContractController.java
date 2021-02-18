@@ -197,7 +197,6 @@ public class ContractController {
     public ModelAndView postContractPreparationForSalesSupport (@RequestParam("id") int id, @RequestParam("contractDate") String contractDate, @RequestParam("contractNumber") String contractNumber, @RequestParam("numberOfTrucks") int numberOfTrucks){
         Contract contract = contractService.findContractById(id);
         int numberOfLoadedTrucks = (int) shipmentService.allShipmentsPerContract(contract).stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
-        System.out.println("numberOfLoadedTrucks before: "+numberOfLoadedTrucks);
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");

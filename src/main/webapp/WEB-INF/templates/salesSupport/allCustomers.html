@@ -108,24 +108,25 @@
 <div class="container-fluid">
         <div class="layerHeader">
             <h3>Усі покупці</h3>
-        </div>
 </div>
-<table  class="table table-hover table-bordered"
-        id="table"
-        data-show-columns="true"
-        data-pagination="true"
-        data-show-jump-to="true"
-        data-side-pagination="client"
-        data-toggle="table"
-        data-filter-control="true"
-        style="width: max-content">
+</div>
+    <table  class="table table-hover table-bordered table-responsive"
+            id="table"
+            data-show-columns="true"
+            data-pagination="true"
+            data-page-list="[10, 25, 50, 100, усі]"
+            data-show-jump-to="true"
+            data-side-pagination="client"
+            data-toggle="table"
+            data-filter-control="true">
     <thead class="thead-light">
     <tr>
         <th data-sortable="true" data-field="id" data-visible="false" data-filter-control="input">Id</th>
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Назва</th>
         <th data-sortable="true" data-field="customerCountry" data-filter-control="input">Країна</th>
         <th data-sortable="true" data-field="customerType" data-filter-control="select">Тип</th>
-        <th data-sortable="true" data-field="arrears" data-filter-control="select">Заборгованість</th>
+        <th data-sortable="true" data-field="arrears" data-filter-control="select">Прострочена <br> заборгованість</th>
+        <th data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="select">До оплати по <br> усім контрактам</th>
         <th data-sortable="true" data-field="comment" data-filter-control="input">Коментар</th>
         <th data-sortable="true" data-field="actions" data-filter-control="input">Дії</th>
     </tr>
@@ -142,12 +143,14 @@
     <!--    </tr>-->
     <!--    </tfoot>-->
     <tbody>
+
     <tr th:each="customer : ${allCustomers}">
         <td class="editable" data-sortable="true" data-field="id" data-visible="false" data-filter-control="input" th:text="${customer.id}">Id</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" th:text="${customer.customerName}">Назва</td>
-        <td data-sortable="true" data-field="customerCountry" data-filter-control="input" th:text="${customer.customerCountry}">Країна</td>
+        <td data-sortable="true" style="word-wrap: break-word;" data-field="customerCountry" data-filter-control="input" th:text="${customer.customerCountry}">Країна</td>
         <td data-sortable="true" data-field="customerType" data-filter-control="input" th:text="${customer.customerType}">Тип</td>
         <td data-sortable="true" data-field="arrears" data-filter-control="input" th:text="${customer.getArrears().stripTrailingZeros().toPlainString()}">Тип</td>
+        <td data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="input" th:text="${customer.getUnpaidSumOfOpenContracts().stripTrailingZeros().toPlainString()}">Тип</td>
         <td data-sortable="true" data-field="comment" data-filter-control="input" th:text="${customer.comment}">Коментар</td>
         <td style="width: 5em">
             <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
@@ -162,13 +165,13 @@
         $('#table').bootstrapTable()
     })
 </script>
-<script>
+<!--<script>-->
 
-    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {
-        if (value=="id")
-            window.open("editCustomer/"+$element.id,"_self");
-    });
-</script>
+<!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->
+<!--        if (value=="id")-->
+<!--            window.open("editCustomer/"+$element.id,"_self");-->
+<!--    });-->
+<!--</script>-->
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

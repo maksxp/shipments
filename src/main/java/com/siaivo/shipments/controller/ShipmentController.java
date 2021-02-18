@@ -166,6 +166,8 @@ public class ShipmentController {
               shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
               productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
           }
+          shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
+          shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
           shipmentFromDataBase.setDestinationCountry(shipmentFromView.getDestinationCountry());
           shipmentFromDataBase.setDestinationPlace(shipmentFromView.getDestinationPlace());
           shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());

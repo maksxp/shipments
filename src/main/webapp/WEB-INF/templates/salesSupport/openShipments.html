@@ -231,10 +231,10 @@
 <!--            </p>-->
 <!--        </td>-->
 <!--        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>-->
-        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedLoadingDate" data-filter-control="input" th:text="W+${shipment.getWeekOfPlannedLoadingDate()}+', '+${shipment.getYearOfPlannedLoadingDate()}">Завантаження <br> (план)</td>
+        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedLoadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedLoadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedLoadingDate()}+', '+${shipment.getYearOfPlannedLoadingDate()})">Завантаження <br> (план)</td>
         <td data-sortable="true" class="loaded" style="text-align: center" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (факт)</td>
 <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (план)</td>-->
-        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()}">Розвантаження <br> (план)</td>
+        <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedUnloadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()})">Розвантаження <br> (план)</td>
         <td data-sortable="true" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
         <td data-sortable="true" data-visible="false" class="paid" style="text-align: center" data-field="fullSettlementDate" data-filter-control="input" th:text="${shipment.getFullSettlementDate ()}">Повний <br> розрахунок</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
