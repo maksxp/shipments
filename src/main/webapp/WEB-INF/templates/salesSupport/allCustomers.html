@@ -35,6 +35,9 @@
             color: blue;
             width: 7em;
         }
+        .highlightDebtor td {
+            background: lightcoral;
+        }
     </style>
 </head>
 <body>
@@ -126,7 +129,7 @@
         <th data-sortable="true" data-field="customerCountry" data-filter-control="input">Країна</th>
         <th data-sortable="true" data-field="customerType" data-filter-control="select">Тип</th>
         <th data-sortable="true" data-field="arrears" data-filter-control="select">Прострочена <br> заборгованість</th>
-        <th data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="select">До оплати по <br> усім контрактам</th>
+        <th data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="input">До оплати по <br> усім контрактам</th>
         <th data-sortable="true" data-field="comment" data-filter-control="input">Коментар</th>
         <th data-sortable="true" data-field="actions" data-filter-control="input">Дії</th>
     </tr>
@@ -149,12 +152,12 @@
         <td data-sortable="true" data-field="customerName" data-filter-control="input" th:text="${customer.customerName}">Назва</td>
         <td data-sortable="true" style="word-wrap: break-word;" data-field="customerCountry" data-filter-control="input" th:text="${customer.customerCountry}">Країна</td>
         <td data-sortable="true" data-field="customerType" data-filter-control="input" th:text="${customer.customerType}">Тип</td>
-        <td data-sortable="true" data-field="arrears" data-filter-control="input" th:text="${customer.getArrears().stripTrailingZeros().toPlainString()}">Тип</td>
-        <td data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="input" th:text="${customer.getUnpaidSumOfOpenContracts().stripTrailingZeros().toPlainString()}">Тип</td>
+        <td data-sortable="true" class="debtor" data-field="arrears" data-filter-control="input" th:text="${customer.getArrears()}==0 ? ('') :${customer.getArrears().stripTrailingZeros().toPlainString()}">Тип</td>
+        <td data-sortable="true" data-field="UnpaidSumOfOpenContracts" data-filter-control="input" th:text="${customer.getUnpaidSumOfOpenContracts()}==0 ? ('') : ${customer.getUnpaidSumOfOpenContracts().stripTrailingZeros().toPlainString()}">Тип</td>
         <td data-sortable="true" data-field="comment" data-filter-control="input" th:text="${customer.comment}">Коментар</td>
         <td style="width: 5em">
             <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
-            <a th:href="${'/salesSupport/editCustomer/' + customer.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Редагувати</a>
+            <a th:href="${'/salesSupport/editCustomer/' + customer.id}" class="btn btn-outline-primary" role="button" aria-pressed="true">Редагувати</a>
 <!--            <a th:href="${'/salesSupport/fulfillShipment/' + shipment.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Виконати</a>-->
         </td>
     </tr>
@@ -163,6 +166,14 @@
 <script>
     $(function() {
         $('#table').bootstrapTable()
+    })
+</script>
+<script>
+    var rows = document.querySelectorAll('tr');
+    [...rows].forEach((r) => {
+        if (r.querySelectorAll('.debtor:empty').length == 0 ) {
+            r.classList.add('highlightDebtor');
+        }
     })
 </script>
 <!--<script>-->

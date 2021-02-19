@@ -23,6 +23,8 @@ public class CommodityController {
     @RequestMapping(value="/salesSupport/allCommodities", method = RequestMethod.GET)
     public ModelAndView allCommoditiesForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllCommodities();
+        modelAndView.addObject("amountEUR", 100);
+        modelAndView.addObject("amountUSD", 200);
         modelAndView.setViewName("/salesSupport/allCommodities");
         return modelAndView;
     }
