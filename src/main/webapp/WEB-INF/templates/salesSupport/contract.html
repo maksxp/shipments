@@ -284,7 +284,7 @@
 <!--        <th data-field="actualLoadingDate" >Завантаження <br> (факт)</th>-->
 <!--        <th data-field="plannedUnloadingDate" >Розвантаження <br> (план)</th>-->
 <!--        <th data-field="actualUnloadingDate" >Розвантаження <br> (факт)</th>-->
-<!--        <th data-field="fullSettlementDate" >Повний <br> розрахунок </th>-->
+<!--        <th data-field="ActualFullSettlementDate" >Повний <br> розрахунок </th>-->
 <!--        <th data-field="shipmentComment" >Коментар</th>-->
 <!--    </tr>-->
 <!--    </thead>-->
@@ -329,7 +329,7 @@
 <!--        <td data-field="actualLoadingDate" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>-->
 <!--        <td data-field="plannedUnloadingDate" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>-->
 <!--        <td data-field="actualUnloadingDate" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>-->
-<!--        <td data-field="fullSettlementDate" th:text="${shipment.getFullSettlementDate ()}">Повний <br> розрахунок</td>-->
+<!--        <td data-field="ActualFullSettlementDate" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>-->
 <!--        <td data-field="shipmentComment" th:text="${shipment.shipmentComment}">Коментар</td>-->
 <!--    </tr>-->
 <!--    </tbody>-->
@@ -360,7 +360,7 @@
         <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (факт)</th>
         <th data-sortable="true" data-field="weekOfPlannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
         <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
-        <th data-sortable="true" data-field="fullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
+        <th data-sortable="true" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
         <th data-sortable="true" data-field="state" data-filter-control="input">Статус</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
 <!--        <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити/ <br> Дії</th>-->
@@ -413,7 +413,7 @@
         <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (план)</td>-->
         <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedUnloadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()})">Розвантаження <br> (план)</td>
         <td data-sortable="true" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
-        <td data-sortable="true" class="paid" style="text-align: center" data-field="fullSettlementDate" data-filter-control="input" th:text="${shipment.getFullSettlementDate ()}">Повний <br> розрахунок</td>
+        <td data-sortable="true" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
         <td data-sortable="true" data-field="state" data-filter-control="input" th:text="${shipment.isFulfilled}? 'Виконано' : 'В роботі'">Статус</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
 <!--        <td data-sortable="true" data-field="state" data-filter-control="input" th:text="${shipment.state}">Статус</td>-->

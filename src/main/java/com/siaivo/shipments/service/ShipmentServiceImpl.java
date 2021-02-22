@@ -100,6 +100,12 @@ public class ShipmentServiceImpl implements ShipmentService{
         return shipmentRepository.findShipmentsByIsFulfilledIsFalse();
     }
 
+    // @Override
+    // public List<Shipment> unPaidShipments() {
+    //     shipmentRepository.findShipmentsByIsAndActualPaymentDateOfSecondPartSumContains(".").forEach(shipment -> System.out.println("test unpaid: "+shipment.getInvoiceWholeSum()));
+    //     return shipmentRepository.findShipmentsByIsAndActualPaymentDateOfSecondPartSumContains(".");
+    // }
+
     @Override
     public List<Shipment> fulfilledShipments() {
         return shipmentRepository.findShipmentsByIsFulfilledIsTrue();

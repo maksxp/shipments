@@ -1,8 +1,12 @@
 package com.siaivo.shipments.controller;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.siaivo.shipments.model.Commodity;
+import com.siaivo.shipments.json.JsonReader;
 import com.siaivo.shipments.service.CommodityService;
 import com.siaivo.shipments.service.ShipmentService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class CommodityController {
@@ -21,10 +28,11 @@ public class CommodityController {
     private ShipmentService shipmentService;
 
     @RequestMapping(value="/salesSupport/allCommodities", method = RequestMethod.GET)
-    public ModelAndView allCommoditiesForSalesSupport(){
+    public ModelAndView allCommoditiesForSalesSupport() throws IOException {
         ModelAndView modelAndView = getModelAndViewWithAllCommodities();
-        modelAndView.addObject("amountEUR", 100);
-        modelAndView.addObject("amountUSD", 200);
+        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        // Double rateEUR = JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?");
         modelAndView.setViewName("/salesSupport/allCommodities");
         return modelAndView;
     }

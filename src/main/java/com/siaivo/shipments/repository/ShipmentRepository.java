@@ -17,4 +17,5 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
     List <Shipment> findByActualLoadingDate(String date);
     List <Shipment> findShipmentsByIsFulfilledIsFalse();
     List <Shipment> findShipmentsByIsFulfilledIsTrue();
+    // List <Shipment> findShipmentsByIsAndActualPaymentDateOfSecondPartSumContains(String parameter);
 }

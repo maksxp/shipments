@@ -33,6 +33,13 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/allInvoices", method = RequestMethod.GET)
+        public ModelAndView allInvoicesForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllShipments();
+        modelAndView.setViewName("/salesSupport/allInvoices");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/openShipments", method = RequestMethod.GET)
     public ModelAndView openShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithOpenShipments();
@@ -267,6 +274,12 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewUnpaidShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("unpaidShipments", shipmentService.unPaidShipments());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithOpenShipments (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("openShipments", shipmentService.openShipments());
@@ -276,7 +289,6 @@ public class ShipmentController {
     private ModelAndView getModelAndViewWithFulfilledShipments (){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("fulfilledShipments", shipmentService.fulfilledShipments());
-        shipmentService.fulfilledShipments().forEach(shipment -> System.out.println(shipment.getFullSettlementDate()));
         return modelAndView;
     }
 

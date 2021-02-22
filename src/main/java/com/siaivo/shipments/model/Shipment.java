@@ -268,12 +268,21 @@ public class Shipment {
         this.destinationPlace = destinationPlace;
     }
 
-    public String getFullSettlementDate (){
+    public String getActualFullSettlementDate(){
         String paymentTerms = this.contract.getPaymentTerms();
         if (paymentTerms.equals("оплата частинами")&&(actualPaymentDateOfFirstPartSum!=null&&!actualPaymentDateOfFirstPartSum.equals(""))){
             return this.actualPaymentDateOfSecondPartSum;
         } else {
             return this.actualPaymentDateOfWholeSum;
+        }
+    }
+
+    public String getPlannedFullSettlementDate(){
+        String paymentTerms = this.contract.getPaymentTerms();
+        if (paymentTerms.equals("оплата частинами")){
+            return this.plannedPaymentDateOfSecondPartSum;
+        } else {
+            return this.plannedPaymentDateOfWholeSum;
         }
     }
 
@@ -428,7 +437,6 @@ public class Shipment {
 
     public BigDecimal getUnpaidSumOfSecondPartSum () {
         BigDecimal unpaidSumOfSecondPartSum = BigDecimal.ZERO;
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals("")){
             unpaidSumOfSecondPartSum = this.invoiceSecondPartSum;
         }
@@ -448,7 +456,6 @@ public class Shipment {
 
     public BigDecimal getUnpaidSumOfWholeSum () {
         BigDecimal unpaidSumOfWholeSum = BigDecimal.ZERO;
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals("")){
             unpaidSumOfWholeSum = getInvoiceWholeSum();
         }
