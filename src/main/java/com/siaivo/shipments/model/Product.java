@@ -132,6 +132,55 @@ public class Product {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getLoadedAndUnpaidQuantity (){
+        List <BigDecimal> quantityOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+        getProductsForShipments()
+                .stream()
+                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+                .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+                .collect(Collectors.toList())
+                .forEach(productForShipment -> quantityOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity()));
+        return quantityOfLoadedAndUnpaidProductInEachShipment
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getUnpaidSumOfLoadedProductInEUR (){
+        BigDecimal unpaidSumOfLoadedProductInEUR = BigDecimal.ZERO;
+        if (this.currency.equals("EUR")){
+            List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+            getProductsForShipments()
+                    .stream()
+                    .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+                    .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+                    .collect(Collectors.toList())
+                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity().multiply(price)));
+
+            unpaidSumOfLoadedProductInEUR = unpaidSumOfLoadedAndUnpaidProductInEachShipment
+                    .stream()
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return unpaidSumOfLoadedProductInEUR;
+    }
+
+    public BigDecimal getUnpaidSumOfLoadedProductInUSD (){
+        BigDecimal unpaidSumOfLoadedProductInUSD = BigDecimal.ZERO;
+        if (this.currency.equals("USD")){
+            List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+            getProductsForShipments()
+                    .stream()
+                    .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+                    .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+                    .collect(Collectors.toList())
+                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity().multiply(price)));
+
+            unpaidSumOfLoadedProductInUSD = unpaidSumOfLoadedAndUnpaidProductInEachShipment
+                    .stream()
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return unpaidSumOfLoadedProductInUSD;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

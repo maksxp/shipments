@@ -39,6 +39,8 @@ public class ShipmentServiceImpl implements ShipmentService{
         shipmentRepository.delete(shipment);
     }
 
+
+
     @Override
     public List<Shipment> thisWeekShipments() {
         List <Shipment> thisWeekShipments = new ArrayList<>();
@@ -100,11 +102,15 @@ public class ShipmentServiceImpl implements ShipmentService{
         return shipmentRepository.findShipmentsByIsFulfilledIsFalse();
     }
 
-    // @Override
-    // public List<Shipment> unPaidShipments() {
-    //     shipmentRepository.findShipmentsByIsAndActualPaymentDateOfSecondPartSumContains(".").forEach(shipment -> System.out.println("test unpaid: "+shipment.getInvoiceWholeSum()));
-    //     return shipmentRepository.findShipmentsByIsAndActualPaymentDateOfSecondPartSumContains(".");
-    // }
+    @Override
+    public List<Shipment> unpaidShipments() {
+        return shipmentRepository.findUnpaidShipments();
+    }
+
+    @Override
+    public List<Shipment> paidShipments() {
+        return shipmentRepository.findPaidShipments();
+    }
 
     @Override
     public List<Shipment> fulfilledShipments() {

@@ -27,7 +27,9 @@ public interface ShipmentService {
 
     List<Shipment> openShipments();
 
-    // List<Shipment> unPaidShipments();
+    List<Shipment> unpaidShipments();
+
+    List<Shipment> paidShipments();
 
     List<Shipment> fulfilledShipments();
 

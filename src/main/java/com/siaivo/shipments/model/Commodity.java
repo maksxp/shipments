@@ -74,6 +74,27 @@ public class Commodity {
         return quantityOfEachLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getUnpaidSumOfLoadedGoodsInEUR (Commodity commodity){
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProduct = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProduct.add(product.getUnpaidSumOfLoadedProductInEUR()));
+        return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getUnpaidSumOfLoadedGoodsInUSD (Commodity commodity){
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProduct = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProduct.add(product.getUnpaidSumOfLoadedProductInUSD ()));
+        return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getQuantityOfAllLoadedAndUnpaidGoods (Commodity commodity){
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <BigDecimal> quantityOfEachLoadedAndUnpaidProduct = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> quantityOfEachLoadedAndUnpaidProduct.add(product.getLoadedAndUnpaidQuantity()));
+        return quantityOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public BigDecimal getQuantityOfAllNotLoadedGoods (Commodity commodity){
         List <ProductForShipment> allNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
         List <Product> allProductsFromThisCommodity = commodity.getProducts();

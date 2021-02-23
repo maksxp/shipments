@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public List<Product> allProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
     public BigDecimal findWeightOfAllProductsByContract(Contract contract) {
         List <BigDecimal> listOfEachProductWeight = new ArrayList<>();
         findProductsByContract(contract).forEach(product -> listOfEachProductWeight.add(product.getQuantity()));
@@ -60,6 +65,8 @@ public class ProductServiceImpl implements ProductService{
             productRepository.delete(product);
         }
     }
+
+
 
 
 }

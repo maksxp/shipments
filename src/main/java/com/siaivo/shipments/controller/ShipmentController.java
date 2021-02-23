@@ -40,6 +40,20 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/unpaidInvoices", method = RequestMethod.GET)
+    public ModelAndView unpaidInvoicesForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithUnpaidShipments();
+        modelAndView.setViewName("/salesSupport/unpaidInvoices");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/paidInvoices", method = RequestMethod.GET)
+    public ModelAndView paidInvoicesForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithPaidShipments();
+        modelAndView.setViewName("/salesSupport/paidInvoices");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/openShipments", method = RequestMethod.GET)
     public ModelAndView openShipmentsForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithOpenShipments();
@@ -181,12 +195,12 @@ public class ShipmentController {
           shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
           shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
           shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
+        shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
+        shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
           shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
           shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
           shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
           shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
-          shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
-          shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
           shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
           shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
           shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
@@ -194,25 +208,6 @@ public class ShipmentController {
           shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
           shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
           shipmentService.saveShipment(shipmentFromDataBase);
-//        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
-//          Arrays.stream(fields).forEach(field -> field.setAccessible(true));
-//        Field [] fields1 = shipmentFromDataBase.getClass().getDeclaredFields();
-//        Arrays.stream(fields1).forEach(field -> field.setAccessible(true));
-//          Arrays.stream(fields).forEach(field -> {
-//              try {
-//                  System.out.println(field.getName()+": "+field.get(shipmentFromView));
-//              } catch (IllegalAccessException e) {
-//                  e.printStackTrace();
-//              }
-//          });
-//        Arrays.stream(fields1).forEach(field -> {
-//            try {
-//                System.out.println(field.getName()+"11: "+field.get(shipmentFromDataBase));
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
         modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+shipmentFromDataBase.getContract().getId());
         return modelAndView;
@@ -231,12 +226,12 @@ public class ShipmentController {
         shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
         shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
         shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
+        shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
+        shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
         shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
         shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
         shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
         shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
-        shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
-        shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
         shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
         shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
         shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
@@ -244,25 +239,6 @@ public class ShipmentController {
         shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
         shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
         shipmentService.saveShipment(shipmentFromDataBase);
-//        Field [] fields = shipmentFromView.getClass().getDeclaredFields();
-//          Arrays.stream(fields).forEach(field -> field.setAccessible(true));
-//        Field [] fields1 = shipmentFromDataBase.getClass().getDeclaredFields();
-//        Arrays.stream(fields1).forEach(field -> field.setAccessible(true));
-//          Arrays.stream(fields).forEach(field -> {
-//              try {
-//                  System.out.println(field.getName()+": "+field.get(shipmentFromView));
-//              } catch (IllegalAccessException e) {
-//                  e.printStackTrace();
-//              }
-//          });
-//        Arrays.stream(fields1).forEach(field -> {
-//            try {
-//                System.out.println(field.getName()+"11: "+field.get(shipmentFromDataBase));
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
         modelAndView.setViewName("/salesManagement/allShipmentsPerContract");
         return modelAndView;
@@ -274,9 +250,15 @@ public class ShipmentController {
         return modelAndView;
     }
 
-    private ModelAndView getModelAndViewUnpaidShipments (){
+    private ModelAndView getModelAndViewWithUnpaidShipments (){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("unpaidShipments", shipmentService.unPaidShipments());
+        modelAndView.addObject("unpaidShipments", shipmentService.unpaidShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithPaidShipments (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("paidShipments", shipmentService.paidShipments());
         return modelAndView;
     }
 

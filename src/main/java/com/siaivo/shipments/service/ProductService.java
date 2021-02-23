@@ -12,6 +12,8 @@ public interface ProductService {
 
     List <Product> findProductsByContract (Contract contract);
 
+    List<Product> allProducts();
+
     BigDecimal findWeightOfAllProductsByContract (Contract contract);
 
     void deleteProductsByContract(Contract contract);
