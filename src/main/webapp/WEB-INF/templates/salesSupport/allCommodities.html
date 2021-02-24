@@ -41,13 +41,33 @@
         function calculateColumn(index) {
             var total = 0;
             $('table tr').each(function() {
-                var value = parseFloat($('.forCount', this).eq(index).text());
+                var value = parseFloat(($('.forCount', this).eq(index).text()).replace(/,/g, ''));
                 if (!isNaN(value)) {
                     total += value;
+                    total = parseFloat(total.toFixed(3));
                 }
             });
             // $('table tfoot td').eq(index).text( total.toFixed(3));
-            $('.sum').eq(index).text( total.toFixed(3));
+            // $('.sum').eq(index).text(total.toFixed(3));
+            $('.sum').eq(index).text(total);
+        }
+    </script>
+<!--    <script>-->
+<!--        function countDecimals(value) {-->
+<!--            if(Math.floor(value) === value) return 0;-->
+<!--            return value.toString().split(".")[1].length || 0;-->
+<!--        }-->
+<!--    </script>-->
+    <script th:inline="javascript">
+        let count;
+        $(document).ready(function() {
+            $(".countDecimals").countDec({
+
+        })
+            });
+        function countDec (){
+            alert("counted")
+            return 2;
         }
     </script>
 </head>
@@ -162,6 +182,8 @@
         <th data-field="contracted" >До відвантаження <br> (всього)</th>
         <th data-field="thisWeekNotLoaded" >До відвантаження <br> (на цьому тижні)</th>
         <th data-field="nextWeekNotLoaded" >До відвантаження <br> (на наступному тижні)</th>
+        <th data-field="thisMonthNotLoaded" >До відвантаження <br> (в цьому місяці)</th>
+        <th data-field="nextMonthNotLoaded" >До відвантаження <br> (в наступному місяці)</th>
     </tr>
     </thead>
 
@@ -169,15 +191,22 @@
     <tr th:each="commodity : ${allCommodities}">
         <td data-field="commodityCode"  data-visible="false" th:text="${commodity.commodityCode}">Код товару</td>
         <td data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
-        <td class="forCount" data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Всьго відвантажено</td>
-        <td class="forCount" data-field="loadedAndUnpaidQuantity" th:text="*{commodity.getQuantityOfAllLoadedAndUnpaidGoods(commodity).stripTrailingZeros().toPlainString()}">Всьго відвантажено <br> і не оплачено</td>
-        <td class="forCount" data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (всього)</td>
-        <td class="forCount" data-field="thisWeekNotLoaded" th:text="*{commodity.getQuantityOfThisWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на цьому тижні)</td>
-        <td class="forCount" data-field="nextWeekNotLoaded" th:text="*{commodity.getQuantityOfNextWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на наступному тижні)</td>
+        <td class="forCount" data-field="shipped" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA',
+          id=countDecimals
+        , 'POINT')}">Всьго відвантажено</td>
+        <td class="forCount" data-field="loadedAndUnpaidQuantity" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfAllLoadedAndUnpaidGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 3, 'POINT')}">Всьго відвантажено <br> і не оплачено</td>
+        <td class="forCount" data-field="contracted" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">До відвантаження <br> (всього)</td>
+        <td class="forCount" data-field="thisWeekNotLoaded" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfThisWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">До відвантаження <br> (на цьому тижні)</td>
+        <td class="forCount" data-field="nextWeekNotLoaded" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfNextWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">До відвантаження <br> (на наступному тижні)</td>
+        <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfThisMonthNotLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">До відвантаження <br> (в цьому місяці)</td>
+        <td class="forCount" data-field="nextMonthNotLoaded" th:text="*{#numbers.formatDecimal(commodity.getQuantityOfNextMonthNotLoadedGoods(commodity).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">До відвантаження <br> (в наступному місяці)</td>
+
     </tr>
     <tfoot style="font-weight: bold">
     <tr>
         <td colspan="2" style="text-align: right" th:text="'Всього:'">Total:</td>
+        <td class="sum">Total:</td>
+        <td class="sum">Total:</td>
         <td class="sum">Total:</td>
         <td class="sum">Total:</td>
         <td class="sum">Total:</td>
@@ -189,7 +218,7 @@
 </table>
 <div class="container-fluid">
     <div class="layerHeader">
-        <h3>Відправлено і не оплачено товарів на суму: <span th:text="${unpaidSumOfLoadedGoodsInEUR}==0 ? ('') :(${unpaidSumOfLoadedGoodsInEUR.stripTrailingZeros().toPlainString()}+' EUR')"></span>&nbsp;<span th:text="${unpaidSumOfLoadedGoodsInUSD}==0 ? ('') : (' і '+${unpaidSumOfLoadedGoodsInUSD.stripTrailingZeros().toPlainString()}+' USD')"></span> </h3>
+        <h3>Відправлено і не оплачено товарів на суму: <span th:text="${unpaidSumOfLoadedGoodsInEUR}==0 ? ('') :(${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInEUR.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' EUR')"></span>&nbsp;<span th:text="${unpaidSumOfLoadedGoodsInUSD}==0 ? ('') : (' та '+${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInUSD.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' USD')"></span> </h3>
     </div>
 </div>
 <script>

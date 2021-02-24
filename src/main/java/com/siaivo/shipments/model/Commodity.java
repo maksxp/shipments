@@ -124,6 +124,24 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getQuantityOfThisMonthNotLoadedGoods (Commodity commodity) {
+        List <ProductForShipment> thisMonthNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+        thisMonthNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
+            try {
+                return getCurrentMonthNumber() == productForShipment.getShipment().getMonthOfPlannedLoadingDate();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
+        thisMonthNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
+        return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public BigDecimal getQuantityOfNextWeekNotLoadedGoods (Commodity commodity){
         List <ProductForShipment> nextWeekNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
         List <Product> allProductsFromThisCommodity = commodity.getProducts();
@@ -142,11 +160,36 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getQuantityOfNextMonthNotLoadedGoods (Commodity commodity){
+        List <ProductForShipment> nextMonthNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
+        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+        nextMonthNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
+            try {
+                return getNextMonthNumber() == productForShipment.getShipment().getMonthOfPlannedLoadingDate();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachNotLoadedProductForShipment = new ArrayList<>();
+        nextMonthNotLoadedProductsForShipmentFromThisCommodity.forEach(notLoadedProductForShipment -> quantityOfEachNotLoadedProductForShipment.add(notLoadedProductForShipment.getQuantity()));
+        return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
         private int getCurrentWeekNumber () {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         Date today = new Date();
         calendar.setTime(today);
         return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    private int getCurrentMonthNumber() {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
+        return calendar.get(Calendar.MONTH);
     }
 
     private int getNextWeekNumber () {
@@ -155,6 +198,14 @@ public class Commodity {
         calendar.setTime(today);
         calendar.add(Calendar.DATE, 7);
         return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    private int getNextMonthNumber () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        Date today = new Date();
+        calendar.setTime(today);
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.get(Calendar.MONTH);
     }
 
     @Override

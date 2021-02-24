@@ -411,7 +411,7 @@ public class Shipment {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (plannedPaymentDateOfFirstPartSum==null||plannedPaymentDateOfFirstPartSum.equals("")) {
-        } else if (calendar.getTime().compareTo(df.parse(this.plannedPaymentDateOfFirstPartSum))>0&&(actualPaymentDateOfFirstPartSum==null||actualPaymentDateOfFirstPartSum.equals(""))){
+        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfFirstPartSum))>0&&(actualPaymentDateOfFirstPartSum==null||actualPaymentDateOfFirstPartSum.equals(""))){
             firstSumArrears = this.invoiceFirstPartSum;
         }
         return firstSumArrears;
@@ -431,7 +431,7 @@ public class Shipment {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (plannedPaymentDateOfSecondPartSum==null||plannedPaymentDateOfSecondPartSum.equals("")) {
-        } else if (calendar.getTime().compareTo(df.parse(this.plannedPaymentDateOfSecondPartSum))>0&&(actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals(""))){
+        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfSecondPartSum))>0&&(actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals(""))){
             secondSumArrears = this.invoiceSecondPartSum;
         }
         return secondSumArrears;
@@ -449,8 +449,9 @@ public class Shipment {
         BigDecimal wholeSumArrears = BigDecimal.ZERO;
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
         if (plannedPaymentDateOfWholeSum==null||plannedPaymentDateOfWholeSum.equals("")) {
-        } else if (calendar.getTime().compareTo(df.parse(this.plannedPaymentDateOfWholeSum))>0&&(actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals(""))){
+        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfWholeSum))>0&&(actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals(""))){
             wholeSumArrears = getInvoiceWholeSum();
         }
         return wholeSumArrears;
