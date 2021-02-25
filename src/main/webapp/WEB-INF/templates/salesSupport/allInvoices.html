@@ -149,19 +149,23 @@
             <h3>Усі рахунки </h3>
         </div>
 </div>
-<table  class="table table-hover table-bordered"
+<table  class="table table-hover table-bordered "
         id="table"
+        data-pagination="true"
+        data-page-list="[10, 25, 50, 100, all]"
+        data-show-jump-to="true"
+        data-side-pagination="client"
         data-toggle="table"
-        style="width: max-content">
+        data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th data-field="invoiceNumber" >Рахунок</th>
-        <th data-field="customerName" >Платник</th>
-        <th data-field="invoiceSum" >Сума</th>
-        <th data-field="paymentTerms" >Умови оплати</th>
-        <th data-field="plannedFullSettlementDate" >Повний розрахунок <br> (план)</th>
-        <th data-field="actualFullSettlementDate" >Повний розрахунок <br> (факт)</th>
-        <th data-field="invoiceComment" >Коментар</th>
+        <th data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
+        <th data-field="customerName" data-filter-control="input">Платник</th>
+        <th data-field="invoiceSum" data-filter-control="input">Сума</th>
+        <th data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
+        <th data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
+        <th data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
+        <th data-field="invoiceComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
 

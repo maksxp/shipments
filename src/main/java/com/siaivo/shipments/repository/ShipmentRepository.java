@@ -15,6 +15,9 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
     Shipment findById(int id);
     List <Shipment> findByContract (Contract contract);
     List <Shipment> findByPlannedLoadingDate(String date);
+    List <Shipment> findByPlannedPaymentDateOfFirstPartSum(String date);
+    List <Shipment> findByPlannedPaymentDateOfSecondPartSum(String date);
+    List <Shipment> findByPlannedPaymentDateOfWholeSum(String date);
     List <Shipment> findByActualLoadingDate(String date);
     List <Shipment> findShipmentsByIsFulfilledIsFalse();
     List <Shipment> findShipmentsByIsFulfilledIsTrue();

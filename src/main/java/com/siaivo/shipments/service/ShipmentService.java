@@ -4,6 +4,7 @@ import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Shipment;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ShipmentService {
 
@@ -16,6 +17,8 @@ public interface ShipmentService {
     void deleteShipment (Shipment shipment);
 
     List<Shipment>thisWeekShipments();
+
+    List<Shipment> paymentsByTheEndOfThisWeek();
 
     List<Shipment>thisMonthShipments();
 

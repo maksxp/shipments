@@ -12,9 +12,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("shipmentService")
 public class ShipmentServiceImpl implements ShipmentService{
+
     @Qualifier("shipmentRepository")
     @Autowired
     private ShipmentRepository shipmentRepository;
@@ -50,6 +52,21 @@ public class ShipmentServiceImpl implements ShipmentService{
         }
         return thisWeekShipments;
     }
+
+    @Override
+    public List <Shipment> paymentsByTheEndOfThisWeek() {
+        List <Shipment> paymentsByTheEndOfThisWeek = new ArrayList<>();
+        List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        getLastDateOfCurrentWeek();
+        String [] allDatesOfWeek = getAllDatesOfCurrentWeek();
+        for (int i=0;i<7;i++){
+            paymentsByTheEndOfThisWeek.addAll(shipmentRepository.findByPlannedPaymentDateOfFirstPartSum(allDatesOfWeek[i]));
+            paymentsByTheEndOfThisWeek.addAll(shipmentRepository.findByPlannedPaymentDateOfSecondPartSum(allDatesOfWeek[i]));
+            paymentsByTheEndOfThisWeek.addAll(shipmentRepository.findByPlannedPaymentDateOfWholeSum(allDatesOfWeek[i]));
+        }
+        return paymentsByTheEndOfThisWeek;
+    }
+
 
     @Override
     public List<Shipment> thisMonthShipments() {
@@ -143,6 +160,14 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        return df.format(calendar.getTime());
+    }
+
+    private String getLastDateOfCurrentWeek () {
+        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        System.out.println("last date of this week is: "+df.format(calendar.getTime()));
         return df.format(calendar.getTime());
     }
 

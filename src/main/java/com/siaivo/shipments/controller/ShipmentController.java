@@ -33,8 +33,15 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/paymentsByTheEndOfThisWeek", method = RequestMethod.GET)
+        public ModelAndView paymentsByTheEndOfThisWeekForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithPaymentsByTheEndOfThisWeek();
+        modelAndView.setViewName("/salesSupport/paymentsByTheEndOfThisWeek");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/allInvoices", method = RequestMethod.GET)
-        public ModelAndView allInvoicesForSalesSupport(){
+    public ModelAndView allInvoicesForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.setViewName("/salesSupport/allInvoices");
         return modelAndView;
@@ -255,6 +262,13 @@ public class ShipmentController {
         modelAndView.addObject("unpaidShipments", shipmentService.unpaidShipments());
         return modelAndView;
     }
+
+    private ModelAndView getModelAndViewWithPaymentsByTheEndOfThisWeek (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("paymentsByTheEndOfThisWeek", shipmentService.paymentsByTheEndOfThisWeek());
+        return modelAndView;
+    }
+
 
     private ModelAndView getModelAndViewWithPaidShipments (){
         ModelAndView modelAndView = new ModelAndView();
