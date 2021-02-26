@@ -33,10 +33,17 @@ public class ShipmentController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesSupport/paymentsByTheEndOfThisWeek", method = RequestMethod.GET)
+    @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfThisWeek", method = RequestMethod.GET)
         public ModelAndView paymentsByTheEndOfThisWeekForSalesSupport(){
-        ModelAndView modelAndView = getModelAndViewWithPaymentsByTheEndOfThisWeek();
-        modelAndView.setViewName("/salesSupport/paymentsByTheEndOfThisWeek");
+        ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfThisWeek();
+        modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfThisWeek");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfNextWeek", method = RequestMethod.GET)
+    public ModelAndView paymentsByTheEndOfNextWeekForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfNextWeek();
+        modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfNextWeek");
         return modelAndView;
     }
 
@@ -263,9 +270,19 @@ public class ShipmentController {
         return modelAndView;
     }
 
-    private ModelAndView getModelAndViewWithPaymentsByTheEndOfThisWeek (){
+    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisWeek (){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("paymentsByTheEndOfThisWeek", shipmentService.paymentsByTheEndOfThisWeek());
+        int currentWeekNumber = getCurrentWeekNumber();
+        modelAndView.addObject("currentWeekNumber", currentWeekNumber);
+        modelAndView.addObject("allPaymentsByTheEndOfThisWeek", shipmentService.allPaymentsByTheEndOfThisWeek());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfNextWeek (){
+        ModelAndView modelAndView = new ModelAndView();
+        int nextWeekNumber = getNextWeekNumber();
+        modelAndView.addObject("nextWeekNumber", nextWeekNumber);
+        modelAndView.addObject("allPaymentsByTheEndOfNextWeek", shipmentService.allPaymentsByTheEndOfNextWeek());
         return modelAndView;
     }
 

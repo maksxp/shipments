@@ -18,7 +18,15 @@ public interface ShipmentService {
 
     List<Shipment>thisWeekShipments();
 
-    List<Shipment> paymentsByTheEndOfThisWeek();
+    List<Shipment> allPaymentsByTheEndOfThisWeek();
+
+    List<Shipment> allPaymentsByTheEndOfNextWeek();
+
+//    List <Shipment> firstSumPaymentsByTheEndOfThisWeek();
+//
+//    List <Shipment> secondSumPaymentsByTheEndOfThisWeek();
+//
+//    List <Shipment> wholeSumPaymentsByTheEndOfThisWeek();
 
     List<Shipment>thisMonthShipments();
 

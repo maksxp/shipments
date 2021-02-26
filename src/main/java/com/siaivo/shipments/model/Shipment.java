@@ -95,6 +95,8 @@ public class Shipment {
     @Column(name = "destination_place")
     private String destinationPlace;
 
+    private String sumForPayIdentity;
+
     public int getId() {
         return id;
     }
@@ -268,6 +270,14 @@ public class Shipment {
 
     public void setDestinationPlace(String destinationPlace) {
         this.destinationPlace = destinationPlace;
+    }
+
+    public String getSumForPayIdentity() {
+        return sumForPayIdentity;
+    }
+
+    public void setSumForPayIdentity(final String sumForPayIdentity) {
+        this.sumForPayIdentity = sumForPayIdentity;
     }
 
     public String getActualFullSettlementDate(){

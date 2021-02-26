@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <!-- jQuery -->
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Tables -->
     <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
     <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>All Commodities</title>
+    <title>All payments by the end of next week</title>
 
     <style>
         .layerHeader {
@@ -30,46 +30,26 @@
             margin: auto;
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('table thead th').each(function(i) {
-                calculateColumn(i);
-            });
-        });
-
-        function calculateColumn(index) {
-            var total = 0;
-            $('table tr').each(function() {
-                var value = parseFloat(($('.forCount', this).eq(index).text()).replace(/,/g, ''));
-                if (!isNaN(value)) {
-                    total += value;
-                    total = parseFloat(total.toFixed(3));
-                }
-            });
-            // $('table tfoot td').eq(index).text( total.toFixed(3));
-            // $('.sum').eq(index).text(total.toFixed(3));
-            $('.sum').eq(index).text(total);
-        }
-    </script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
 <!--    <script>-->
-<!--        function countDecimals(value) {-->
-<!--            if(Math.floor(value) === value) return 0;-->
-<!--            return value.toString().split(".")[1].length || 0;-->
+<!--        $(document).ready(function() {-->
+<!--            $('table thead th').each(function(i) {-->
+<!--                calculateColumn(i);-->
+<!--            });-->
+<!--        });-->
+
+<!--        function calculateColumn(index) {-->
+<!--            var total = 0;-->
+<!--            $('table tr').each(function() {-->
+<!--                var value = parseFloat($('.forCount', this).eq(index).text());-->
+<!--                if (!isNaN(value)) {-->
+<!--                    total += value;-->
+<!--                }-->
+<!--            });-->
+<!--            // $('table tfoot td').eq(index).text( total.toFixed(3));-->
+<!--            $('.sum').eq(index).text( total.toFixed(3));-->
 <!--        }-->
 <!--    </script>-->
-    <script th:inline="javascript">
-        let count;
-        $(document).ready(function() {
-            $(".countDecimals").countDec({
-
-        })
-            });
-        function countDec (){
-            alert("counted")
-            return 2;
-        }
-    </script>
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
@@ -94,6 +74,7 @@
                     <a class="dropdown-item" href="allCustomers">Усі покупці</a>
                     <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="allCommodities">Усі товари</a>
                     <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
                 </div>
             </li>
@@ -134,21 +115,19 @@
                     Рахунки
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="allInvoices">Усі рахунки</a>
                     <a class="dropdown-item" href="paidInvoices">Оплачені рахунки</a>
                     <a class="dropdown-item" href="unpaidInvoices">Неоплачені рахунки</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Заплановані оплати
+                    План надходженнь
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allPaymentsByTheEndOfThisWeek">До кінця цього тижня</a>
-                    <a class="dropdown-item" href="nextWeekPayments">До кінця наступного тижня</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="thisMonthPayments">До кінця цього місяця</a>
-                    <a class="dropdown-item" href="nextMonthPayments">До кінця наступного місяця</a>
+                    <a class="dropdown-item" href="paymentsByTheEndOfThisMonth">До кінця цього місяця</a>
+                    <a class="dropdown-item" href="paymentsByTheEndOfNextMonth">До кінця наступного місяця</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allPayments">Усі</a>
                     <a class="dropdown-item" href="overduePayments">Прострочені</a>
@@ -166,59 +145,41 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі товари </h3>
+            <h3>Заплановані надходження до кінця наступного тижня (№ <span th:text="${nextWeekNumber}"></span>)</span> </h3>
         </div>
 </div>
-<table  class="table table-hover table-bordered"
+<table  class="table table-hover table-bordered "
         id="table"
+        data-pagination="true"
+        data-page-list="[10, 25, 50, 100, all]"
+        data-show-jump-to="true"
+        data-side-pagination="client"
         data-toggle="table"
-        style="width: max-content">
+        data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th data-field="commodityCode" data-visible="false">Код товару</th>
-        <th data-field="commodityName" >Назва товару</th>
-        <th data-field="shipped" >Відвантажено <br> (всього) </th>
-        <th data-field="loadedAndUnpaidQuantity" >Відвантажено <br> і не оплачено</th>
-        <th data-field="contracted" >До відвантаження <br> (всього)</th>
-        <th data-field="thisWeekNotLoaded" >До відвантаження <br> (на цьому тижні)</th>
-        <th data-field="nextWeekNotLoaded" >До відвантаження <br> (на наступному тижні)</th>
-        <th data-field="thisMonthNotLoaded" >До відвантаження <br> (в цьому місяці)</th>
-        <th data-field="nextMonthNotLoaded" >До відвантаження <br> (в наступному місяці)</th>
+        <th data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
+        <th data-field="customerName" data-filter-control="input">Платник</th>
+        <th data-field="invoiceSum" data-filter-control="input">Сума</th>
+        <th data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
+        <th data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
+        <th data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
+        <th data-field="invoiceComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr th:each="commodity : ${allCommodities}">
-        <td data-field="commodityCode"  data-visible="false" th:text="${commodity.commodityCode}">Код товару</td>
-        <td data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
-        <td class="forCount" data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">Всьго відвантажено</td>
-        <td class="forCount" data-field="loadedAndUnpaidQuantity" th:text="*{commodity.getQuantityOfAllLoadedAndUnpaidGoods(commodity).stripTrailingZeros().toPlainString()}">Всьго відвантажено <br> і не оплачено</td>
-        <td class="forCount" data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (всього)</td>
-        <td class="forCount" data-field="thisWeekNotLoaded" th:text="*{commodity.getQuantityOfThisWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на цьому тижні)</td>
-        <td class="forCount" data-field="nextWeekNotLoaded" th:text="*{commodity.getQuantityOfNextWeekNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (на наступному тижні)</td>
-        <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{commodity.getQuantityOfThisMonthNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (в цьому місяці)</td>
-        <td class="forCount" data-field="nextMonthNotLoaded" th:text="*{commodity.getQuantityOfNextMonthNotLoadedGoods(commodity).stripTrailingZeros().toPlainString()}">До відвантаження <br> (в наступному місяці)</td>
-
+    <tr th:each="shipment : ${allPaymentsByTheEndOfNextWeek}">
+        <td data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
+        <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
+        <td data-field="invoiceSum" th:text="*{shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>
+        <td data-field="paymentTerms" th:text="*{shipment.getContract().getPaymentTerms()}">Умови оплати</td>
+        <td data-field="plannedFullSettlementDate" th:text="*{shipment.getPlannedFullSettlementDate()}">Повний розрахунок <br> (план)</td>
+        <td data-field="actualFullSettlementDate" th:text="*{shipment.getActualFullSettlementDate()}">Повний розрахунок <br> (факт)</td>
+        <td data-field="invoiceComment" th:text="*{shipment.invoiceComment}">Коментар</td>
     </tr>
-    <tfoot style="font-weight: bold">
-    <tr>
-        <td colspan="2" style="text-align: right" th:text="'Всього:'">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
-    </tr>
-    </tfoot>
     </tbody>
 </table>
-<div class="container-fluid">
-    <div class="layerHeader">
-        <h3>Відправлено і не оплачено товарів на суму: <span th:text="${unpaidSumOfLoadedGoodsInEUR}==0 ? ('') :(${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInEUR.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' EUR')"></span>&nbsp;<span th:text="${unpaidSumOfLoadedGoodsInUSD}==0 ? ('') : (' та '+${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInUSD.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' USD')"></span> </h3>
-    </div>
-</div>
 <script>
     $(function() {
         $('#table').bootstrapTable()
