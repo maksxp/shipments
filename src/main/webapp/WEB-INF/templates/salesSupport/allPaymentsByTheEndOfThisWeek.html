@@ -168,14 +168,44 @@
     </thead>
 
     <tbody>
-    <tr th:each="shipment : ${allPaymentsByTheEndOfThisWeek}">
+    <tr th:each="shipment, iterStat : ${allPaymentsByTheEndOfThisWeek}">
         <td data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
 <!--        <td data-field="sumForPayment" th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>-->
-        <td data-field="sumForPayment" th:text="${shipment.getSumForPayIdentity()}=='second'?
-        (${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}): 'test'">
+        <th:block th:switch="${shipment.getSumForPayIdentity()}">
+            <td th:case="'first'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'second'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'whole'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'firstAndSecond'" data-field="sumForPayment"
+                th:text="${iterStat.odd} ?
+                ${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()} :
+                ${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+        </th:block>
         <td data-field="paymentTerms" th:text="${shipment.getContract().getPaymentTerms()}">Умови оплати</td>
-        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>
+        <th:block th:switch="${shipment.getSumForPayIdentity()}">
+            <td th:case="'first'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfFirstPartSum()">
+            </td>
+            <td th:case="'second'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfSecondPartSum()}">
+            </td>
+            <td th:case="'whole'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfWholeSum()}">
+            </td>
+            <td th:case="'firstAndSecond'" data-field="estimatedDate"
+                th:text="${iterStat.odd} ?
+                ${shipment.getPlannedPaymentDateOfFirstPartSum()} :
+                ${shipment.getPlannedPaymentDateOfSecondPartSum()}">
+            </td>
+        </th:block>
+<!--        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>-->
         <td data-field="invoiceComment" th:text="${shipment.invoiceComment}">Коментар</td>
     </tr>
     </tbody>

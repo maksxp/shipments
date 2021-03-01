@@ -276,8 +276,16 @@ public class Shipment {
         return sumForPayIdentity;
     }
 
-    public void setSumForPayIdentity(final String sumForPayIdentity) {
-        this.sumForPayIdentity = sumForPayIdentity;
+    public void setSumForPayIdentity(String sumForPayIdentity) {
+        if (null == this.sumForPayIdentity){
+            this.sumForPayIdentity = sumForPayIdentity;
+        } else if ("first".equals(this.sumForPayIdentity) && "second".equals(sumForPayIdentity)) {
+            this.sumForPayIdentity = "firstAndSecond";
+        } else if ("second".equals(this.sumForPayIdentity) && "first".equals(sumForPayIdentity)) {
+            this.sumForPayIdentity = "firstAndSecond";
+        } else {
+            this.sumForPayIdentity = sumForPayIdentity;
+        }
     }
 
     public String getActualFullSettlementDate(){

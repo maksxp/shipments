@@ -62,7 +62,7 @@ public class ShipmentServiceImpl implements ShipmentService{
                 secondSumPaymentsByTheEndOfThisWeek().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfThisWeek.addAll(
                 wholeSumPaymentsByTheEndOfThisWeek().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
-        allPaymentsByTheEndOfThisWeek.forEach(shipment -> System.out.println("sum id "+shipment.getSumForPayIdentity()));
+        allPaymentsByTheEndOfThisWeek.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
         return allPaymentsByTheEndOfThisWeek;
     }
 
@@ -81,6 +81,8 @@ public class ShipmentServiceImpl implements ShipmentService{
     public List <Shipment> firstSumPaymentsByTheEndOfThisWeek(){
         List <Shipment> firstSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
+        System.out.println();
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() ||shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
@@ -99,7 +101,7 @@ public class ShipmentServiceImpl implements ShipmentService{
     public List <Shipment> firstSumPaymentsByTheEndOfNextWeek(){
         List <Shipment> firstSumPaymentsByTheEndOfNextWeek = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+                Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfNextWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() ||shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
         firstSumPaymentsByTheEndOfNextWeek = firstSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> {
@@ -117,6 +119,7 @@ public class ShipmentServiceImpl implements ShipmentService{
     public List <Shipment> secondSumPaymentsByTheEndOfThisWeek(){
         List <Shipment> secondSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -154,6 +157,7 @@ public class ShipmentServiceImpl implements ShipmentService{
     public List <Shipment> wholeSumPaymentsByTheEndOfThisWeek(){
         List <Shipment> wholeSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());

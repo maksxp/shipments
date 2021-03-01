@@ -282,7 +282,9 @@ public class ShipmentController {
         ModelAndView modelAndView = new ModelAndView();
         int nextWeekNumber = getNextWeekNumber();
         modelAndView.addObject("nextWeekNumber", nextWeekNumber);
-        modelAndView.addObject("allPaymentsByTheEndOfNextWeek", shipmentService.allPaymentsByTheEndOfNextWeek());
+        List <Shipment> allPaymentsByTheEndOfNextWeekSorted = shipmentService.allPaymentsByTheEndOfNextWeek();
+        allPaymentsByTheEndOfNextWeekSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allPaymentsByTheEndOfNextWeekSorted", allPaymentsByTheEndOfNextWeekSorted);
         return modelAndView;
     }
 
