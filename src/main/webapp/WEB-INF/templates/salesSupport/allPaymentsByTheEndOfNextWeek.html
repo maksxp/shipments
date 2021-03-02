@@ -126,11 +126,11 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allPaymentsByTheEndOfThisWeek">До кінця цього тижня</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="paymentsByTheEndOfThisMonth">До кінця цього місяця</a>
-                    <a class="dropdown-item" href="paymentsByTheEndOfNextMonth">До кінця наступного місяця</a>
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfThisMonth">До кінця цього місяця</a>
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfNextMonth">До кінця наступного місяця</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="allPayments">Усі</a>
-                    <a class="dropdown-item" href="overduePayments">Прострочені</a>
+                    <a class="dropdown-item" href="allPlannedPayments">Усі</a>
+                    <a class="dropdown-item" href="allOverduePayments">Прострочені</a>
                 </div>
             </li>
                         <!--            <li class="nav-item">-->
@@ -160,23 +160,53 @@
     <tr>
         <th data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
         <th data-field="customerName" data-filter-control="input">Платник</th>
-        <th data-field="invoiceSum" data-filter-control="input">Сума</th>
+        <th data-field="sumForPayment" data-filter-control="input">Сума</th>
         <th data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
-        <th data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
-        <th data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
+        <th data-field="estimatedDate" data-filter-control="input">Очікувана дата</th>
         <th data-field="invoiceComment" data-filter-control="input">Коментар</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr th:each="shipment : ${allPaymentsByTheEndOfNextWeek}">
+    <tr th:each="shipment, iterStat : ${allPaymentsByTheEndOfNextWeekSorted}">
         <td data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
-        <td data-field="invoiceSum" th:text="*{shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>
-        <td data-field="paymentTerms" th:text="*{shipment.getContract().getPaymentTerms()}">Умови оплати</td>
-        <td data-field="plannedFullSettlementDate" th:text="*{shipment.getPlannedFullSettlementDate()}">Повний розрахунок <br> (план)</td>
-        <td data-field="actualFullSettlementDate" th:text="*{shipment.getActualFullSettlementDate()}">Повний розрахунок <br> (факт)</td>
-        <td data-field="invoiceComment" th:text="*{shipment.invoiceComment}">Коментар</td>
+<!--        <td data-field="sumForPayment" th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>-->
+        <th:block th:switch="${shipment.getSumForPayIdentity()}">
+            <td th:case="'first'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'second'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'whole'" data-field="sumForPayment"
+                th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+            <td th:case="'firstAndSecond'" data-field="sumForPayment"
+                th:text="${iterStat.odd} ?
+                ${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()} :
+                ${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+            </td>
+        </th:block>
+        <td data-field="paymentTerms" th:text="${shipment.getContract().getPaymentTerms()}">Умови оплати</td>
+        <th:block th:switch="${shipment.getSumForPayIdentity()}">
+            <td th:case="'first'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfFirstPartSum()}">
+            </td>
+            <td th:case="'second'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfSecondPartSum()}">
+            </td>
+            <td th:case="'whole'" data-field="estimatedDate"
+                th:text="${shipment.getPlannedPaymentDateOfWholeSum()}">
+            </td>
+            <td th:case="'firstAndSecond'" data-field="estimatedDate"
+                th:text="${iterStat.odd} ?
+                ${shipment.getPlannedPaymentDateOfFirstPartSum()} :
+                ${shipment.getPlannedPaymentDateOfSecondPartSum()}">
+            </td>
+        </th:block>
+<!--        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>-->
+        <td data-field="invoiceComment" th:text="${shipment.invoiceComment}">Коментар</td>
     </tr>
     </tbody>
 </table>

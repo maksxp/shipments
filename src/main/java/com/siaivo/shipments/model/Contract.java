@@ -153,7 +153,7 @@ public class Contract {
     public BigDecimal getSumOfContract (Contract contract){
         List <BigDecimal> costOfEachProduct = new ArrayList<>();
         contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
-        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add).stripTrailingZeros();
     }
 
     public String getDeliveryTerms() {

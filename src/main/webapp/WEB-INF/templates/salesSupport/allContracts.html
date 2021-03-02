@@ -177,7 +177,7 @@
         <td data-sortable="true" data-filter-control="input" data-visible="false" th:text="${contract.id}">id</td>
         <td style="width: 6em" data-sortable="true" data-field="contractNumber" data-filter-control="input" th:text="${contract.contractNumber}">contractNumber</td>
         <td data-sortable="true" data-field="customerName" data-filter-control="input" style="word-wrap: break-word" th:text="${contract.getCustomer().customerName}">customerName</td>
-        <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${#numbers.formatDecimal(contract.getSumOfContract(contract).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
+        <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${#strings.replace(#numbers.formatDecimal(contract.getSumOfContract(contract), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
         <td data-sortable="true" data-field="paymentTerms" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.paymentTerms}">paymentTerms</td>
 <!--        <td data-sortable="true" data-field="uniqueCommodityNames" data-filter-control="select" style="word-wrap: break-word" th:text="${contract.getStringOfUniqueCommodityNames(contract)}">commodityNames</td>-->
 <!--        <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${contract.getSumOfContract(contract).stripTrailingZeros().toPlainString()}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>-->

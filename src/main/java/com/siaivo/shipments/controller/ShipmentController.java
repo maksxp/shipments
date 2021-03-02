@@ -33,6 +33,20 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/allPlannedPayments", method = RequestMethod.GET)
+    public ModelAndView allPlannedPayments(){
+        ModelAndView modelAndView = getModelAndViewWithAllPlannedPayments();
+        modelAndView.setViewName("/salesSupport/allPlannedPayments");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/allOverduePayments", method = RequestMethod.GET)
+    public ModelAndView allOverduePayments(){
+        ModelAndView modelAndView = getModelAndViewWithAllOverduePayments();
+        modelAndView.setViewName("/salesSupport/allOverduePayments");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfThisWeek", method = RequestMethod.GET)
         public ModelAndView paymentsByTheEndOfThisWeekForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfThisWeek();
@@ -40,10 +54,24 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfThisMonth", method = RequestMethod.GET)
+    public ModelAndView paymentsByTheEndOfThisMonthForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfThisMonth();
+        modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfThisMonth");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfNextWeek", method = RequestMethod.GET)
     public ModelAndView paymentsByTheEndOfNextWeekForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfNextWeek();
         modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfNextWeek");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfNextMonth", method = RequestMethod.GET)
+    public ModelAndView paymentsByTheEndOfNextMonthForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfNextMonth();
+        modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfNextMonth");
         return modelAndView;
     }
 
@@ -270,11 +298,29 @@ public class ShipmentController {
         return modelAndView;
     }
 
+//    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisWeek (){
+//        ModelAndView modelAndView = new ModelAndView();
+//        int currentWeekNumber = getCurrentWeekNumber();
+//        modelAndView.addObject("currentWeekNumber", currentWeekNumber);
+//        modelAndView.addObject("allPaymentsByTheEndOfThisWeekSorted", shipmentService.allPaymentsByTheEndOfThisWeek());
+//        return modelAndView;
+//    }
+
     private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisWeek (){
         ModelAndView modelAndView = new ModelAndView();
         int currentWeekNumber = getCurrentWeekNumber();
         modelAndView.addObject("currentWeekNumber", currentWeekNumber);
-        modelAndView.addObject("allPaymentsByTheEndOfThisWeek", shipmentService.allPaymentsByTheEndOfThisWeek());
+        List <Shipment> allPaymentsByTheEndOfThisWeekSorted = shipmentService.allPaymentsByTheEndOfThisWeek();
+        allPaymentsByTheEndOfThisWeekSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allPaymentsByTheEndOfThisWeekSorted", allPaymentsByTheEndOfThisWeekSorted);
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisMonth (){
+        ModelAndView modelAndView = new ModelAndView();
+        List <Shipment> allPaymentsByTheEndOfThisMonthSorted = shipmentService.allPaymentsByTheEndOfThisMonth();
+        allPaymentsByTheEndOfThisMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allPaymentsByTheEndOfThisMonthSorted", allPaymentsByTheEndOfThisMonthSorted);
         return modelAndView;
     }
 
@@ -288,6 +334,29 @@ public class ShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfNextMonth (){
+        ModelAndView modelAndView = new ModelAndView();
+        List <Shipment> allPaymentsByTheEndOfNextMonthSorted = shipmentService.allPaymentsByTheEndOfNextMonth ();
+        allPaymentsByTheEndOfNextMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allPaymentsByTheEndOfNextMonthSorted", allPaymentsByTheEndOfNextMonthSorted);
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithAllPlannedPayments (){
+        ModelAndView modelAndView = new ModelAndView();
+        List <Shipment> allPlannedPaymentsSorted = shipmentService.allPlannedPayments();
+        allPlannedPaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allPlannedPaymentsSorted", allPlannedPaymentsSorted);
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithAllOverduePayments (){
+        ModelAndView modelAndView = new ModelAndView();
+        List <Shipment> allOverduePaymentsSorted = shipmentService.allOverduePayments();
+        allOverduePaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("allOverduePaymentsSorted", allOverduePaymentsSorted);
+        return modelAndView;
+    }
 
     private ModelAndView getModelAndViewWithPaidShipments (){
         ModelAndView modelAndView = new ModelAndView();
