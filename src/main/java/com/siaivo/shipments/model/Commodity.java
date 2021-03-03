@@ -63,9 +63,9 @@ public class Commodity {
         this.commodityCode = commodityCode;
     }
 
-    public BigDecimal getQuantityOfAllLoadedGoods (Commodity commodity){
+    public BigDecimal getQuantityOfAllLoadedGoods (){
         List <ProductForShipment> allLoadedProductsForShipmentFromThisCommodity;
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
@@ -74,30 +74,30 @@ public class Commodity {
         return quantityOfEachLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getUnpaidSumOfLoadedGoodsInEUR (Commodity commodity){
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+    public BigDecimal getUnpaidSumOfLoadedGoodsInEUR (){
+        List <Product> allProductsFromThisCommodity = products;
         List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProduct = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProduct.add(product.getUnpaidSumOfLoadedProductInEUR()));
         return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getUnpaidSumOfLoadedGoodsInUSD (Commodity commodity){
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+    public BigDecimal getUnpaidSumOfLoadedGoodsInUSD (){
+        List <Product> allProductsFromThisCommodity = products;
         List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProduct = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProduct.add(product.getUnpaidSumOfLoadedProductInUSD ()));
         return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfAllLoadedAndUnpaidGoods (Commodity commodity){
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+    public BigDecimal getQuantityOfAllLoadedAndUnpaidGoods (){
+        List <Product> allProductsFromThisCommodity = products;
         List <BigDecimal> quantityOfEachLoadedAndUnpaidProduct = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> quantityOfEachLoadedAndUnpaidProduct.add(product.getLoadedAndUnpaidQuantity()));
         return quantityOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfAllNotLoadedGoods (Commodity commodity){
+    public BigDecimal getQuantityOfAllNotLoadedGoods (){
         List <ProductForShipment> allNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         allNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()==null || productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
@@ -106,9 +106,9 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfThisWeekNotLoadedGoods (Commodity commodity) {
+    public BigDecimal getQuantityOfThisWeekNotLoadedGoods () {
         List <ProductForShipment> thisWeekNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         thisWeekNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
@@ -124,9 +124,9 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfThisMonthNotLoadedGoods (Commodity commodity) {
+    public BigDecimal getQuantityOfThisMonthNotLoadedGoods () {
         List <ProductForShipment> thisMonthNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         thisMonthNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
@@ -142,9 +142,9 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfNextWeekNotLoadedGoods (Commodity commodity){
+    public BigDecimal getQuantityOfNextWeekNotLoadedGoods (){
         List <ProductForShipment> nextWeekNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         nextWeekNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {
@@ -160,9 +160,9 @@ public class Commodity {
         return quantityOfEachNotLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getQuantityOfNextMonthNotLoadedGoods (Commodity commodity){
+    public BigDecimal getQuantityOfNextMonthNotLoadedGoods (){
         List <ProductForShipment> nextMonthNotLoadedProductsForShipmentFromThisCommodity = new ArrayList<>();
-        List <Product> allProductsFromThisCommodity = commodity.getProducts();
+        List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
         nextMonthNotLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> {

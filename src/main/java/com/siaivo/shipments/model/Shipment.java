@@ -229,7 +229,7 @@ public class Shipment {
     public void setActualPaymentDateOfSecondPartSum(String actualPaymentDateOfSecondPartSum) {
         this.actualPaymentDateOfSecondPartSum = actualPaymentDateOfSecondPartSum;
         if (getUnpaidSumOfFirstPartSum()!=null&&getUnpaidSumOfFirstPartSum().equals(BigDecimal.ZERO))
-        this.actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
+        actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
     }
 
     public String getPlannedPaymentDateOfWholeSum() {

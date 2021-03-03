@@ -150,9 +150,16 @@ public class Contract {
         return stringOfCommodityNames.replaceAll("/","+");
     }
 
-    public BigDecimal getSumOfContract (Contract contract){
+//    public BigDecimal getSumOfContract (Contract contract){
+//        List <BigDecimal> costOfEachProduct = new ArrayList<>();
+//        contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
+//        return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add).stripTrailingZeros();
+//    }
+
+    public BigDecimal getSumOfContract (){
         List <BigDecimal> costOfEachProduct = new ArrayList<>();
-        contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
+//        contract.getProducts().stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
+        products.stream().forEach(product -> costOfEachProduct.add((product.getQuantity()).multiply(product.getPrice())));
         return costOfEachProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add).stripTrailingZeros();
     }
 

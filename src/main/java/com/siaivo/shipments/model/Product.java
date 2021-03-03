@@ -42,9 +42,6 @@ public class Product {
     @Column(name = "product_batch")
     private String batch;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<ProductForShipment> productsForShipment;
-
     public int getId() {
         return id;
     }
@@ -132,22 +129,32 @@ public class Product {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+//    public BigDecimal getLoadedAndUnpaidQuantity (){
+//        List <BigDecimal> quantityOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+//        getProductsForShipments()
+//                .stream()
+//                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+//                .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+//                .collect(Collectors.toList())
+//                .forEach(productForShipment -> quantityOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity()));
+//        return quantityOfLoadedAndUnpaidProductInEachShipment
+//                .stream()
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//    }
+
     public BigDecimal getLoadedAndUnpaidQuantity (){
-        List <BigDecimal> quantityOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+        List <BigDecimal> quantityOfLoadedAndUnpaidProductsForShipment = new ArrayList<>();
         getProductsForShipments()
-                .stream()
-                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
-                .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
-                .collect(Collectors.toList())
-                .forEach(productForShipment -> quantityOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity()));
-        return quantityOfLoadedAndUnpaidProductInEachShipment
+                .forEach(productForShipment -> quantityOfLoadedAndUnpaidProductsForShipment.add(productForShipment.getLoadedAndUnpaidQuantity()));
+
+        return quantityOfLoadedAndUnpaidProductsForShipment
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getUnpaidSumOfLoadedProductInEUR (){
         BigDecimal unpaidSumOfLoadedProductInEUR = BigDecimal.ZERO;
-        if (this.currency.equals("EUR")){
+        if (currency.equals("EUR")){
             List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
             getProductsForShipments()
                     .stream()

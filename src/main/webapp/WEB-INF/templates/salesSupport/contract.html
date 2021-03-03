@@ -207,7 +207,7 @@
     <td th:text="${contract.startOfShipments}">Початок <br> відвантажень</td>
     <td th:text="${contract.endOfShipments}">Завершення <br> відвантажень</td>
     <td th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага <br> всіх товарів</td>
-    <td th:text="${#numbers.formatDecimal(contract.getSumOfContract(contract).stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
+    <td th:text="${#numbers.formatDecimal(contract.getSumOfContract().stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
     <td style="word-wrap: break-word" th:text="${contract.comment}">Коментар</td>
 <!--    <td style="width: max-content">-->
      <td style="width: 10em">
