@@ -121,10 +121,24 @@ public class Product {
         List <BigDecimal> quantityOfLoadedProductInEachShipment = new ArrayList<>();
         getProductsForShipments()
                 .stream()
-                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+//                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+                .filter(productForShipment -> productForShipment.isLoaded())
                 .collect(Collectors.toList())
                 .forEach(productForShipment -> quantityOfLoadedProductInEachShipment.add(productForShipment.getQuantity()));
         return quantityOfLoadedProductInEachShipment
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getLoadedOrPaidQuantity (){
+        List <BigDecimal> quantityOfLoadedOrPaidProductInEachShipment = new ArrayList<>();
+        getProductsForShipments()
+                .stream()
+//                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+                .filter(productForShipment -> productForShipment.isLoaded()|| productForShipment.isAnySumPaid())
+                .collect(Collectors.toList())
+                .forEach(productForShipment -> quantityOfLoadedOrPaidProductInEachShipment.add(productForShipment.getQuantity()));
+        return quantityOfLoadedOrPaidProductInEachShipment
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

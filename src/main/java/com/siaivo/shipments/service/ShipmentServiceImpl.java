@@ -2,7 +2,9 @@ package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
+import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
+import com.siaivo.shipments.repository.ProductForShipmentRepository;
 import com.siaivo.shipments.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,14 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Qualifier("shipmentRepository")
     @Autowired
     private ShipmentRepository shipmentRepository;
+
+    @Qualifier("productForShipmentRepository")
+    @Autowired
+    private ProductForShipmentRepository productForShipmentRepository;
+
+    @Autowired
+    private ProductForShipmentService productForShipmentService;
+
     @Override
     public Shipment findById(int id) {
         return shipmentRepository.findById(id);
@@ -39,7 +49,10 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     @Override
     public void deleteShipment(Shipment shipment) {
-        shipmentRepository.delete(shipment);
+        if (!shipment.isLoadedOrAnyPaymentMade()) {
+            productForShipmentRepository.findByShipment(shipment).forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment));
+            shipmentRepository.delete(shipment);
+        }
     }
 
 
@@ -118,13 +131,15 @@ public class ShipmentServiceImpl implements ShipmentService{
                 return allPaymentsByTheEndOfNextWeek;
     }
 
+
+
     @Override
     public List <Shipment> allPaymentsByTheEndOfNextMonth() {
         List <Shipment> allPaymentsByTheEndOfNextMonth = new ArrayList<>();
         allPaymentsByTheEndOfNextMonth.addAll(
                 firstSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfNextMonth.addAll(
-                secondSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
+                this.secondSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfNextMonth.addAll(
                 wholeSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         return allPaymentsByTheEndOfNextMonth;
@@ -513,13 +528,6 @@ public class ShipmentServiceImpl implements ShipmentService{
 
 
 
-//    @Override
-//    public Shipment getOne(int id) {
-//        return shipmentRepository.getOne(id);
-//    }
-
-
-
     @Override
     public List<Shipment> allShipments() {
         return shipmentRepository.findAll();
@@ -533,6 +541,15 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public List<Shipment> unpaidShipments() {
         return shipmentRepository.findUnpaidShipments();
+    }
+
+    @Override
+    public List<Shipment> notLoadedAndWithoutAnyPaymentShipments() {
+        List <Shipment> notLoadedAndWithoutAnyPaymentShipments=shipmentRepository.findNotLoadedShipments();
+        notLoadedAndWithoutAnyPaymentShipments.removeAll(shipmentRepository.findFirstPartSumPaidShipments());
+        notLoadedAndWithoutAnyPaymentShipments.removeAll(shipmentRepository.findSecondPartSumPaidShipments());
+        notLoadedAndWithoutAnyPaymentShipments.removeAll(shipmentRepository.findPaidShipments());
+        return notLoadedAndWithoutAnyPaymentShipments;
     }
 
     @Override

@@ -48,6 +48,8 @@ public interface ShipmentService {
 
     List<Shipment> unpaidShipments();
 
+    List<Shipment> notLoadedAndWithoutAnyPaymentShipments();
+
     List<Shipment> paidShipments();
 
     List<Shipment> fulfilledShipments();

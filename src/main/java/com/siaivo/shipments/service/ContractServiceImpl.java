@@ -1,7 +1,9 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import com.siaivo.shipments.repository.ContractRepository;
 
@@ -10,10 +12,12 @@ import java.util.List;
 
 @Service("contractService")
 public class ContractServiceImpl implements ContractService{
+
     @Autowired
     private ContractRepository contractRepository;
+
     @Autowired
-    private ContractService contractService;
+    private ShipmentService shipmentService;
 
     @Override
     public void saveEditRequest(Contract contract) {
@@ -23,7 +27,12 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public void saveContract(Contract contract) {
-        contractRepository.save(contract);
+        if (!contract.getState().equals("скасований")){
+            contractRepository.save(contract);
+        } else {
+            shipmentService.notLoadedAndWithoutAnyPaymentShipments().forEach(shipment -> shipmentService.deleteShipment(shipment));
+            contractRepository.save(contract);
+        }
     }
 
     @Override
@@ -35,7 +44,7 @@ public class ContractServiceImpl implements ContractService{
     public List<Contract> openContracts(){
         List <Contract> closedContracts = new ArrayList<>();
         List <Contract> cancelledContracts = new ArrayList<>();
-        List <Contract> contractsToReturn = contractService.allContracts();
+        List <Contract> contractsToReturn = contractRepository.findAll();
         closedContracts.addAll(contractRepository.findByStateLike("виконаний"));
         cancelledContracts.addAll(contractRepository.findByStateLike("скасований"));
         contractsToReturn.removeAll(closedContracts);

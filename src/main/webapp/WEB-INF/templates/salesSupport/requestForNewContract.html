@@ -15,27 +15,27 @@
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
     <title>Request for new contract</title>
-    <script>
-    $( function() {
-    let availableTerms = [
-    "1 день по завантаженню",
-    "1 день по прибуттю",
-    "2 дні по прибуттю",
-    "5 днів по прибуттю",
-    "7 днів по прибуттю",
-    "10 днів по прибуттю",
-    "30 днів по прибуттю",
-    "60 днів по прибуттю",
-    "повна передоплата",
-    "оплата частинами",
-    "інше",
-    ];
-    $( "#paymentTerms" ).autocomplete({
-    minLength : 1,
-    source: availableTerms,
-    });
-    } );
-    </script>
+<!--    <script>-->
+<!--    $( function() {-->
+<!--    let availableTerms = [-->
+<!--    "1 день по завантаженню",-->
+<!--    "1 день по прибуттю",-->
+<!--    "2 дні по прибуттю",-->
+<!--    "5 днів по прибуттю",-->
+<!--    "7 днів по прибуттю",-->
+<!--    "10 днів по прибуттю",-->
+<!--    "30 днів по прибуттю",-->
+<!--    "60 днів по прибуттю",-->
+<!--    "повна передоплата",-->
+<!--    "оплата частинами",-->
+<!--    "інше",-->
+<!--    ];-->
+<!--    $( "#paymentTerms" ).autocomplete({-->
+<!--    minLength : 1,-->
+<!--    source: availableTerms,-->
+<!--    });-->
+<!--    } );-->
+<!--    </script>-->
 
     <script th:inline="javascript">
         const allCustomersNames = /*[[${allCustomersNames}]]*/'noValue';
@@ -237,11 +237,34 @@
                     </div>
                     <div class="form-group">
                         <div class="ui-widget">
-                            <p style="font-size: small; font-weight: bold">Умови оплати</p>
-                            <input th:name="paymentTerms" id="paymentTerms" required/>
+                                 <p style="font-size: small; font-weight: bold">Умови оплати</p>
+                                    <select  th:field="*{paymentTerms}" required>
+                                       <option value="" style="font-size: small; font-weight: bold">Оберіть</option>
+                                       <option th:value="'1 день по завантаженню'">1 день по завантаженню</option>
+                                       <option th:value="'1 день по прибуттю'">1 день по прибуттю</option>
+                                       <option th:value="'2 дні по прибуттю'">2 дні по прибуттю</option>
+                                       <option th:value="'5 днів по прибуттю'">5 днів по прибуттю</option>
+                                       <option th:value="'7 днів по прибуттю'">7 днів по прибуттю</option>
+                                       <option th:value="'10 днів по прибуттю'">10 днів по прибуттю</option>
+                                       <option th:value="'30 днів по прибуттю'">30 днів по прибуттю</option>
+                                       <option th:value="'60 днів по прибуттю'">60 днів по прибуттю</option>
+                                       <option th:value="'повна передоплата'">повна передоплата</option>
+                                       <option th:value="'оплата частинами'">оплата частинами</option>
+                                       <option th:value="'інше'">інше</option>
+                                    </select>
                         </div>
                     </div>
                     <div class="form-group">
+
+                    <!--                    <div class="form-group">-->
+                    <!--                        <div class="ui-widget">-->
+                    <!--                            <p style="font-size: small; font-weight: bold">Умови оплати</p>-->
+                    <!--                            <input th:name="paymentTerms" id="paymentTerms" required/>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class="form-group">-->
+
+
                         <div class="ui-widget">
                             <p style="font-size: small; font-weight: bold">Умови доставки</p>
                             <select  th:field="*{deliveryTerms}" required>

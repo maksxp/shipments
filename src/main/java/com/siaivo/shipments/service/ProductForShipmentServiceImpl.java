@@ -1,6 +1,7 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
 import com.siaivo.shipments.repository.ProductForShipmentRepository;

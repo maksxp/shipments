@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -196,13 +197,15 @@ public class ContractController {
     @RequestMapping(value="/salesSupport/contractPreparation", method = RequestMethod.POST)
     public ModelAndView postContractPreparationForSalesSupport (@RequestParam("id") int id, @RequestParam("contractDate") String contractDate, @RequestParam("contractNumber") String contractNumber, @RequestParam("numberOfTrucks") int numberOfTrucks){
         Contract contract = contractService.findContractById(id);
-        int numberOfLoadedTrucks = (int) shipmentService.allShipmentsPerContract(contract).stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
+//        int numberOfLoadedTrucks = (int) shipmentService.allShipmentsPerContract(contract).stream().filter(shipment -> !shipment.getActualLoadingDate().equals("") || shipment.getActualLoadingDate() != null).count();
+        int numberOfLoadedOrPaidTrucks = (int) shipmentService.allShipmentsPerContract(contract).stream().filter(shipment -> shipment.isLoadedOrAnyPaymentMade()).count();
+        System.out.println("numberOfLoadedOrPaidTrucks: "+numberOfLoadedOrPaidTrucks);
         contract.setContractNumber(contractNumber);
         contract.setContractDate(contractDate);
         contract.setState("підготовлений");
         contractService.saveContract(contract);
         List <Product> products = contract.getProducts();
-            for (int i = numberOfLoadedTrucks; i<numberOfTrucks; i++){
+            for (int i = numberOfLoadedOrPaidTrucks; i<numberOfTrucks; i++){
                 ProductsForShipmentForm productsForShipmentForm = new ProductsForShipmentForm(contract.getProducts().size());
                 Shipment shipment = new Shipment();
                 shipment.setContract(contract);
@@ -216,7 +219,7 @@ public class ContractController {
                 for (int j=0; j<productsForShipmentForm.getProductsForShipment().size(); j++) {
                     productsForShipmentForm.getProductsForShipment().get(j).setShipment(shipment);
                     productsForShipmentForm.getProductsForShipment().get(j).setProduct(products.get(j));
-                    productsForShipmentForm.getProductsForShipment().get(j).setQuantity((products.get(j).getQuantity()).subtract(products.get(j).getLoadedQuantity()).divide(BigDecimal.valueOf(numberOfTrucks-numberOfLoadedTrucks),3, RoundingMode.UP));
+                    productsForShipmentForm.getProductsForShipment().get(j).setQuantity((products.get(j).getQuantity()).subtract(products.get(j).getLoadedOrPaidQuantity()).divide(BigDecimal.valueOf(numberOfTrucks-numberOfLoadedOrPaidTrucks),3, RoundingMode.UP));
                 }
                 shipment.setProductsForShipment(productsForShipmentForm.getProductsForShipment());
                 shipmentService.saveShipment(shipment);
@@ -294,9 +297,9 @@ public class ContractController {
             }
         });
         List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
-        List<Shipment> notLoadedShipments = allShipmentsPerContract.stream().filter(shipment -> shipment.getActualLoadingDate()==null || shipment.getActualLoadingDate().equals("")).collect(Collectors.toList());
-        notLoadedShipments.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
-        notLoadedShipments.forEach(shipment -> shipmentService.deleteShipment(shipment));
+        List<Shipment> notLoadedOrAnyPaymentMade = allShipmentsPerContract.stream().filter(shipment -> !shipment.isLoadedOrAnyPaymentMade()).collect(Collectors.toList());
+        notLoadedOrAnyPaymentMade.forEach(shipment -> shipmentService.deleteShipment(shipment));
+        notLoadedOrAnyPaymentMade.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
         productsFromView.stream().filter(product -> !productsFromDatabase.contains(product)).forEach(product -> productService.saveProduct(product));
         return getModelAndViewWithContractsForPreparation();
     }

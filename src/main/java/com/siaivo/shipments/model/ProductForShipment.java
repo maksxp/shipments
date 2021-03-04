@@ -23,6 +23,14 @@ public class ProductForShipment {
     @JoinColumn(name="shipment_id")
     Shipment shipment;
 
+    public ProductForShipment (){
+
+    }
+
+    public ProductForShipment (Product product) {
+        setProduct(product);
+    }
+
     public int getId() {
         return id;
     }
@@ -63,14 +71,10 @@ public class ProductForShipment {
                     loadedAndUnpaidQuantity = getQuantity();
                     break;
                 } else if (isLoaded()&&!isFirstPartSumPaid()){
-//                    loadedAndUnpaidQuantity = (shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(),2, RoundingMode.HALF_UP)).divide(product.getPrice(),2, RoundingMode.HALF_UP);
-                    loadedAndUnpaidQuantity = (shipment.getInvoiceWholeSum().subtract(shipment.getInvoiceSecondPartSum())).divide(product.getPrice(),2, RoundingMode.HALF_UP);
-                    loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum()));
+                    loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
                     break;
                 } else if (isLoaded()&&!isSecondPartSumPaid()){
-//                    loadedAndUnpaidQuantity = (shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum(), 2, RoundingMode.HALF_UP)).divide(product.getPrice(), 2, RoundingMode.HALF_UP);
-//                    loadedAndUnpaidQuantity = (shipment.getInvoiceSecondPartSum()).divide(product.getPrice(),2, RoundingMode.HALF_UP);
-                    loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum()));
+                    loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
                     break;
                 }
             default:
@@ -82,24 +86,33 @@ public class ProductForShipment {
         return loadedAndUnpaidQuantity;
     }
 
-    private Boolean isLoaded (){
+    public boolean isLoaded (){
         return shipment.getActualLoadingDate() != null && !shipment.getActualLoadingDate().equals("");
     }
 
-    private Boolean isWholeSumPaid (){
+    private boolean isWholeSumPaid (){
         return shipment.getActualPaymentDateOfWholeSum()!=null && !shipment.getActualPaymentDateOfWholeSum().equals("");
     }
 
-    private Boolean isFirstPartSumPaid (){
+    private boolean isFirstPartSumPaid (){
         return shipment.getActualPaymentDateOfFirstPartSum()!=null && !shipment.getActualPaymentDateOfFirstPartSum().equals("");
     }
 
-    private Boolean isSecondPartSumPaid (){
+    private boolean isSecondPartSumPaid (){
         return shipment.getActualPaymentDateOfSecondPartSum()!=null && !shipment.getActualPaymentDateOfSecondPartSum().equals("");
     }
 
-    private Boolean isFirstAndSecondPartSumUnpaid () {
+    private boolean isFirstAndSecondPartSumUnpaid () {
        return !isFirstPartSumPaid()&&!isSecondPartSumPaid();
+    }
+
+
+    public boolean isAnySumPaid () {
+        boolean isAnySumPaid=false;
+        if (isFirstPartSumPaid()||isSecondPartSumPaid()||isWholeSumPaid()){
+            isAnySumPaid=true;
+        }
+        return isAnySumPaid;
     }
 
 }

@@ -83,7 +83,7 @@ public class Shipment {
     @Column(name = "actual_payment_date_of_whole_sum")
     private String actualPaymentDateOfWholeSum;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipment")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shipment")
     private List<ProductForShipment> productsForShipment;
 
     @Column(name = "is_fulfilled")
@@ -367,7 +367,6 @@ public class Shipment {
     }
 
     public List<ProductForShipment> getProductsForShipment() {
-
         return productsForShipment.stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).collect(Collectors.toList());
     }
 
@@ -481,6 +480,71 @@ public class Shipment {
             unpaidSumOfWholeSum = getInvoiceWholeSum();
         }
         return unpaidSumOfWholeSum;
+    }
+
+//    public boolean isLoadedOrAnyPaymentMade () {
+//        boolean isLoadedOrAnyPaymentMade = false;
+//        if (isLoaded()) {
+//            isLoadedOrAnyPaymentMade = true;
+//        }
+//        if (isFirstPartSumPaid()){
+//            isLoadedOrAnyPaymentMade = true;
+//        }
+//        if (isSecondPartSumPaid()) {
+//            isLoadedOrAnyPaymentMade = true;
+//        }
+//        if (isWholeSumPaid()){
+//            isLoadedOrAnyPaymentMade = true;
+//        }
+//        return isLoadedOrAnyPaymentMade;
+//    }
+
+    public boolean isLoadedOrAnyPaymentMade () {
+        boolean isLoadedOrAnyPaymentMade = false;
+        if (isLoaded()||isAnySumPaid()){
+            isLoadedOrAnyPaymentMade = true;
+        }
+        return isLoadedOrAnyPaymentMade;
+    }
+
+    public boolean isLoaded () {
+        boolean isLoaded = true;
+        if (actualLoadingDate==null || actualLoadingDate.equals("")){
+            isLoaded = false;
+        }
+        return isLoaded;
+    }
+
+    public boolean isFirstPartSumPaid () {
+        boolean isFirstPartSumPaid = true;
+        if (actualPaymentDateOfFirstPartSum==null || actualPaymentDateOfFirstPartSum.equals("")){
+            isFirstPartSumPaid = false;
+        }
+        return isFirstPartSumPaid;
+    }
+
+    public boolean isSecondPartSumPaid () {
+        boolean isSecondPartSumPaid = true;
+        if (actualPaymentDateOfSecondPartSum==null || actualPaymentDateOfSecondPartSum.equals("")){
+            isSecondPartSumPaid = false;
+        }
+        return isSecondPartSumPaid;
+    }
+
+    public boolean isWholeSumPaid () {
+        boolean isWholeSumPaid = true;
+        if (actualPaymentDateOfWholeSum==null || actualPaymentDateOfWholeSum.equals("")){
+            isWholeSumPaid = false;
+        }
+        return isWholeSumPaid;
+    }
+
+    public boolean isAnySumPaid () {
+        boolean isAnySumPaid = false;
+        if (isFirstPartSumPaid()||isSecondPartSumPaid()||isWholeSumPaid()){
+            isAnySumPaid =true;
+        }
+        return isAnySumPaid;
     }
 
     @Override

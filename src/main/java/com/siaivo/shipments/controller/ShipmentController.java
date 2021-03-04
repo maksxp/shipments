@@ -1,6 +1,8 @@
 package com.siaivo.shipments.controller;
 
+import com.siaivo.shipments.model.Commodity;
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
 import com.siaivo.shipments.service.ContractService;
 import com.siaivo.shipments.service.ProductForShipmentService;
@@ -25,6 +27,34 @@ public class ShipmentController {
 
     @Autowired
     private ProductForShipmentService productForShipmentService;
+
+    @RequestMapping(value="/salesSupport/shipmentRegistration/{id}", method = RequestMethod.GET)
+    public ModelAndView registerNewShipment(@PathVariable(value = "id") int id){
+        Contract contract = contractService.findContractById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        Shipment shipment = new Shipment();
+        List <ProductForShipment> allProductsForShipment = new ArrayList<>();
+        contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
+
+        modelAndView.addObject("contractNumber", contract.getContractNumber());
+        modelAndView.addObject("allProductsForShipment", allProductsForShipment);
+        modelAndView.addObject("contractDate", contract.getContractDate());
+        modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
+        modelAndView.addObject("paymentTerms", contract.getPaymentTerms());
+        modelAndView.addObject("deliveryTerms", contract.getDeliveryTerms());
+//        modelAndView.addObject("invoiceWholeSum", shipment.getInvoiceWholeSum(shipment));
+//        if (contract.getPaymentTerms().equals("оплата частинами")) {
+//            modelAndView.addObject("strippedInvoiceFirstPartSum", shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString());
+//            modelAndView.addObject("strippedInvoiceSecondPartSum", shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString());
+//        } else {
+//            modelAndView.addObject("strippedInvoiceFirstPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
+//            modelAndView.addObject("strippedInvoiceSecondPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
+//        }
+//
+        modelAndView.addObject("shipment", shipment);
+        modelAndView.setViewName("/salesSupport/shipmentRegistration");
+        return modelAndView;
+    }
 
     @RequestMapping(value="/salesSupport/allShipments", method = RequestMethod.GET)
     public ModelAndView allShipmentsForSalesSupport(){
@@ -110,9 +140,22 @@ public class ShipmentController {
         return new ModelAndView("redirect:../openShipments");
     }
 
+    @RequestMapping(value = "/salesSupport/deleteShipment/{id}", method = RequestMethod.GET)
+    public ModelAndView deleteShipmentForSalesSupport(@PathVariable(value = "id") int id){
+        Shipment shipment =  shipmentService.findById(id);
+        shipmentService.deleteShipment(shipment);
+        return new ModelAndView("redirect:../openShipments");
+    }
+
     @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)
     public ModelAndView fulfillShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
         shipmentService.fulfillShipment(shipment);
+        return new ModelAndView("redirect:salesSupport/openShipments");
+    }
+
+    @RequestMapping(value = "/salesSupport/deleteShipment", method = RequestMethod.POST)
+    public ModelAndView deleteShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+        shipmentService.deleteShipment(shipment);
         return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
