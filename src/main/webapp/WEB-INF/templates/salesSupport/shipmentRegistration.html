@@ -430,7 +430,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: center">
-            <h4>Реєстрація нового відправлення до контракту з <span style="color: blueviolet" th:text="${customerName}"></span> № <span th:text="${contractNumber}"></span> від <span th:text="${contractDate}"></span></h4>
+            <h4>Реєстрація нового відправлення до контракту  № <span th:name="contractNumber" th:text="${contractNumber}"></span> від <span th:name="contractDate" th:text="${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span></h4>
         </div>
     </div>
 </div>
@@ -444,7 +444,8 @@
 <form autocomplete="off" action="#" th:action="@{/salesSupport/shipmentRegistration}"
       th:object="${shipment}" method="post" class="form-horizontal" role="form">
 
-<!--    <input type="hidden" th:field="*{id}"/>-->
+    <input type="hidden" th:field="${contractNumber}"/>
+    <input type="hidden" th:field="${contractDate}"/>
 
     <table  class="table table-hover table-bordered"
             data-toggle="table">
@@ -468,8 +469,8 @@
 <!--        <td th:text="${id}">id</td>-->
         <td style="width: 2em" th:text="${deliveryTerms}"></td>
         <!--    <td> <input type="" th:field="*{destinationCountry}" th:value="#{destinationCountry}" class="country" /></td>-->
-        <td>  <textarea th:field="*{destinationCountry}" th:value="#{destinationCountry}" class="country"> </textarea></td>
-        <td>  <textarea th:field="*{destinationPlace}" th:value="#{destinationPlace}"> </textarea></td>
+        <td>  <textarea th:name="destinationCountry" th:text="${country}" class="country"> </textarea></td>
+        <td>  <textarea th:name="destinationPlace" th:text="${place}"> </textarea></td>
         <!--    <td> <input type="text" th:field="*{destinationPlace}" th:value="#{destinationPlace}" class="country"/> </td>-->
         <!--    <td  th:text="${destinationCountry}"></td>-->
         <!--    <td  th:text="${destinationPlace}"></td>-->
@@ -522,7 +523,7 @@
             <td th:text="${productForShipment.getProduct().getBatch()}"></td>
             <td th:text="${productForShipment.getProduct().getPrice().stripTrailingZeros().toPlainString()}"></td>
             <td th:text="${productForShipment.getProduct().getCurrency()}" ></td>
-            <td> <input type="text" th:name="productForShipmentWeight" th:value="${productForShipment.quantity.stripTrailingZeros().toPlainString()}"></td>
+            <td> <input type="text" th:name="productForShipmentWeight[]" required></td>
             <td th:text="${productForShipment.getProduct().getPackaging()}"></td>
         </tr>
         </tbody>
@@ -541,7 +542,7 @@
         <tr>
             <th style="width: 4em" data-field="truckNumber">Авто</th>
             <th style="width: 7em" data-field="invoiceNumber">Рахунок</th>
-            <th style="width: 7em" data-field="invoiceWholeSum" > Сума</th>
+<!--            <th style="width: 7em" data-field="invoiceWholeSum" > Сума</th>-->
             <th style="width: 15em" data-field="paymentTerms" >Умови оплати</th>
             <th style="width: 7em" class="twoPayments" data-field="invoiceFirstPartSum" >Передплата <br> (сума)</th>
             <th style="width: 7em" class="twoPayments" data-field="plannedPaymentDateOfFirstPartSum" >Передплата <br> (план)</th>
@@ -555,9 +556,10 @@
         </tr>
         </thead>
         <tbody>
-        <td  style="width: 4em"> <input type="text" th:field="*{truckNumber}" th:value="#{truckNumber}"/></td>
-        <td  style="width: 7em"> <input type="text" th:field="*{invoiceNumber}" th:value="#{invoiceNumber}"/></td>
-        <td  style="width: 7em" th:text="${invoiceWholeSum.stripTrailingZeros().toPlainString()}"></td>
+        <td  style="width: 4em"> <input type="text" th:name="truckNumber" th:value="${truck}"/></td>
+        <td  style="width: 7em"> <input type="text" th:name="invoiceNumber" th:value="${invoice}"/></td>
+<!--        <td  style="width: 7em" th:text="${invoiceWholeSum.stripTrailingZeros().toPlainString()}"></td>-->
+<!--        <td  style="width: 7em"> <input type="text" th:texfieldt="${invoiceWholeSum.stripTrailingZeros().toPlainString()}">-->
         <td  style="width: 15em" th:text="${paymentTerms}"></td>
         <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceFirstPartSum" th:value="${strippedInvoiceFirstPartSum}"/> </td>
         <td style="width: 7em" > <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" /> </td>
@@ -574,7 +576,7 @@
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">
-                <button type="submit" class="btn btn-primary btn-block">Внести зміни</button>
+                <button type="submit" th:name="contractId" th:value="${contractId}" class="btn btn-primary btn-block">Зареєструвати</button>
             </div>
         </div>
     </div>

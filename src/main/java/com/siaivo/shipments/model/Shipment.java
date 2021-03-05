@@ -370,6 +370,10 @@ public class Shipment {
         return productsForShipment.stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).collect(Collectors.toList());
     }
 
+    public List<ProductForShipment> getAllProductsForShipment() {
+        return productsForShipment;
+    }
+
     public void setProductsForShipment(List<ProductForShipment> productsForShipment) {
         this.productsForShipment = productsForShipment;
     }

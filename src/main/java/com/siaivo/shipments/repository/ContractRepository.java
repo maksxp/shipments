@@ -14,7 +14,7 @@ import java.util.List;
 public interface ContractRepository extends JpaRepository<Contract, Long> {
     Contract findById(int id);
     List<Contract> findByCustomer(Customer customer);
-    List<Contract> findByContractNumber(String contractNumber);
+    Contract findByContractNumberAndContractDate(String contractNumber, String contractDate);
     List<Contract> findByProducts(Product products);
     List<Contract> findByState (String state);
     List<Contract> findByStateNotLike (String state);

@@ -184,4 +184,13 @@ public class Contract {
         return Objects.hash(id);
     }
 
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "id=" + id +
+                ", contractNumber='" + contractNumber + '\'' +
+                ", contractDate='" + contractDate + '\'' +
+                '}';
+    }
 }

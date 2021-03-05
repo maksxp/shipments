@@ -14,4 +14,5 @@ public interface ContractService {
     List<Contract> contractsForPreparation();
     List<Contract> fulfilledContracts ();
     Contract findContractById(int id);
+    Contract findByContractNumberAndContractDate(String contractNumber, String contractDate);
 }

@@ -176,7 +176,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: left">
-            <h4>Базова інформація по контракту з <span style="color: blueviolet" th:text="${contract.customer.customerName}"></span> № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span></h4>
+            <h4>Базова інформація по контракту № <span th:text="${contract.contractNumber}"></span> від <span th:text="${contract.contractDate}"></span> з <span style="color: blueviolet" th:text="${contract.customer.customerName}"></span> </h4>
         </div>
     </div>
 </div>
@@ -436,7 +436,7 @@
 <div class="container-fluid">
     <div align="center">
         <div class="layerBottom">
-            <a class="btn btn-primary" th:href="${'/salesSupport/shipmentRegistration/' + contract.id}" role="button">Link</a>
+            <a class="btn btn-primary" th:href="${'/salesSupport/shipmentRegistration/' + contract.id}" role="button">Додати нове відправлення</a>
         </div>
     </div>
 </div>

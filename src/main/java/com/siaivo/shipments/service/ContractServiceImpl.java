@@ -76,4 +76,11 @@ public class ContractServiceImpl implements ContractService{
     public Contract findContractById(int id) {
         return contractRepository.findById(id);
     }
+
+    @Override
+    public Contract findByContractNumberAndContractDate(String contractNumber, String contractDate) {
+        return contractRepository.findByContractNumberAndContractDate(contractNumber,contractDate);
+    }
+
+
 }

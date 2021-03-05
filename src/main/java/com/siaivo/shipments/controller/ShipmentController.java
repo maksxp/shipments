@@ -31,27 +31,32 @@ public class ShipmentController {
     @RequestMapping(value="/salesSupport/shipmentRegistration/{id}", method = RequestMethod.GET)
     public ModelAndView registerNewShipment(@PathVariable(value = "id") int id){
         Contract contract = contractService.findContractById(id);
+        String country="";
+        String place="";
+        if (contract.getShipments().size()>0){
+            country = contract.getShipments().get(0).getDestinationCountry();
+            place = contract.getShipments().get(0).getDestinationPlace();
+        }
+        int truckNumber = contract.getShipments().size()+1;
+        String invoiceNumber = contract.getContractNumber()+"."+truckNumber;
         ModelAndView modelAndView = new ModelAndView();
         Shipment shipment = new Shipment();
         List <ProductForShipment> allProductsForShipment = new ArrayList<>();
         contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
-
+        modelAndView.addObject("country", country);
+        modelAndView.addObject("place", place);
+        modelAndView.addObject("truck", truckNumber);
+        modelAndView.addObject("invoice", invoiceNumber);
         modelAndView.addObject("contractNumber", contract.getContractNumber());
         modelAndView.addObject("allProductsForShipment", allProductsForShipment);
         modelAndView.addObject("contractDate", contract.getContractDate());
         modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
         modelAndView.addObject("paymentTerms", contract.getPaymentTerms());
         modelAndView.addObject("deliveryTerms", contract.getDeliveryTerms());
-//        modelAndView.addObject("invoiceWholeSum", shipment.getInvoiceWholeSum(shipment));
-//        if (contract.getPaymentTerms().equals("оплата частинами")) {
-//            modelAndView.addObject("strippedInvoiceFirstPartSum", shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString());
-//            modelAndView.addObject("strippedInvoiceSecondPartSum", shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString());
-//        } else {
-//            modelAndView.addObject("strippedInvoiceFirstPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
-//            modelAndView.addObject("strippedInvoiceSecondPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
-//        }
-//
         modelAndView.addObject("shipment", shipment);
+        modelAndView.addObject("contractId", id);
+        modelAndView.addObject("strippedInvoiceSecondPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
+        modelAndView.addObject("strippedInvoiceFirstPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
         modelAndView.setViewName("/salesSupport/shipmentRegistration");
         return modelAndView;
     }
@@ -264,35 +269,80 @@ public class ShipmentController {
     }
 
     @Transactional
+    @RequestMapping(value="/salesSupport/shipmentRegistration", method = RequestMethod.POST)
+    public ModelAndView registerNewShipmentForSalesSupport (@RequestParam(value="contractId") String contractId, @ModelAttribute("shipment")Shipment shipmentFromView,@RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
+//          int id = shipmentFromView.getId();
+//          Shipment shipmentFromDataBase = shipmentService.findById(id);
+//        System.out.println("contract number: "+contractNumber);
+//        System.out.println("contract date: "+contractDate);
+        int id = Integer.parseInt(contractId);
+        Contract contract = contractService.findContractById(id);
+           shipmentFromView.setContract(contract);
+           shipmentService.saveShipment(shipmentFromView);
+        List <ProductForShipment> allProductsForShipment = new ArrayList<>();
+        contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
+        shipmentFromView.setProductsForShipment(allProductsForShipment);
+        allProductsForShipment.forEach(productForShipment -> productForShipment.setShipment(shipmentFromView));
+           for (int i=0; i<productsForShipmentWeight.size(); i++){
+              shipmentFromView.getAllProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
+              productForShipmentService.saveProductForShipment(shipmentFromView.getProductsForShipment().get(i));
+          }
+//          shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
+//          shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
+//          shipmentFromDataBase.setDestinationCountry(shipmentFromView.getDestinationCountry());
+//          shipmentFromDataBase.setDestinationPlace(shipmentFromView.getDestinationPlace());
+//          shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
+//          shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
+//          shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
+//          shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
+//          shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
+//          shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
+//          shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
+//          shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
+//          shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
+//          shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
+//          shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
+//          shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
+//          shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
+//          shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
+//          shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
+//          shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
+          shipmentService.saveShipment(shipmentFromView);
+        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+        modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+id);
+        return modelAndView;
+    }
+
+    @Transactional
     @RequestMapping(value="/salesSupport/shipment", method = RequestMethod.POST)
     public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipmentFromView, @RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
-          int id = shipmentFromView.getId();
-          Shipment shipmentFromDataBase = shipmentService.findById(id);
-          for (int i=0; i<productsForShipmentWeight.size(); i++){
-              shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
-              productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
-          }
-          shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
-          shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
-          shipmentFromDataBase.setDestinationCountry(shipmentFromView.getDestinationCountry());
-          shipmentFromDataBase.setDestinationPlace(shipmentFromView.getDestinationPlace());
-          shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
-          shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
-          shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
-          shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
+        int id = shipmentFromView.getId();
+        Shipment shipmentFromDataBase = shipmentService.findById(id);
+        for (int i=0; i<productsForShipmentWeight.size(); i++){
+            shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
+            productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
+        }
+        shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
+        shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
+        shipmentFromDataBase.setDestinationCountry(shipmentFromView.getDestinationCountry());
+        shipmentFromDataBase.setDestinationPlace(shipmentFromView.getDestinationPlace());
+        shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
+        shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
+        shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
+        shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
         shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
         shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
-          shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
-          shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
-          shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
-          shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
-          shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
-          shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
-          shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
-          shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
-          shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
-          shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
-          shipmentService.saveShipment(shipmentFromDataBase);
+        shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
+        shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
+        shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
+        shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
+        shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
+        shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
+        shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
+        shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
+        shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
+        shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
+        shipmentService.saveShipment(shipmentFromDataBase);
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
         modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+shipmentFromDataBase.getContract().getId());
         return modelAndView;
