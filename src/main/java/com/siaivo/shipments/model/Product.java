@@ -172,10 +172,9 @@ public class Product {
             List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
             getProductsForShipments()
                     .stream()
-                    .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
-                    .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+                    .filter(productForShipment -> productForShipment.isLoaded())
                     .collect(Collectors.toList())
-                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity().multiply(price)));
+                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getUnpaidSumInEUR()));
 
             unpaidSumOfLoadedProductInEUR = unpaidSumOfLoadedAndUnpaidProductInEachShipment
                     .stream()
@@ -186,14 +185,13 @@ public class Product {
 
     public BigDecimal getUnpaidSumOfLoadedProductInUSD (){
         BigDecimal unpaidSumOfLoadedProductInUSD = BigDecimal.ZERO;
-        if (this.currency.equals("USD")){
+        if (currency.equals("USD")){
             List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
             getProductsForShipments()
                     .stream()
-                    .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
-                    .filter(productForShipment -> productForShipment.getShipment().getActualPaymentDateOfWholeSum()==null || productForShipment.getShipment().getActualPaymentDateOfWholeSum().equals(""))
+                    .filter(productForShipment -> productForShipment.isLoaded())
                     .collect(Collectors.toList())
-                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getQuantity().multiply(price)));
+                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getUnpaidSumInUSD()));
 
             unpaidSumOfLoadedProductInUSD = unpaidSumOfLoadedAndUnpaidProductInEachShipment
                     .stream()

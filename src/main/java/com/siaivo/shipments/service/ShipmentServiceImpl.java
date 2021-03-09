@@ -49,11 +49,9 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     @Override
     public void deleteShipment(Shipment shipment) {
-        if (!shipment.isLoadedOrAnyPaymentMade()) {
             productForShipmentRepository.findByShipment(shipment).forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment));
             shipmentRepository.delete(shipment);
-        }
-    }
+            }
 
 
 

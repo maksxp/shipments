@@ -260,6 +260,15 @@
     </tr>
     </tbody>
 </table>
+
+<div class="container-fluid">
+    <div align="center">
+        <div class="layerBottom">
+            <a class="btn btn-primary" th:href="${'/salesSupport/addProduct/' + contract.id}" role="button">Додати ще один товар</a>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
     <div style="text-align: left">
         <h4>Усі відправлення по контракту</h4>
@@ -338,7 +347,6 @@
         id="table"
         data-sort-name="truckNumber"
         data-sort-order="asc"
-        data-show-columns="true"
         data-pagination="true"
         data-page-list="[10, 25, 50, 100, усі]"
         data-show-jump-to="true"
@@ -363,7 +371,7 @@
         <th data-sortable="true" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
         <th data-sortable="true" data-field="state" data-filter-control="input">Статус</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
-        <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити/ <br> Дії</th>
+        <th data-sortable="true" data-field="actions" data-filter-control="input">Дії</th>
     </tr>
     </thead>
     <!--    <tfoot>-->
@@ -420,8 +428,7 @@
         <td style="width: 7em">
             <select class="selectable" onchange="location = this.value;">
                 <option value="" disabled selected hidden>Оберіть</option>
-                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Відправлення</option>
-                <optgroup label="--------------"></optgroup>
+                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Редагувати</option>
                 <option th:value="${'/salesSupport/fulfillShipment/' + shipment.id}">Виконати</option>
                 <option th:value="${'/salesSupport/deleteShipment/' + shipment.id}">Видалити</option>
             </select>

@@ -1,6 +1,7 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,6 +39,11 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public List<Contract> allContracts(){
         return contractRepository.findAll();
+    }
+
+    @Override
+    public List<Contract> allContractsPerCustomer(Customer customer) {
+        return contractRepository.findByCustomer(customer);
     }
 
     @Override
@@ -81,6 +87,7 @@ public class ContractServiceImpl implements ContractService{
     public Contract findByContractNumberAndContractDate(String contractNumber, String contractDate) {
         return contractRepository.findByContractNumberAndContractDate(contractNumber,contractDate);
     }
+
 
 
 }

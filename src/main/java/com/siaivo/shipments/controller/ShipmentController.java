@@ -149,7 +149,12 @@ public class ShipmentController {
     public ModelAndView deleteShipmentForSalesSupport(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
         shipmentService.deleteShipment(shipment);
-        return new ModelAndView("redirect:../openShipments");
+        Contract contract = shipment.getContract();
+        int contractId = contract.getId();
+        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+        modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+contractId);
+        return modelAndView;
+//        return new ModelAndView("redirect:../openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)
@@ -271,10 +276,6 @@ public class ShipmentController {
     @Transactional
     @RequestMapping(value="/salesSupport/shipmentRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewShipmentForSalesSupport (@RequestParam(value="contractId") String contractId, @ModelAttribute("shipment")Shipment shipmentFromView,@RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
-//          int id = shipmentFromView.getId();
-//          Shipment shipmentFromDataBase = shipmentService.findById(id);
-//        System.out.println("contract number: "+contractNumber);
-//        System.out.println("contract date: "+contractDate);
         int id = Integer.parseInt(contractId);
         Contract contract = contractService.findContractById(id);
            shipmentFromView.setContract(contract);
@@ -285,29 +286,10 @@ public class ShipmentController {
         allProductsForShipment.forEach(productForShipment -> productForShipment.setShipment(shipmentFromView));
            for (int i=0; i<productsForShipmentWeight.size(); i++){
               shipmentFromView.getAllProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
-              productForShipmentService.saveProductForShipment(shipmentFromView.getProductsForShipment().get(i));
+              productForShipmentService.saveProductForShipment(shipmentFromView.getAllProductsForShipment().get(i));
           }
-//          shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
-//          shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
-//          shipmentFromDataBase.setDestinationCountry(shipmentFromView.getDestinationCountry());
-//          shipmentFromDataBase.setDestinationPlace(shipmentFromView.getDestinationPlace());
-//          shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
-//          shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
-//          shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
-//          shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
-//          shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
-//          shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
-//          shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
-//          shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
-//          shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
-//          shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
-//          shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
-//          shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
-//          shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
-//          shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
-//          shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
-//          shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
-          shipmentService.saveShipment(shipmentFromView);
+        shipmentFromView.setIsFulfilled(false);
+        shipmentService.saveShipment(shipmentFromView);
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
         modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+id);
         return modelAndView;
@@ -319,8 +301,8 @@ public class ShipmentController {
         int id = shipmentFromView.getId();
         Shipment shipmentFromDataBase = shipmentService.findById(id);
         for (int i=0; i<productsForShipmentWeight.size(); i++){
-            shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
-            productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
+            shipmentFromDataBase.getAllProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
+            productForShipmentService.saveProductForShipment(shipmentFromDataBase.getAllProductsForShipment().get(i));
         }
         shipmentFromDataBase.setTruckNumber(shipmentFromView.getTruckNumber());
         shipmentFromDataBase.setInvoiceNumber(shipmentFromView.getInvoiceNumber());
