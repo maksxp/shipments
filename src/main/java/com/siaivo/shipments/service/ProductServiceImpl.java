@@ -18,9 +18,16 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
+    public Product findById(int id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
     public void saveProduct(Product product) {
         productRepository.save(product);
     }
+
+
 
 //    @Override
 //    public void saveProduct(List<Product> products) {

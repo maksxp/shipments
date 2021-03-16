@@ -74,7 +74,7 @@ public class ShipmentServiceImpl implements ShipmentService{
                 secondSumPaymentsByTheEndOfThisWeek().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfThisWeek.addAll(
                 wholeSumPaymentsByTheEndOfThisWeek().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
-        allPaymentsByTheEndOfThisWeek.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
+//        allPaymentsByTheEndOfThisWeek.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
         return allPaymentsByTheEndOfThisWeek;
     }
 
@@ -87,7 +87,7 @@ public class ShipmentServiceImpl implements ShipmentService{
                 secondSumPlannedPayments().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPlannedPayments.addAll(
                 wholeSumPlannedPayments().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
-        allPlannedPayments.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
+//        allPlannedPayments.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
         return allPlannedPayments;
     }
 
@@ -100,7 +100,7 @@ public class ShipmentServiceImpl implements ShipmentService{
                 secondSumOverduePayments().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allOverduePayments.addAll(
                 wholeSumOverduePayments().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
-        allOverduePayments.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
+//        allOverduePayments.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
         return allOverduePayments;
     }
 
@@ -113,7 +113,7 @@ public class ShipmentServiceImpl implements ShipmentService{
                 secondSumPaymentsByTheEndOfThisMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfThisMonth.addAll(
                 wholeSumPaymentsByTheEndOfThisMonth().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
-        allPaymentsByTheEndOfThisMonth.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
+//        allPaymentsByTheEndOfThisMonth.forEach(shipment -> System.out.println("invoice is: " +shipment.getInvoiceNumber()+"   sum id is: "+shipment.getSumForPayIdentity()));
         return allPaymentsByTheEndOfThisMonth;
     }
 
@@ -147,8 +147,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> firstSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> firstSumPaymentsByTheEndOfThisWeek;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
-        System.out.println();
+//        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
+//        System.out.println();
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
@@ -169,8 +169,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> firstSumPaymentsByTheEndOfThisMonth = new ArrayList<>();
         List <Shipment> firstSumPaymentsByTheEndOfThisMonth;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
-        System.out.println();
+//        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
+//        System.out.println();
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfThisMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
@@ -231,8 +231,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> firstSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> firstSumPlannedPayments;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
-        System.out.println();
+//        unpaidShipments.forEach(shipment -> System.out.println("first sumID: "+shipment.getSumForPayIdentity()));
+//        System.out.println();
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPlannedPayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
@@ -265,7 +265,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> secondSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> secondSumPaymentsByTheEndOfThisWeek;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
+//        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -286,7 +286,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> secondSumPaymentsByTheEndOfThisMonth = new ArrayList<>();
         List <Shipment> secondSumPaymentsByTheEndOfThisMonth;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
+//        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfThisMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -307,7 +307,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //       List <Shipment> secondSumPaymentsByTheEndOfNextWeek = new ArrayList<>();
         List <Shipment> secondSumPaymentsByTheEndOfNextWeek;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfNextWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() || shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPaymentsByTheEndOfNextWeek = secondSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -327,7 +327,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //       List <Shipment> secondSumPaymentsByTheEndOfNextMonth = new ArrayList<>();
         List <Shipment> secondSumPaymentsByTheEndOfNextMonth;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfNextMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() || shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPaymentsByTheEndOfNextMonth = secondSumPaymentsByTheEndOfNextMonth.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -347,9 +347,9 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> secondSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> secondSumPlannedPayments;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+//        unpaidShipments.forEach(shipment -> System.out.println("second sumID: "+shipment.getSumForPayIdentity()));
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPlannedPayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPlannedPayments = secondSumPlannedPayments.stream().filter(shipment -> null != shipment.getActualPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPlannedPayments.forEach(shipment -> shipment.setSumForPayIdentity("second"));
@@ -360,7 +360,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //       List <Shipment> secondSumOverduePayments = new ArrayList<>();
         List <Shipment> secondSumOverduePayments;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumOverduePayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() || shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumOverduePayments = secondSumOverduePayments.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
@@ -380,8 +380,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> wholeSumPaymentsByTheEndOfThisWeek;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumPaymentsByTheEndOfThisWeek = wholeSumPaymentsByTheEndOfThisWeek.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -401,8 +401,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumPaymentsByTheEndOfThisMonth = new ArrayList<>();
         List <Shipment> wholeSumPaymentsByTheEndOfThisMonth;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPaymentsByTheEndOfThisMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumPaymentsByTheEndOfThisMonth = wholeSumPaymentsByTheEndOfThisMonth.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -422,7 +422,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumPaymentsByTheEndOfNextWeek = new ArrayList<>();
         List <Shipment> wholeSumPaymentsByTheEndOfNextWeek;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPaymentsByTheEndOfNextWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumPaymentsByTheEndOfNextWeek = wholeSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -442,7 +442,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumPaymentsByTheEndOfNextMonth = new ArrayList<>();
         List <Shipment> wholeSumPaymentsByTheEndOfNextMonth;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPaymentsByTheEndOfNextMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumPaymentsByTheEndOfNextMonth = wholeSumPaymentsByTheEndOfNextMonth.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -462,7 +462,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumOverduePayments = new ArrayList<>();
         List <Shipment> wholeSumOverduePayments;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumOverduePayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumOverduePayments = wholeSumOverduePayments.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -482,8 +482,8 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        List <Shipment> wholeSumPaymentsByTheEndOfThisWeek = new ArrayList<>();
         List <Shipment> wholeSumPlannedPayments;
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
-        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
+//        unpaidShipments.forEach(shipment -> System.out.println("whole sumID: "+shipment.getSumForPayIdentity()));
+//        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         wholeSumPlannedPayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfWholeSum() ||shipment.getActualPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
         wholeSumPlannedPayments = wholeSumPlannedPayments.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfWholeSum() && !shipment.getPlannedPaymentDateOfWholeSum().equals("")).collect(Collectors.toList());
@@ -499,7 +499,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         for (int i=0;i<allDatesOfMonth.length;i++){
             thisMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
         }
-        System.out.println(Arrays.toString(allDatesOfMonth));
+//        System.out.println(Arrays.toString(allDatesOfMonth));
         return thisMonthShipments;
     }
 
@@ -510,7 +510,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         for (int i=0;i<allDatesOfMonth.length;i++){
             nextMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
         }
-        System.out.println(Arrays.toString(allDatesOfMonth));
+//        System.out.println(Arrays.toString(allDatesOfMonth));
         return nextMonthShipments;
     }
 
@@ -616,7 +616,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        System.out.println("last date of current month is: "+calendar.getTime());
+//        System.out.println("last date of current month is: "+calendar.getTime());
         return df.format(calendar.getTime());
     }
 
@@ -624,7 +624,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        System.out.println("first date of current month is: "+calendar.getTime());
+//        System.out.println("first date of current month is: "+calendar.getTime());
         return df.format(calendar.getTime());
     }
 
@@ -642,7 +642,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        System.out.println("last date of next month is: "+calendar.getTime());
+//        System.out.println("last date of next month is: "+calendar.getTime());
         return df.format(calendar.getTime());
     }
 

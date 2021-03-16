@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ProductService {
 
+    Product findById(int id) ;
+
     void saveProduct(Product product);
 
     List <Product> findProductsByContract (Contract contract);
