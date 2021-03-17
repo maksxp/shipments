@@ -242,21 +242,34 @@
     <thead class="thead-light">
     <tr>
         <th data-field="commodityName">Товар</th>
-        <th data-field="quantity">Вага</th>
+        <th data-field="quantity">Вага <br> (законтрактована)</th>
+        <th data-field="quantity">Вага <br> (не розподілена)</th>
         <th data-field="batch">Партія</th>
         <th data-field="price">Ціна</th>
         <th data-field="currency">Валюта</th>
         <th data-field="packaging">Пакування</th>
+        <th data-field="actions">Дії</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="product : ${allProductsByContract}">
         <td th:text="${product.commodity.commodityName}">Товар</td>
-        <td th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Вага</td>
+        <td th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Вага <br> (законтрактована)</td>
+        <td th:text="${product.getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
         <td th:text="${product.batch}">Партія</td>
         <td th:text="${product.price.stripTrailingZeros().toPlainString()}">Ціна</td>
         <td th:text="${product.currency}">Валюта</td>
         <td th:text="${product.packaging}">Пакування</td>
+        <td style="width: 7em">
+            <select class="selectable" onchange="location = this.value;">
+                <option value="" disabled selected hidden>Оберіть</option>
+                <option th:value="${'/salesSupport/product/' + product.id}">Редагувати</option>
+                <option th:value="${'/salesSupport/deleteProduct/' + product.id}">Видалити</option>
+            </select>
+            <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
+            <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->
+            <!--            <a th:href="${'/salesSupport/allShipmentsPerContract/' + contract.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Відправлення</a>-->
+        </td>
     </tr>
     </tbody>
 </table>
@@ -264,7 +277,7 @@
 <div class="container-fluid">
     <div align="center">
         <div class="layerBottom">
-            <a class="btn btn-primary" th:href="${'/salesSupport/addProduct/' + contract.id}" role="button">Додати ще один товар</a>
+            <a class="btn btn-primary" th:href="${'/salesSupport/productRegistration/' + contract.id}" role="button">Додати ще один товар</a>
         </div>
     </div>
 </div>

@@ -305,12 +305,12 @@
 <!--    </script>-->
     <style>
         .layerHeader {
-            padding: 70px 5px 5px;
+            padding: 130px 5px 10px;
             text-align: center;
         }
         .layerBottom {
             width: 20%;
-            padding: 20px;
+            padding: 30px;
         }
         .layerForm{
             border: 4px solid cornflowerblue;
@@ -325,8 +325,16 @@
         }
         td {
             position: relative;
+            height: 2em;
         }
-        .table th, td {
+
+        .table {
+            text-align: center;
+            /*width: max-content;*/
+            /*position: center;*/
+            margin: auto;
+        }
+        th, td {
             text-align: center;
         }
 
@@ -434,78 +442,20 @@
         </div>
     </div>
 </div>
-<!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
-<!--<input type="hidden" th:field="*{id}"/>-->
-<!--<div class="container-fluid">-->
-<!--    <div style="text-align: left">-->
-<!--        <h4>Логістика</h4>-->
-<!--    </div>-->
-<!--</div>-->
+
 <form autocomplete="off" action="#" th:action="@{/salesSupport/productRegistration}"
       th:object="${product}" method="post" class="form-horizontal" role="form">
 
     <input type="hidden" th:field="${contractNumber}"/>
     <input type="hidden" th:field="${contractDate}"/>
 
-    <table  class="table table-hover table-bordered"
-            data-toggle="table">
-
-        <thead class="thead-light">
-        <tr>
-<!--            <th data-visible="false" data-field="id">id</th>-->
-            <th style="width: 2em" data-field="commodity" >Товар</th>
-            <th data-field="batch" >Партія</th>
-            <th data-field="price" >Ціна</th>
-            <th data-field="currency" >Валюта</th>
-            <th data-field="quantity" >Кількість</th>
-            <th data-field="packaging" >Пакування</th>
-        </tr>
-        </thead>
-        <tbody>
-<!--        <td th:text="${id}">id</td>-->
-        <td style="width: 2em" th:text="${deliveryTerms}"></td>
-        <!--    <td> <input type="" th:field="*{destinationCountry}" th:value="#{destinationCountry}" class="country" /></td>-->
-        <td>  <textarea th:name="destinationCountry" th:text="${country}" class="country"> </textarea></td>
-        <td>  <textarea th:name="destinationPlace" th:text="${place}"> </textarea></td>
-        <!--    <td> <input type="text" th:field="*{destinationPlace}" th:value="#{destinationPlace}" class="country"/> </td>-->
-        <!--    <td  th:text="${destinationCountry}"></td>-->
-        <!--    <td  th:text="${destinationPlace}"></td>-->
-        <td> <input type="text" th:field="*{plannedLoadingDate}" th:value="#{plannedLoadingDate}" class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{actualLoadingDate}" th:value="#{actualLoadingDate}"class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{plannedUnloadingDate}" th:value="#{plannedUnloadingDate}"class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{actualUnloadingDate}" th:value="#{actualUnloadingDate}"class="datepicker"  /> </td>
-        <td>
-            <select  th:field="*{logisticInstructionStatus}" th:value="#{logisticInstructionStatus}" required>
-                <option th:value="'готується'">готується</option>
-                <option th:value="'у клієнта'">у клієнта</option>
-                <option th:value="'готово'">готово</option>
-                <option th:value="'розіслано'">розіслано</option>
-            </select>
-        </td>
-        <td>
-            <select  th:field="*{labelsStatus}" th:value="#{labelsStatus}" required>
-                <option th:value="'готується'">готується</option>
-                <option th:value="'у клієнта'">у клієнта</option>
-                <option th:value="'готово'">готово</option>
-                <option th:value="'розіслано'">розіслано</option>
-            </select>
-        </td>
-
-        <!--    <td> <input type="text" th:field="*{shipmentComment}" th:value="#{shipmentComment}"/></td>-->
-        <td style="width: 100%; height: 100%; border: none">  <textarea  th:field="*{shipmentComment}" th:value="#{shipmentComment}"> </textarea></td>
-        </tbody>
-    </table>
-
-    <div class="container-fluid">
-        <div style="text-align: left; margin-top: 3%;">
-            <h4>Товари та ціни</h4>
-        </div>
-    </div>
     <table class="table table-hover table-bordered"
+           id="table"
+           style="width: max-content"
            data-pagination="true">
         <thead class="thead-light">
         <tr>
-            <th data-field="commodityName">Товар</th>
+            <th data-field="commodity">Товар</th>
             <th data-field="batch">Партія</th>
             <th data-field="price">Ціна</th>
             <th data-field="currency">Валюта</th>
@@ -514,18 +464,41 @@
         </tr>
         </thead>
         <tbody>
-        <td  style="width: 4em"> <input type="text" th:name="truckNumber" th:value="${truck}" required></td>
-        <td  style="width: 4em"> <input type="text" th:name="batch" th:value="${batch}" required></td>
-        <td  style="width: 4em"> <input type="text" th:name="price" th:value="${price}" required></td>
-        <td  style="width: 4em"> <input type="text" th:name="truckNumber" th:value="${truck}" required></td>
-        <td  style="width: 4em"> <input type="text" th:name="truckNumber" th:value="${truck}" required></td>
-        <td  style="width: 4em"> <input type="text" th:name="truckNumber" th:value="${truck}" required></td>
+        <td style="width: 15em">
+        <select th:field="*{commodity}" required>
+            <option value="" >Оберіть товар</option>
+            <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
+        </select>
+        </td>
+        <td style="width: 7em"> <input type="text" th:name="batch" th:value="${batch}" required></td>
+        <td  style="width: 7em"> <input type="text" th:name="price" th:value="${price}" required></td>
+        <td>
+            <select th:field="*{currency}" required>
+                <option value="" >Оберіть</option>
+                <option th:value="EUR">EUR</option>
+                <option th:value="USD">USD</option>
+                <option th:value="UAH">UAH</option>
+            </select>
+        </td>
+        <td  style="width: 7em"> <input type="text" th:name="quantity" th:value="${quantity}" required></td>
+        <td style="width: 20em">
+            <select th:field="*{packaging}" required>
+                <option value="" >Оберіть</option>
+                <option th:value="'біг-беги на піддонах'">біг-беги на піддонах</option>
+                <option th:value="'біг-беги без піддонів'">біг-беги без піддонів</option>
+                <option th:value="'п/п мішки 25кг на піддонах'">п/п мішки 25кг на піддонах</option>
+                <option th:value="'п/п мішки 25кг без піддонів'">п/п мішки 25кг без піддонів</option>
+                <option th:value="'паперові мішки 25кг на піддонах'">паперові мішки 25кг на піддонах</option>
+                <option th:value="'паперові мішки 25кг без піддонів'">паперові мішки 25кг без піддонів</option>
+                <option th:value="'паперові мішки 20кг на піддонах'">паперові мішки 20кг на піддонах</option>
+                <option th:value="'паперові мішки 20кг без піддонів'">паперові мішки 20кг без піддонів</option>
+                <option th:value="'п/п мішки 20кг на піддонах'">п/п мішки 20кг на піддонах</option>
+                <option th:value="'п/п мішки 20кг без піддонів'">п/п мішки 20кг без піддонів</option>
+            </select>
+        </td>
         </tr>
         </tbody>
     </table>
-
-
-
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">

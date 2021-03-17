@@ -84,8 +84,30 @@ public class Product {
         return quantity;
     }
 
+    public BigDecimal getNotDistributedQuantity() {
+        return quantity.subtract(getDistributedQuantity());
+    }
+
+    public BigDecimal getDistributedQuantity() {
+        List <BigDecimal> distributedQuantity = new ArrayList<>();
+        getProductsForShipments()
+                .stream()
+//                .filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals(""))
+//                .filter(productForShipment -> productForShipment.isLoaded())
+//                .collect(Collectors.toList())
+                .forEach(productForShipment -> distributedQuantity.add(productForShipment.getQuantity()));
+        return distributedQuantity
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public void addQuantity(BigDecimal addedQuantity) {
+
+        quantity = quantity.add(addedQuantity);
     }
 
     public void setQuantityAfterChangeRequest (BigDecimal quantity) {
@@ -200,12 +222,21 @@ public class Product {
         return unpaidSumOfLoadedProductInUSD;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Product product = (Product) o;
+//        return commodity.equals(product.commodity) && price.equals(product.price) && currency.equals(product.currency) && packaging.equals(product.packaging)  && batch.equals(product.batch) && contract.equals(product.contract);
+//    }
+
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return commodity.equals(product.commodity) && price.equals(product.price) && currency.equals(product.currency) && packaging.equals(product.packaging)  && batch.equals(product.batch) && contract.equals(product.contract);
+        if (o == null || this.getClass() != o.getClass()) return false;
+        final Product product = (Product) o;
+        return commodity.equals(product.commodity) && contract.equals(product.contract) && price.compareTo(product.price)==0 && currency.equals(product.currency) && packaging.equals(product.packaging) && batch.equals(product.batch);
     }
 
     @Override
