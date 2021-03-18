@@ -164,6 +164,18 @@ public class SalesSupportContractController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/editContract/{id}", method = RequestMethod.GET)
+    public ModelAndView editContract(@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = new ModelAndView();
+        Contract contract = contractService.findContractById(id);
+        modelAndView.addObject("contract", contract);
+        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
+        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
+        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
+        modelAndView.setViewName("/salesSupport/editContract");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/contract", method = RequestMethod.POST)
     public ModelAndView changeContractState(@ModelAttribute("contract")Contract contractFromView){
         int id = contractFromView.getId();
@@ -257,12 +269,12 @@ public class SalesSupportContractController {
 //        return modelAndView;
 //    }
 
-    @RequestMapping(value = "/salesSupport/editRequestForNewContract", method = RequestMethod.POST)
-    public ModelAndView editRequestForNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
-        ModelAndView modelAndView = saveEditRequestForNewContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
-        modelAndView.setViewName("redirect:/salesSupport/contractsForPreparation");
-        return modelAndView;
-    }
+//    @RequestMapping(value = "/salesSupport/editRequestForNewContract", method = RequestMethod.POST)
+//    public ModelAndView editRequestForNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+//        ModelAndView modelAndView = saveEditRequestForNewContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+//        modelAndView.setViewName("redirect:/salesSupport/contractsForPreparation");
+//        return modelAndView;
+//    }
     private ModelAndView saveRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
@@ -277,38 +289,38 @@ public class SalesSupportContractController {
         return getModelAndViewWithContractsForPreparation ();
     }
 
-    private ModelAndView saveEditRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
-        int id = contract.getId();
-        Contract contractFromDatabase = contractService.findContractById(id);
-        List<Product> productsFromView = productForm.getProducts().stream().filter(product -> product.getCommodity()!=null).collect(Collectors.toList());
-        List<Product> productsFromDatabase = contractFromDatabase.getProducts();
-        productsFromView.forEach(product -> product.setContract(contractFromDatabase));
-        if (contractFromDatabase.getContractNumber()!=null && !contractFromDatabase.getContractNumber().equals("")){
-            contract.setContractNumber(contractFromDatabase.getContractNumber());
-        }
-        contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
-        contract.setPaymentTerms(paymentTerms);
-        if (contractFromDatabase.getContractDate()!=null && !contractFromDatabase.getContractDate().equals("")){
-            contract.setContractDate(contractFromDatabase.getContractDate());
-        }
-        contractService.saveEditRequest(contract);
-        productsFromDatabase.forEach(productFromDatabase -> {
-            if (productsFromView.contains(productFromDatabase)){
-                int indexOfProductInProductsFromView = productsFromView.indexOf(productFromDatabase);
-                productFromDatabase.setQuantityAfterChangeRequest(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
-                productService.saveProduct(productFromDatabase);
-
-            } else {
-                productService.deleteNotLoadedProduct(productFromDatabase);
-            }
-        });
-        List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
-        List<Shipment> notLoadedOrAnyPaymentMade = allShipmentsPerContract.stream().filter(shipment -> !shipment.isLoadedOrAnyPaymentMade()).collect(Collectors.toList());
-        notLoadedOrAnyPaymentMade.forEach(shipment -> shipmentService.deleteShipment(shipment));
-        notLoadedOrAnyPaymentMade.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
-        productsFromView.stream().filter(product -> !productsFromDatabase.contains(product)).forEach(product -> productService.saveProduct(product));
-        return getModelAndViewWithContractsForPreparation();
-    }
+//    private ModelAndView saveEditRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
+//        int id = contract.getId();
+//        Contract contractFromDatabase = contractService.findContractById(id);
+//        List<Product> productsFromView = productForm.getProducts().stream().filter(product -> product.getCommodity()!=null).collect(Collectors.toList());
+//        List<Product> productsFromDatabase = contractFromDatabase.getProducts();
+//        productsFromView.forEach(product -> product.setContract(contractFromDatabase));
+//        if (contractFromDatabase.getContractNumber()!=null && !contractFromDatabase.getContractNumber().equals("")){
+//            contract.setContractNumber(contractFromDatabase.getContractNumber());
+//        }
+//        contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
+////        contract.setPaymentTerms(paymentTerms);
+//        if (contractFromDatabase.getContractDate()!=null && !contractFromDatabase.getContractDate().equals("")){
+//            contract.setContractDate(contractFromDatabase.getContractDate());
+//        }
+//        contractService.saveEditRequest(contract);
+//        productsFromDatabase.forEach(productFromDatabase -> {
+//            if (productsFromView.contains(productFromDatabase)){
+//                int indexOfProductInProductsFromView = productsFromView.indexOf(productFromDatabase);
+//                productFromDatabase.setQuantityAfterChangeRequest(productsFromView.get(indexOfProductInProductsFromView).getQuantity());
+//                productService.saveProduct(productFromDatabase);
+//
+//            } else {
+//                productService.deleteNotLoadedProduct(productFromDatabase);
+//            }
+//        });
+//        List <Shipment> allShipmentsPerContract = shipmentService.allShipmentsPerContract(contract);
+//        List<Shipment> notLoadedOrAnyPaymentMade = allShipmentsPerContract.stream().filter(shipment -> !shipment.isLoadedOrAnyPaymentMade()).collect(Collectors.toList());
+//        notLoadedOrAnyPaymentMade.forEach(shipment -> shipmentService.deleteShipment(shipment));
+//        notLoadedOrAnyPaymentMade.forEach(shipment -> shipment.getProductsForShipment().forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment)));
+//        productsFromView.stream().filter(product -> !productsFromDatabase.contains(product)).forEach(product -> productService.saveProduct(product));
+//        return getModelAndViewWithContractsForPreparation();
+//    }
 
 
     private ModelAndView getRequestForNewContractModelAndView(@Valid Contract contract, ProductForm productForm, ModelAndView modelAndView) {

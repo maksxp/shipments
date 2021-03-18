@@ -1,16 +1,14 @@
 package com.siaivo.shipments.controller.salesSupport;
 
 import com.siaivo.shipments.model.*;
-import com.siaivo.shipments.service.CommodityService;
-import com.siaivo.shipments.service.ContractService;
-import com.siaivo.shipments.service.ProductService;
-import com.siaivo.shipments.service.ShipmentService;
+import com.siaivo.shipments.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +17,9 @@ public class SalesSupportProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductForShipmentService productForShipmentService;
 
     @Autowired
     private ShipmentService shipmentService;
@@ -77,6 +78,7 @@ public class SalesSupportProductController {
         int id = Integer.parseInt(contractId);
         Contract contract = contractService.findContractById(id);
         product.setContract(contract);
+        List <Shipment> allShipmentsPerContract = contract.getShipments();
         List <Product> allProductsPerContract = contract.getProducts();
         if (allProductsPerContract.contains(product)){
             Product theSameProduct = allProductsPerContract
@@ -86,7 +88,13 @@ public class SalesSupportProductController {
                     .orElse(null);
             theSameProduct.addQuantity(product.getQuantity());
         } else {
+            allShipmentsPerContract.forEach(shipment -> {
+            ProductForShipment  productForShipment = new ProductForShipment(product);
+            productForShipment.setShipment(shipment);
+            productForShipment.setQuantity(BigDecimal.ZERO);
+            productForShipmentService.saveProductForShipment(productForShipment);
             productService.saveProduct(product);
+            });
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("contract", contract);

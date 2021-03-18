@@ -2,7 +2,11 @@ package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
+import com.siaivo.shipments.model.ProductForShipment;
+import com.siaivo.shipments.model.Shipment;
+import com.siaivo.shipments.repository.ProductForShipmentRepository;
 import com.siaivo.shipments.repository.ProductRepository;
+import com.siaivo.shipments.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,13 @@ public class ProductServiceImpl implements ProductService{
     @Qualifier("productRepository")
     @Autowired
     private ProductRepository productRepository;
+
+    @Qualifier("productForShipmentRepository")
+    @Autowired
+    private ProductForShipmentRepository productForShipmentRepository;
+
+    @Autowired
+    private ShipmentService shipmentService;
 
     @Override
     public Product findById(int id) {
@@ -63,12 +74,18 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void deleteProduct(Product product) {
+//        List <ProductForShipment> productsForShipments = product.getProductsForShipments();
+//        productsForShipments.forEach(productForShipment -> productForShipmentRepository.delete(productForShipment));
+        List <Shipment> shipmentsWithThisProduct = product.getShipmentsWithThisProduct();
+        shipmentsWithThisProduct.forEach(shipment -> shipmentService.deleteShipment(shipment));
         productRepository.delete(product);
     }
 
     @Override
     public void deleteNotLoadedProduct(Product product) {
         if (product.getLoadedQuantity().compareTo(BigDecimal.ZERO)==0){
+            List <Shipment> shipmentsWithThisProduct = product.getShipmentsWithThisProduct();
+            shipmentsWithThisProduct.forEach(shipment -> shipmentService.deleteShipment(shipment));
             productRepository.delete(product);
         }
     }

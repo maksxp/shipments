@@ -197,7 +197,7 @@
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
                 <option value="" disabled selected hidden>Оберіть</option>
-                <option th:value="${'/salesSupport/editRequestForNewContract/' + contract.id}">Заявку</option>
+<!--                <option th:value="${'/salesSupport/editRequestForNewContract/' + contract.id}">Заявку</option>-->
                 <option th:value="${'/salesSupport/allShipmentsPerContract/' + contract.id}">Відправлення</option>
                 <option th:value="${'/salesSupport/contract/' + contract.id}">Контракт</option>
             </select>

@@ -84,6 +84,13 @@ public class Product {
         return quantity;
     }
 
+    public List <Shipment> getShipmentsWithThisProduct () {
+        List <Shipment> shipmentsWithThisProduct = new ArrayList<>();
+        List <ProductForShipment> productForShipments = getProductsForShipments();
+        productForShipments.forEach(productForShipment -> shipmentsWithThisProduct.add(productForShipment.getShipment()));
+        return shipmentsWithThisProduct;
+    }
+
     public BigDecimal getNotDistributedQuantity() {
         return quantity.subtract(getDistributedQuantity());
     }

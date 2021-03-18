@@ -19,22 +19,47 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Contract</title>
+    <title>Edit Contract</title>
+
+
+    <script th:inline="javascript">
+        const allCustomersNames = /*[[${allCustomersNames}]]*/'noValue';
+        $(document).ready(function () {
+            // let customerName;
+            $("#nameInput").autocomplete({
+                minLength : 2,
+                source : allCustomersNames
+                // select : function(e, ui) {
+                // $("#nameOutput").text('Ви обрали : ' + ui.item.value);
+                // customerName = ui.item.value;
+                // return ui.item.value;
+                // }
+            })
+        });
+
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $(".datepicker").datepicker({
                 monthNames: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
-                dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                firstDay: 1,
-                dateFormat: "dd.mm.yy",
-                // changeYear: true,
-                // changeMonth: true,
-                showWeek: true,
-                weekHeader: "тж",
+                monthNamesShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+                // dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                // firstDay: 1,
+                // dateFormat: "dd.mm.yy",
+                dateFormat: "MM yy",
+                changeYear: true,
+                changeMonth: true,
+                // minDate: "0",
+                // showWeek: true,
+                // weekHeader: "тж",
+                onClose: function() {
+                    var iMonth = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                    var iYear = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
+                },
             });
         });
-
     </script>
     <style>
         .layerHeader {
@@ -42,7 +67,6 @@
             text-align: center;
         }
         .layerBottom {
-            width: 20%;
             padding: 20px;
         }
 
@@ -179,7 +203,7 @@
         </div>
     </div>
 </div>
-<form autocomplete="off" action="#" th:action="@{/salesSupport/contract}"
+<form autocomplete="off" action="#" th:action="@{/salesSupport/editContract}"
       th:object="${contract}" method="post" class="form-horizontal" role="form">
 
     <input type="hidden" th:field="*{id}"/>
@@ -196,7 +220,7 @@
         <th data-field="sumOfContract">Сума контракту</th>
         <th style="width: auto" data-field="state">Статус</th>
         <th style="width: 10em" data-field="comment">Коментар</th>
-        <th data-field="actions">Дії</th>
+<!--        <th data-field="actions">Дії</th>-->
 
     </tr>
     </thead>
@@ -219,29 +243,16 @@
             </select>
     </td>
     <td style="word-wrap: break-word" th:text="${contract.comment}">Коментар</td>
-<td style="width: 7em">
-    <select class="selectable" onchange="location = this.value;">
-        <option value="" disabled selected hidden>Оберіть</option>
-        <option th:value="${'/salesSupport/editContract/' + id}">Редагувати</option>
-    </select>
-    <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
-    <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->
-    <!--            <a th:href="${'/salesSupport/allShipmentsPerContract/' + contract.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Відправлення</a>-->
-</td>
+
     </tbody>
 </table>
 
-    <div class="container-fluid">
-        <div align="center">
-            <div class="layerBottom">
-                <button type="submit" class="btn btn-primary btn-block">Змінити статус контракту</button>
-            </div>
-        </div>
-    </div>
 </form>
 <div class="container-fluid">
-    <div style="text-align: left">
+    <div class="layerBottom">
+      <div style="text-align: left">
         <h4>Товари та ціни</h4>
+      </div>
     </div>
 </div>
 <table class="table table-hover table-bordered"
@@ -282,87 +293,13 @@
 </table>
 
 <div class="container-fluid">
-    <div align="center">
-        <div class="layerBottom">
-            <a class="btn btn-primary" th:href="${'/salesSupport/productRegistration/' + contract.id}" role="button">Додати ще один товар</a>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid">
-    <div style="text-align: left">
+    <div class="layerBottom">
+       <div style="text-align: left">
         <h4>Усі відправлення по контракту</h4>
+      </div>
     </div>
 </div>
 
-<!--<table  class="table table-hover table-bordered"-->
-<!--        id="table"-->
-<!--        data-toggle="table"-->
-<!--        data-pagination="true">-->
-<!--    <thead class="thead-light">-->
-<!--    <tr>-->
-<!--        <th style="width: 7em" data-visible="false" data-field="id">id</th>-->
-<!--&lt;!&ndash;        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>&ndash;&gt;-->
-<!--        <th style="width: 4em" data-field="truckNumber" >Авто</th>-->
-<!--&lt;!&ndash;        <th data-field="customerName">Покупець</th>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <th data-sortable="true" data-field="goodsPerShipment" data-filter-control="input">Вантаж</th>&ndash;&gt;-->
-<!--        <th data-field="commodityName" >Товар</th>-->
-<!--        <th style="width: 7em"   data-field="commodityWeight" >Вага</th>-->
-<!--        <th data-field="packaging" >Пакування</th>-->
-<!--        <th data-field="plannedLoadingDate" >Завантаження <br> (план)</th>-->
-<!--        <th data-field="actualLoadingDate" >Завантаження <br> (факт)</th>-->
-<!--        <th data-field="plannedUnloadingDate" >Розвантаження <br> (план)</th>-->
-<!--        <th data-field="actualUnloadingDate" >Розвантаження <br> (факт)</th>-->
-<!--        <th data-field="ActualFullSettlementDate" >Повний <br> розрахунок </th>-->
-<!--        <th data-field="shipmentComment" >Коментар</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    &lt;!&ndash;    <tfoot>&ndash;&gt;-->
-<!--    &lt;!&ndash;    <tr>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Номер</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Покупець</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Умови оплати</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Товари</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Сума контракту</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Початок відвантажень</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <th>Завершення відвантажень</th>&ndash;&gt;-->
-<!--    &lt;!&ndash;    </tr>&ndash;&gt;-->
-<!--    &lt;!&ndash;    </tfoot>&ndash;&gt;-->
-<!--    <tbody>-->
-<!--    <tr th:each="shipment : ${allShipmentsPerContract}">-->
-<!--        <td style="width: 7em" data-visible="false" th:text="${shipment.id}">id</td>-->
-<!--&lt;!&ndash;        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>&ndash;&gt;-->
-<!--        <td style="width: 4em"  data-field="truckNumber" th:text="${shipment.truckNumber}">Машина</td>-->
-<!--&lt;!&ndash;        <td data-field="customerName" style="word-wrap: break-word" th:text="${shipment.getContract().getCustomer().customerName}">Покупець</td>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <td data-sortable="true" data-field="goodsPerShipment" data-filter-control="input" >&ndash;&gt;-->
-<!--        &lt;!&ndash;            <p th:each="product : ${shipment.getListOfGoodsPerShipment(shipment)}">&ndash;&gt;-->
-<!--        &lt;!&ndash;                <span style="white-space: nowrap;" th:text="${product}"> Вантаж</span>&ndash;&gt;-->
-<!--        &lt;!&ndash;            </p>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </td>&ndash;&gt;-->
-<!--        <td data-field="commodityName"  >-->
-<!--            <p th:each="productForShipment, iterStat  : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
-<!--                <span th:text="${productForShipment.getProduct().getCommodity().getCommodityName()}"> Товар</span>-->
-<!--            </p>-->
-<!--        </td>-->
-<!--        <td data-field="commodityWeight" >-->
-<!--            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
-<!--                <span style="width: 7em" th:text="${productForShipment.getQuantity().stripTrailingZeros().toPlainString()}"> Вага</span>-->
-<!--            </p>-->
-<!--        </td>-->
-<!--        <td data-field="packaging" >-->
-<!--            <p th:each="productForShipment, iterStat : ${shipment.getProductsForShipment()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">-->
-<!--                <span th:text="${productForShipment.getProduct().getPackaging()}"> Пакування</span>-->
-<!--            </p>-->
-<!--        </td>-->
-<!--        <td data-field="plannedLoadingDate" th:text="${shipment.plannedLoadingDate}">Дата завантаження (план)</td>-->
-<!--        <td data-field="actualLoadingDate" th:text="${shipment.actualLoadingDate}">Дата завантаження (факт)</td>-->
-<!--        <td data-field="plannedUnloadingDate" th:text="${shipment.plannedUnloadingDate}">Дата розвантаження (план)</td>-->
-<!--        <td data-field="actualUnloadingDate" th:text="${shipment.actualUnloadingDate}">Дата розвантаження (факт)</td>-->
-<!--        <td data-field="ActualFullSettlementDate" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>-->
-<!--        <td data-field="shipmentComment" th:text="${shipment.shipmentComment}">Коментар</td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
 <table  class="table table-hover table-bordered table-responsive"
         id="table"
         data-sort-name="truckNumber"
@@ -391,7 +328,6 @@
         <th data-sortable="true" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
         <th data-sortable="true" data-field="state" data-filter-control="input">Статус</th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
-        <th data-sortable="true" data-field="actions" data-filter-control="input">Дії</th>
     </tr>
     </thead>
     <!--    <tfoot>-->
@@ -445,41 +381,16 @@
         <td data-sortable="true" data-field="state" data-filter-control="input" th:text="${shipment.isFulfilled}? 'Виконано' : 'В роботі'">Статус</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
 <!--        <td data-sortable="true" data-field="state" data-filter-control="input" th:text="${shipment.state}">Статус</td>-->
-        <td style="width: 7em">
-            <select class="selectable" onchange="location = this.value;">
-                <option value="" disabled selected hidden>Оберіть</option>
-                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Редагувати</option>
-                <option th:value="${'/salesSupport/fulfillShipment/' + shipment.id}">Виконати</option>
-                <option th:value="${'/salesSupport/deleteShipment/' + shipment.id}">Видалити</option>
-            </select>
-            <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
-            <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->
-            <!--            <a th:href="${'/salesSupport/allShipmentsPerContract/' + contract.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Відправлення</a>-->
-        </td>
+
     </tr>
     </tbody>
 </table>
-
-<div class="container-fluid">
-    <div align="center">
-        <div class="layerBottom">
-            <a class="btn btn-primary" th:href="${'/salesSupport/shipmentRegistration/' + contract.id}" role="button">Додати нове відправлення</a>
-        </div>
-    </div>
-</div>
 
     <script>
     $(function() {
         $('#table').bootstrapTable()
     })
 </script>
-<!--<script>-->
-
-<!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->
-<!--        if (value=="truckNumber")-->
-<!--            window.open("../shipment/"+$element.id,"_self");-->
-<!--    });-->
-<!--</script>-->
 <script>
     var rows = document.querySelectorAll('#shipmentsTable > tr');
     [...rows].forEach((r) => {
