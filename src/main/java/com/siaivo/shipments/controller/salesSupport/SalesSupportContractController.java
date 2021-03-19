@@ -169,18 +169,22 @@ public class SalesSupportContractController {
         ModelAndView modelAndView = new ModelAndView();
         Contract contract = contractService.findContractById(id);
         modelAndView.addObject("contract", contract);
+        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
-        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
+//        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.setViewName("/salesSupport/editContract");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/contract", method = RequestMethod.POST)
-    public ModelAndView changeContractState(@ModelAttribute("contract")Contract contractFromView){
+    public ModelAndView changeContract(@ModelAttribute("contract")Contract contractFromView){
         int id = contractFromView.getId();
         Contract contractFromDataBase = contractService.findContractById(id);
         contractFromDataBase.setState(contractFromView.getState());
+        contractFromDataBase.setPaymentTerms(contractFromView.getPaymentTerms());
+        contractFromDataBase.setDeliveryTerms(contractFromView.getDeliveryTerms());
+        contractFromDataBase.setComment(contractFromView.getComment());
         contractService.saveContract(contractFromDataBase);
         ModelAndView modelAndView = getModelAndViewWithAllContracts();
         modelAndView.setViewName("redirect:/salesSupport/allContracts");

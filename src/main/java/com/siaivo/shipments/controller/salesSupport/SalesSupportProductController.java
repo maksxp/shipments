@@ -88,12 +88,12 @@ public class SalesSupportProductController {
                     .orElse(null);
             theSameProduct.addQuantity(product.getQuantity());
         } else {
+            productService.saveProduct(product);
             allShipmentsPerContract.forEach(shipment -> {
             ProductForShipment  productForShipment = new ProductForShipment(product);
             productForShipment.setShipment(shipment);
             productForShipment.setQuantity(BigDecimal.ZERO);
             productForShipmentService.saveProductForShipment(productForShipment);
-            productService.saveProduct(product);
             });
         }
         ModelAndView modelAndView = new ModelAndView();
@@ -102,6 +102,7 @@ public class SalesSupportProductController {
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.setViewName("redirect:/salesSupport/contract/"+id);
+        System.out.println("test");
         return modelAndView;
     }
 }

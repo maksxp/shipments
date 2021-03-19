@@ -199,7 +199,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: left">
-            <h4>Базова інформація по контракту <span th:text="${contract.contractNumber}==null ? '' : '  № '+ ${contract.contractNumber}"></span> <span th:text="${contract.contractDate}==null ? '': ' від ' +${contract.contractDate}"></span> з <span style="color: blueviolet" th:text="${contract.customer.customerName}"></span> </h4>
+            <h4>Редагування контракту <span th:text="${contract.contractNumber}==null ? '' : '  № '+ ${contract.contractNumber}"></span> <span th:text="${contract.contractDate}==null ? '': ' від ' +${contract.contractDate}"></span> з <span style="color: blueviolet" th:text="${contract.customer.customerName}"></span> </h4>
         </div>
     </div>
 </div>
@@ -212,25 +212,46 @@
             data-toggle="table">
     <thead class="thead-light">
     <tr>
-<!--        <th data-field="customer">Покупець</th>-->
+        <th data-field="customer">Покупець</th>
         <th data-field="paymentTerms">Умови оплати</th>
+        <th data-field="deliveryTerms">Умови доставка</th>
         <th data-field="startOfShipments">Початок <br> відвантажень</th>
         <th data-field="endOfShipments">Завершення <br> відвантажень</th>
-        <th data-field="totalWeightOfAllGoods">Загальна вага <br> всіх товарів</th>
-        <th data-field="sumOfContract">Сума контракту</th>
         <th style="width: auto" data-field="state">Статус</th>
         <th style="width: 10em" data-field="comment">Коментар</th>
-<!--        <th data-field="actions">Дії</th>-->
-
     </tr>
     </thead>
     <tbody>
-<!--    <td th:text="${contract.customer.customerName}">Покупець</td>-->
-    <td th:text="${contract.paymentTerms}">Умови оплати</td>
+    <td th:text="${contract.customer.customerName}">
+        <input type="text" th:name="customerName" id="nameInput" required/>
+    </td>
+    <td>
+        <select class="selectable" th:field="*{paymentTerms}" required>
+            <option value="" style="font-size: small; font-weight: bold">Оберіть</option>
+            <option th:value="'1 день по завантаженню'">1 день по завантаженню</option>
+            <option th:value="'1 день по прибуттю'">1 день по прибуттю</option>
+            <option th:value="'2 дні по прибуттю'">2 дні по прибуттю</option>
+            <option th:value="'5 днів по прибуттю'">5 днів по прибуттю</option>
+            <option th:value="'7 днів по прибуттю'">7 днів по прибуттю</option>
+            <option th:value="'10 днів по прибуттю'">10 днів по прибуттю</option>
+            <option th:value="'30 днів по прибуттю'">30 днів по прибуттю</option>
+            <option th:value="'60 днів по прибуттю'">60 днів по прибуттю</option>
+            <option th:value="'повна передоплата'">повна передоплата</option>
+            <option th:value="'оплата частинами'">оплата частинами</option>
+            <option th:value="'інше'">інше</option>
+        </select>
+    </td>
+    <td>
+        <select  class="selectable" th:field="*{deliveryTerms}" required>
+            <option value="" style="font-size: small; font-weight: bold">Оберіть</option>
+            <option th:value="DAP">DAP</option>
+            <option th:value="FCA">FCA</option>
+            <option th:value="CIF">CIF</option>
+            <option th:value="CFR">CFR</option>
+        </select>
+    </td>
     <td th:text="${contract.startOfShipments}">Початок <br> відвантажень</td>
     <td th:text="${contract.endOfShipments}">Завершення <br> відвантажень</td>
-    <td th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага <br> всіх товарів</td>
-    <td th:text="${#numbers.formatDecimal(contract.getSumOfContract().stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
 <!--    <td style="width: max-content">-->
      <td style="width: 10em">
 <!--            <select  th:field="*{state}" th:value="#{state}" required>-->
@@ -291,6 +312,14 @@
     </tr>
     </tbody>
 </table>
+
+<div class="container-fluid">
+    <div align="center">
+        <div class="layerBottom">
+            <a class="btn btn-primary" th:href="${'/salesSupport/productRegistration/' + contract.id}" role="button">Додати ще один товар</a>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid">
     <div class="layerBottom">
