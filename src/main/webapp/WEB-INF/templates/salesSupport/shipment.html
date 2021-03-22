@@ -301,7 +301,6 @@
                 weekHeader: "тж",
             });
         });
-
     </script>
     <style>
         .layerHeader {
@@ -461,7 +460,7 @@
         <th data-field="actualUnloadingDate" >Розвантаження <br> (факт)</th>
         <th data-field="logisticInstructionStatus" >Інструкція</th>
         <th data-field="labelsStatus" >Етикетки</th>
-        <th  data-field="shipmentComment" >Коментар</th>
+        <th  data-field="shipmentComment" >Коментар щодо логістики</th>
     </tr>
     </thead>
     <tbody>
@@ -514,6 +513,7 @@
             <th data-field="currency">Валюта</th>
             <th data-field="quantity">Законтрактовано</th>
             <th data-field="quantity">Вже відвантажено</th>
+            <th data-field="quantity">Вага <br> (не розподілена)</th>
             <th data-field="quantity">Кількість <br> в машині</th>
             <th data-field="packaging">Пакування</th>
         </tr>
@@ -526,6 +526,7 @@
             <td th:text="${productForShipment.getProduct().getCurrency()}" ></td>
             <td th:text="${productForShipment.getProduct().getQuantity().stripTrailingZeros().toPlainString()}" ></td>
             <td th:text="${productForShipment.getProduct().getLoadedQuantity().stripTrailingZeros().toPlainString()}" ></td>
+            <td th:text="${productForShipment.getProduct().getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
             <td> <input type="text" th:name="productForShipmentWeight[]" th:value="${productForShipment.quantity.stripTrailingZeros().toPlainString()}"></td>
             <td th:text="${productForShipment.getProduct().getPackaging()}"></td>
         </tr>
@@ -555,7 +556,7 @@
             <th style="width: 7em" class="twoPayments" data-field="actualPaymentDateOfSecondPartSum" >Доплата <br> (факт)</th>
             <th style="width: 7em" class="onePayment" data-field="plannedPaymentDateOfWholeSum" >Оплата <br> (план)</th>
             <th style="width: 7em" class="onePayment" data-field="actualPaymentDateOfWholeSum" >Оплата <br> (факт)</th>
-            <th data-field="invoiceComment" >Коментар</th>
+            <th data-field="invoiceComment" >Коментар щодо оплати</th>
         </tr>
         </thead>
         <tbody>

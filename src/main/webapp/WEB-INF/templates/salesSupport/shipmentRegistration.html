@@ -513,6 +513,8 @@
             <th data-field="batch">Партія</th>
             <th data-field="price">Ціна</th>
             <th data-field="currency">Валюта</th>
+            <th data-field="quantity">Законтрактовано</th>
+            <th data-field="quantity">Вже відвантажено</th>
             <th data-field="quantity">Вага <br> (не розподілена)</th>
             <th data-field="quantity">Кількість</th>
             <th data-field="packaging">Пакування</th>
@@ -524,6 +526,8 @@
             <td th:text="${productForShipment.getProduct().getBatch()}"></td>
             <td th:text="${productForShipment.getProduct().getPrice().stripTrailingZeros().toPlainString()}"></td>
             <td th:text="${productForShipment.getProduct().getCurrency()}" ></td>
+            <td th:text="${productForShipment.getProduct().getQuantity().stripTrailingZeros().toPlainString()}" ></td>
+            <td th:text="${productForShipment.getProduct().getLoadedQuantity().stripTrailingZeros().toPlainString()}" ></td>
             <td th:text="${productForShipment.getProduct().getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
             <td> <input type="text" th:name="productForShipmentWeight[]" required></td>
             <td th:text="${productForShipment.getProduct().getPackaging()}"></td>

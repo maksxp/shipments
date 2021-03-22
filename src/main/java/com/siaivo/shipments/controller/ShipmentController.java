@@ -145,6 +145,13 @@ public class ShipmentController {
         return new ModelAndView("redirect:../openShipments");
     }
 
+    @RequestMapping(value = "/salesSupport/returnShipmentToWork/{id}", method = RequestMethod.GET)
+    public ModelAndView returnShipmentToWorkForSalesSupport(@PathVariable(value = "id") int id){
+        Shipment shipment =  shipmentService.findById(id);
+        shipmentService.returnShipmentToWork(shipment);
+        return new ModelAndView("redirect:../openShipments");
+    }
+
     @RequestMapping(value = "/salesSupport/deleteShipment/{id}", method = RequestMethod.GET)
     public ModelAndView deleteShipmentForSalesSupport(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
@@ -155,6 +162,12 @@ public class ShipmentController {
         modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+contractId);
         return modelAndView;
 //        return new ModelAndView("redirect:../openShipments");
+    }
+
+    @RequestMapping(value = "/salesSupport/returnShipmentToWork", method = RequestMethod.POST)
+    public ModelAndView returnShipmentToWorkForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+        shipmentService.returnShipmentToWork(shipment);
+        return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)

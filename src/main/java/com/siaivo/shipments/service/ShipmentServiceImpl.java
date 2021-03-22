@@ -48,12 +48,16 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public void returnShipmentToWork(Shipment shipment) {
+        shipment.setIsFulfilled(false);
+        shipmentRepository.save(shipment);
+    }
+
+    @Override
     public void deleteShipment(Shipment shipment) {
             productForShipmentRepository.findByShipment(shipment).forEach(productForShipment -> productForShipmentService.deleteProductForShipment(productForShipment));
             shipmentRepository.delete(shipment);
             }
-
-
 
     @Override
     public List<Shipment> thisWeekShipments() {

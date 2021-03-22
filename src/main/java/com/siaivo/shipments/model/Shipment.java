@@ -276,6 +276,14 @@ public class Shipment {
         return sumForPayIdentity;
     }
 
+    public void deleteProductForShipment (Product product) {
+        List <ProductForShipment> productForShipmentList;
+        productForShipmentList = getProductsForShipment().stream().filter(productForShipment ->
+                productForShipment.getProduct().equals(product))
+                .collect(Collectors.toList());
+        setProductsForShipment(productForShipmentList);
+    }
+
     public void setSumForPayIdentity(String sumForPayIdentity) {
         if (null == this.sumForPayIdentity){
             this.sumForPayIdentity = sumForPayIdentity;

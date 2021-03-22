@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,7 +32,8 @@ public class SalesSupportProductController {
     @RequestMapping(value = "/salesSupport/deleteProduct/{id}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable(value = "id") int id){
         Product product =  productService.findById(id);
-        productService.deleteProduct(product);
+//        productService.deleteProductAndShipments(product);
+        productService.deleteProductAndProductsForShipments (product);
         Contract contract = product.getContract();
         int contractId = contract.getId();
         ModelAndView modelAndView = new ModelAndView();

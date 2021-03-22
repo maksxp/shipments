@@ -73,11 +73,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProduct(Product product) {
+    public void deleteProductAndShipments(Product product) {
 //        List <ProductForShipment> productsForShipments = product.getProductsForShipments();
 //        productsForShipments.forEach(productForShipment -> productForShipmentRepository.delete(productForShipment));
         List <Shipment> shipmentsWithThisProduct = product.getShipmentsWithThisProduct();
         shipmentsWithThisProduct.forEach(shipment -> shipmentService.deleteShipment(shipment));
+        productRepository.delete(product);
+    }
+
+    @Override
+    public void deleteProductAndProductsForShipments(Product product) {
+        List <Shipment> shipmentsWithThisProduct = product.getShipmentsWithThisProduct();
+        List <ProductForShipment> productsForShipments = product.getProductsForShipments();
+        shipmentsWithThisProduct.forEach(shipment -> shipment.deleteProductForShipment(product));
+        productsForShipments.forEach(productForShipment -> productForShipmentRepository.delete(productForShipment));
         productRepository.delete(product);
     }
 

@@ -164,25 +164,28 @@ public class SalesSupportContractController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesSupport/editContract/{id}", method = RequestMethod.GET)
-    public ModelAndView editContract(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
-        Contract contract = contractService.findContractById(id);
-        modelAndView.addObject("contract", contract);
-        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
-        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
-        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
-//        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
-        modelAndView.setViewName("/salesSupport/editContract");
-        return modelAndView;
-    }
+//    @RequestMapping(value="/salesSupport/editContract/{id}", method = RequestMethod.GET)
+//    public ModelAndView editContract(@PathVariable(value = "id") int id){
+//        ModelAndView modelAndView = new ModelAndView();
+//        Contract contract = contractService.findContractById(id);
+//        modelAndView.addObject("contract", contract);
+//        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
+//        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
+//        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
+////        modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
+//        modelAndView.setViewName("/salesSupport/editContract");
+//        return modelAndView;
+//    }
 
     @RequestMapping(value="/salesSupport/contract", method = RequestMethod.POST)
     public ModelAndView changeContract(@ModelAttribute("contract")Contract contractFromView){
         int id = contractFromView.getId();
+//        System.out.println("start date: "+contractFromView.getStartOfShipments());
         Contract contractFromDataBase = contractService.findContractById(id);
         contractFromDataBase.setState(contractFromView.getState());
         contractFromDataBase.setPaymentTerms(contractFromView.getPaymentTerms());
+        contractFromDataBase.setStartOfShipments(contractFromView.getStartOfShipments());
+        contractFromDataBase.setEndOfShipments(contractFromView.getEndOfShipments());
         contractFromDataBase.setDeliveryTerms(contractFromView.getDeliveryTerms());
         contractFromDataBase.setComment(contractFromView.getComment());
         contractService.saveContract(contractFromDataBase);

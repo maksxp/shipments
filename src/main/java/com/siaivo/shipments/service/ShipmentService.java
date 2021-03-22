@@ -1,6 +1,7 @@
 package com.siaivo.shipments.service;
 
 import com.siaivo.shipments.model.Contract;
+import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.model.Shipment;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface ShipmentService {
     void saveShipment (Shipment shipment);
 
     void fulfillShipment (Shipment shipment);
+
+    void returnShipmentToWork (Shipment shipment);
 
     void deleteShipment (Shipment shipment);
 
@@ -55,4 +58,5 @@ public interface ShipmentService {
     List<Shipment> fulfilledShipments();
 
     List<Shipment> allShipmentsPerContract(Contract contract);
+
 }
