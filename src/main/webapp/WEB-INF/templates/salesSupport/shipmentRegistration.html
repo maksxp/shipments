@@ -430,7 +430,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: center">
-            <h4>Реєстрація нового відправлення до контракту  № <span th:name="contractNumber" th:text="${contractNumber}"></span> від <span th:name="contractDate" th:text="${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span></h4>
+            <h4>Реєстрація нового відправлення до контракту  <span th:text="${contractNumber}==null ? '' : '  № '+ ${contractNumber}"></span> <span th:text="${contractDate}==null ? '': ' від ' +${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span> </h4>
         </div>
     </div>
 </div>
@@ -444,8 +444,8 @@
 <form autocomplete="off" action="#" th:action="@{/salesSupport/shipmentRegistration}"
       th:object="${shipment}" method="post" class="form-horizontal" role="form">
 
-    <input type="hidden" th:field="${contractNumber}"/>
-    <input type="hidden" th:field="${contractDate}"/>
+<!--    <input type="hidden" th:field="${contractNumber}"/>-->
+<!--    <input type="hidden" th:field="${contractDate}"/>-->
 
     <table  class="table table-hover table-bordered"
             data-toggle="table">

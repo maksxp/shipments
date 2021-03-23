@@ -429,7 +429,7 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: center">
-            <h4>Відправлення № <span th:text="${shipment.truckNumber}"></span> по контракту № <span th:text="${contractNumber}"></span> від <span th:text="${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span> </h4>
+            <h4>Відправлення № <span th:text="${shipment.truckNumber}"></span> по контракту <span th:text="${contractNumber}==null ? '' : '  № '+ ${contractNumber}"></span> <span th:text="${contractDate}==null ? '': ' від ' +${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span> </h4>
         </div>
     </div>
 </div>

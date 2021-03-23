@@ -72,6 +72,32 @@ public class SalesSupportProductController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/editProduct/{id}", method = RequestMethod.GET)
+    public ModelAndView editProduct (@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = new ModelAndView();
+        Product product = productService.findById(id);
+        modelAndView.addObject("product", product);
+//        String country="";
+//        String place="";
+//        if (contract.getShipments().size()>0){
+//            country = contract.getShipments().get(0).getDestinationCountry();
+//            place = contract.getShipments().get(0).getDestinationPlace();
+//        }
+//        int truckNumber = contract.getShipments().size()+1;
+//        String invoiceNumber = contract.getContractNumber()+"."+truckNumber;
+//        ModelAndView modelAndView = new ModelAndView();
+//        Shipment shipment = new Shipment();
+//        List<ProductForShipment> allProductsForShipment = new ArrayList<>();
+//        contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
+        modelAndView.addObject("contractNumber", product.getContractNumber());
+        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+        modelAndView.addObject("contractDate", product.getContractDate());
+        modelAndView.addObject("customerName", product.getCustomerName());
+//        modelAndView.addObject("contractId", id);
+        modelAndView.setViewName("/salesSupport/editProduct");
+        return modelAndView;
+    }
+
     @Transactional
     @RequestMapping(value="/salesSupport/productRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewProduct (@RequestParam(value="contractId") String contractId, @ModelAttribute("product") Product product){

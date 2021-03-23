@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Product registration</title>
+    <title>Edit Product</title>
 
 <!--    <script th:inline="javascript">-->
 <!--        let paymentTerms =/*[[${paymentTerms}]]*/'noValue';-->
@@ -438,12 +438,12 @@
 <div class="container-fluid">
     <div class="layerHeader">
         <div style="text-align: center">
-            <h4>Реєстрація нового продукту до контракту  <span th:text="${contractNumber}==null ? '' : '  № '+ ${contractNumber}"></span> <span th:text="${contractDate}==null ? '': ' від ' +${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span> </h4>
+            <h4>Редагуваня продукту до контракту  <span th:text="${contractNumber}==null ? '' : '  № '+ ${contractNumber}"></span> <span th:text="${contractDate}==null ? '': ' від ' +${contractDate}"></span> з <span style="color: blueviolet" th:text="${customerName}"></span>  </h4>
         </div>
     </div>
 </div>
 
-<form autocomplete="off" action="#" th:action="@{/salesSupport/productRegistration}"
+<form autocomplete="off" action="#" th:action="@{/salesSupport/editProduct}"
       th:object="${product}" method="post" class="form-horizontal" role="form">
 
 <!--    <input type="hidden" th:field="${contractNumber}"/>-->
@@ -465,22 +465,22 @@
         </thead>
         <tbody>
         <td style="width: 15em">
-        <select th:field="*{commodity}" required>
+        <select th:field="*{commodity}" th:value="#{commodity}"required>
             <option value="" >Оберіть товар</option>
             <option th:each="commodity : ${allCommodities}" th:value="${{commodity}}" th:text="${commodity.commodityName}"></option>
         </select>
         </td>
-        <td style="width: 7em"> <input type="text" th:name="batch" th:value="${batch}" required></td>
-        <td  style="width: 7em"> <input type="text" th:name="price" th:value="${price}" required></td>
+        <td style="width: 7em"> <input type="text" th:field="*{batch}" required></td>
+        <td  style="width: 7em"> <input type="text" th:field="*{price}" required></td>
         <td>
-            <select th:field="*{currency}" required>
+            <select th:field="*{currency}" th:value="#{currency}"required>
                 <option value="" >Оберіть</option>
                 <option th:value="EUR">EUR</option>
                 <option th:value="USD">USD</option>
                 <option th:value="UAH">UAH</option>
             </select>
         </td>
-        <td  style="width: 7em"> <input type="text" th:name="quantity" th:value="${quantity}" required></td>
+        <td  style="width: 7em"> <input type="text" th:field="*{quantity}" required></td>
         <td style="width: 20em">
             <select th:field="*{packaging}" required>
                 <option value="" >Оберіть</option>

@@ -146,6 +146,18 @@ public class Product {
         this.productsForShipments = productsForShipments;
     }
 
+    public String getContractNumber (){
+        return getContract().getContractNumber();
+    }
+
+    public String getContractDate (){
+        return getContract().getContractDate();
+    }
+
+    public String getCustomerName (){
+        return getContract().getCustomer().getCustomerName();
+    }
+
     public BigDecimal getLoadedQuantity (){
         List <BigDecimal> quantityOfLoadedProductInEachShipment = new ArrayList<>();
         getProductsForShipments()
