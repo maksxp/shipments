@@ -188,22 +188,23 @@
         data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
-        <th data-field="customerName" data-filter-control="input">Платник</th>
-        <th data-field="invoiceSum" data-filter-control="input">Сума</th>
-        <th data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
-        <th data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
-        <th data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
-        <th data-field="invoiceComment" data-filter-control="input">Коментар</th>
-        <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити</th>
+        <th style="width: 4em" data-sortable="true" data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
+        <th data-sortable="true" data-field="customerName" data-filter-control="input">Платник</th>
+        <th data-sortable="true" data-field="invoiceSum" data-filter-control="input">Сума</th>
+        <th data-sortable="true" data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
+        <th data-sortable="true" data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
+        <th data-sortable="true" data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
+        <th data-sortable="true" data-field="invoiceComment" data-filter-control="input">Коментар</th>
+        <th data-field="actions" data-filter-control="input">Відкрити</th>
     </tr>
     </thead>
 
     <tbody>
     <tr th:each="shipment : ${allShipments}">
-        <td data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
+        <td style="width: 4em" data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
-        <td data-field="invoiceSum" th:text="*{shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>
+<!--        <td data-field="invoiceSum" th:text="*{shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>-->
+        <td data-field="invoiceSum" th:text="${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Сума</td>
         <td data-field="paymentTerms" th:text="*{shipment.getContract().getPaymentTerms()}">Умови оплати</td>
         <td data-field="plannedFullSettlementDate" th:text="*{shipment.getPlannedFullSettlementDate()}">Повний розрахунок <br> (план)</td>
         <td data-field="actualFullSettlementDate" th:text="*{shipment.getActualFullSettlementDate()}">Повний розрахунок <br> (факт)</td>

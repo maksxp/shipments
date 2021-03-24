@@ -4,6 +4,7 @@ import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Product;
 import com.siaivo.shipments.model.Shipment;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -58,5 +59,7 @@ public interface ShipmentService {
     List<Shipment> fulfilledShipments();
 
     List<Shipment> allShipmentsPerContract(Contract contract);
+
+    BigDecimal
 
 }

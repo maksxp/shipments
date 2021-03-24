@@ -77,24 +77,30 @@ public class SalesSupportProductController {
         ModelAndView modelAndView = new ModelAndView();
         Product product = productService.findById(id);
         modelAndView.addObject("product", product);
-//        String country="";
-//        String place="";
-//        if (contract.getShipments().size()>0){
-//            country = contract.getShipments().get(0).getDestinationCountry();
-//            place = contract.getShipments().get(0).getDestinationPlace();
-//        }
-//        int truckNumber = contract.getShipments().size()+1;
-//        String invoiceNumber = contract.getContractNumber()+"."+truckNumber;
-//        ModelAndView modelAndView = new ModelAndView();
-//        Shipment shipment = new Shipment();
-//        List<ProductForShipment> allProductsForShipment = new ArrayList<>();
-//        contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
         modelAndView.addObject("contractNumber", product.getContractNumber());
         modelAndView.addObject("allCommodities", commodityService.allCommodities());
         modelAndView.addObject("contractDate", product.getContractDate());
         modelAndView.addObject("customerName", product.getCustomerName());
 //        modelAndView.addObject("contractId", id);
         modelAndView.setViewName("/salesSupport/editProduct");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/editProduct", method = RequestMethod.POST)
+    public ModelAndView editProduct ( @ModelAttribute("product")Product productFromView){
+        System.out.println("type of "+productFromView.getPrice().getClass());
+        ModelAndView modelAndView = new ModelAndView();
+        int id = productFromView.getId();
+        Product productFromDataBase = productService.findById(id);
+        int contractId = productFromDataBase.getContract().getId();
+        productFromDataBase.setCommodity(productFromView.getCommodity());
+        productFromDataBase.setBatch(productFromView.getBatch());
+        productFromDataBase.setPrice(productFromView.getPrice());
+        productFromDataBase.setCurrency(productFromView.getCurrency());
+        productFromDataBase.setQuantity(productFromView.getQuantity());
+        productFromDataBase.setPackaging(productFromView.getPackaging());
+        productService.saveProduct(productFromDataBase);
+        modelAndView.setViewName("redirect:/salesSupport/contract/"+contractId);
         return modelAndView;
     }
 
@@ -128,7 +134,6 @@ public class SalesSupportProductController {
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.setViewName("redirect:/salesSupport/contract/"+id);
-        System.out.println("test");
         return modelAndView;
     }
 }

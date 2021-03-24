@@ -494,6 +494,14 @@ public class Shipment {
         return unpaidSumOfWholeSum;
     }
 
+    public String getCurrency (){
+        if (getContract().getProducts().size()>0) {
+            return getContract().getProducts().get(0).getCurrency();
+        } else {
+            return "";
+        }
+    }
+
 //    public boolean isLoadedOrAnyPaymentMade () {
 //        boolean isLoadedOrAnyPaymentMade = false;
 //        if (isLoaded()) {

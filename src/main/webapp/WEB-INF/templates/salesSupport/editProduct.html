@@ -446,8 +446,7 @@
 <form autocomplete="off" action="#" th:action="@{/salesSupport/editProduct}"
       th:object="${product}" method="post" class="form-horizontal" role="form">
 
-<!--    <input type="hidden" th:field="${contractNumber}"/>-->
-<!--    <input type="hidden" th:field="${contractDate}"/>-->
+    <input type="hidden" th:field="*{id}"/>
 
     <table class="table table-hover table-bordered"
            id="table"
@@ -503,7 +502,7 @@
     <div class="container-fluid">
         <div align="center">
             <div class="layerBottom">
-                <button type="submit" th:name="contractId" th:value="${contractId}" class="btn btn-primary btn-block">Зареєструвати</button>
+                <button type="submit" class="btn btn-primary btn-block">Внести зміни</button>
             </div>
         </div>
     </div>
