@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Unpaid Invoices</title>
+    <title>Paid Invoices</title>
 
     <style>
         .layerHeader {
@@ -145,7 +145,8 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allInvoices">Усі рахунки</a>
-                    <a class="dropdown-item" href="paidInvoices">Оплачені рахунки</a></div>
+                    <a class="dropdown-item" href="unpaidInvoices">Неоплачені рахунки</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -174,7 +175,8 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Неоплачені рахунки </h3>
+            <h4>Неоплачені рахунки. Загальна сума: <span th:text="${totalSumOfUnpaidInvoicesInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfUnpaidInvoicesInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfUnpaidInvoicesInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfUnpaidInvoicesInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfUnpaidInvoicesInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfUnpaidInvoicesInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>
+
         </div>
 </div>
 <table  class="table table-hover table-bordered"
@@ -187,12 +189,14 @@
         data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 4em" data-sortable="true" data-field="invoiceNumber" data-filter-control="input" >Рахунок</th>
-        <th data-sortable="true" data-field="customerName" data-filter-control="input" >Платник</th>
-        <th data-sortable="true" data-field="invoiceSum" data-filter-control="input" >Сума</th>
-        <th data-sortable="true" data-field="paymentTerms" data-filter-control="input" >Умови оплати</th>
-        <th data-sortable="true" data-field="plannedFullSettlementDate" data-filter-control="input" >Повний розрахунок <br> (план)</th>
-        <th data-sortable="true" data-field="invoiceComment" data-filter-control="input" >Коментар</th>
+        <th dstyle="width: 4em" ata-sortable="true" data-field="invoiceNumber" data-filter-control="input" >Рахунок</th>
+        <th data-sortable="true" data-field="customerName" data-filter-control="input">Платник</th>
+        <th data-sortable="true" data-field="invoiceSum" data-filter-control="input">Сума рахунку</th>
+        <th data-sortable="true" data-field="unpaidInvoiceSum" data-filter-control="input">Неоплачена сума</th>
+        <th data-sortable="true" data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
+        <th data-sortable="true" data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
+        <th data-sortable="true" data-field="actualFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (факт)</th>
+        <th data-sortable="true" data-field="invoiceComment" data-filter-control="input">Коментар</th>
         <th data-field="actions" data-filter-control="input" >Відкрити</th>
     </tr>
     </thead>
@@ -201,9 +205,11 @@
     <tr th:each="shipment : ${unpaidShipments}">
         <td style="width: 4em" data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
-        <td data-field="invoiceSum" th:text="${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Сума</td>
+        <td data-field="invoiceSum" th:text="${shipment.getInvoiceWholeSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Сума рахунку</td>
+        <td data-field="unpaidInvoiceSum" th:text="${shipment.getUnpaidSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getUnpaidSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Неоплачена сума</td>
         <td data-field="paymentTerms" th:text="*{shipment.getContract().getPaymentTerms()}">Умови оплати</td>
         <td data-field="plannedFullSettlementDate" th:text="*{shipment.getPlannedFullSettlementDate()}">Повний розрахунок <br> (план)</td>
+        <td data-field="actualFullSettlementDate" th:text="*{shipment.getActualFullSettlementDate()}">Повний розрахунок <br> (факт)</td>
         <td data-field="invoiceComment" th:text="*{shipment.invoiceComment}">Коментар</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">

@@ -299,6 +299,14 @@
                 // changeMonth: true,
                 showWeek: true,
                 weekHeader: "тж",
+                showButtonPanel: true,
+                closeText: 'Очистити',
+                onClose: function (dateText, inst) {
+                    if ($(window.event.target).hasClass('ui-datepicker-close'))
+                    {
+                        document.getElementById(this.id).value = '';
+                    }
+                }
             });
         });
 
@@ -474,10 +482,10 @@
         <!--    <td> <input type="text" th:field="*{destinationPlace}" th:value="#{destinationPlace}" class="country"/> </td>-->
         <!--    <td  th:text="${destinationCountry}"></td>-->
         <!--    <td  th:text="${destinationPlace}"></td>-->
-        <td> <input type="text" th:field="*{plannedLoadingDate}" th:value="#{plannedLoadingDate}" class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{actualLoadingDate}" th:value="#{actualLoadingDate}"class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{plannedUnloadingDate}" th:value="#{plannedUnloadingDate}"class="datepicker"  /> </td>
-        <td> <input type="text" th:field="*{actualUnloadingDate}" th:value="#{actualUnloadingDate}"class="datepicker"  /> </td>
+        <td> <input type="text" th:field="*{plannedLoadingDate}" th:value="#{plannedLoadingDate}" class="datepicker" readonly /> </td>
+        <td> <input type="text" th:field="*{actualLoadingDate}" th:value="#{actualLoadingDate}"class="datepicker" readonly /> </td>
+        <td> <input type="text" th:field="*{plannedUnloadingDate}" th:value="#{plannedUnloadingDate}"class="datepicker" readonly /> </td>
+        <td> <input type="text" th:field="*{actualUnloadingDate}" th:value="#{actualUnloadingDate}"class="datepicker" readonly /> </td>
         <td>
             <select  th:field="*{logisticInstructionStatus}" th:value="#{logisticInstructionStatus}" required>
                 <option th:value="'готується'">готується</option>
@@ -568,13 +576,13 @@
 <!--        <td  style="width: 7em"> <input type="text" th:texfieldt="${invoiceWholeSum.stripTrailingZeros().toPlainString()}">-->
         <td  style="width: 15em" th:text="${paymentTerms}"></td>
         <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceFirstPartSum" th:value="${strippedInvoiceFirstPartSum}"/> </td>
-        <td style="width: 7em" > <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" /> </td>
-        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" /> </td>
+        <td style="width: 7em" > <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfFirstPartSum}" th:value="#{plannedPaymentDateOfFirstPartSum}" readonly /> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfFirstPartSum}" th:value="#{actualPaymentDateOfFirstPartSum}" readonly /> </td>
         <td style="width: 7em"> <input class="twoPayments" type="text" th:name="invoiceSecondPartSum" th:value="${strippedInvoiceSecondPartSum}"/> </td>
-        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" /> </td>
-        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfSecondPartSum}" th:value="#{actualPaymentDateOfSecondPartSum}" /> </td>
-        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{plannedPaymentDateOfWholeSum}" th:value="#{plannedPaymentDateOfWholeSum}" /> </td>
-        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{actualPaymentDateOfWholeSum}" th:value="#{actualPaymentDateOfWholeSum}" /> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{plannedPaymentDateOfSecondPartSum}" th:value="#{plannedPaymentDateOfSecondPartSum}" readonly /> </td>
+        <td style="width: 7em"> <input class="twoPayments datepicker" type="text" th:field="*{actualPaymentDateOfSecondPartSum}" th:value="#{actualPaymentDateOfSecondPartSum}" readonly /> </td>
+        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{plannedPaymentDateOfWholeSum}" th:value="#{plannedPaymentDateOfWholeSum}" readonly /> </td>
+        <td style="width: 7em"> <input class="onePayment datepicker" type="text" th:field="*{actualPaymentDateOfWholeSum}" th:value="#{actualPaymentDateOfWholeSum}" readonly /> </td>
         <td> <input type="text" th:field="*{invoiceComment}" th:value="#{invoiceComment}"/></td>
         </tbody>
     </table>

@@ -241,6 +241,23 @@ public class Product {
         return unpaidSumOfLoadedProductInUSD;
     }
 
+    public BigDecimal getUnpaidSumOfLoadedProductInUAH (){
+        BigDecimal unpaidSumOfLoadedProductInUAH = BigDecimal.ZERO;
+        if (currency.equals("UAH")){
+            List <BigDecimal> unpaidSumOfLoadedAndUnpaidProductInEachShipment = new ArrayList<>();
+            getProductsForShipments()
+                    .stream()
+                    .filter(productForShipment -> productForShipment.isLoaded())
+                    .collect(Collectors.toList())
+                    .forEach(productForShipment -> unpaidSumOfLoadedAndUnpaidProductInEachShipment.add(productForShipment.getUnpaidSumInUAH()));
+
+            unpaidSumOfLoadedProductInUAH = unpaidSumOfLoadedAndUnpaidProductInEachShipment
+                    .stream()
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return unpaidSumOfLoadedProductInUAH;
+    }
+
 //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;

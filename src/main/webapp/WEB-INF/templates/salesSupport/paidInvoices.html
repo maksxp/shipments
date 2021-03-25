@@ -175,7 +175,8 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Оплачені рахунки </h3>
+            <h4>Оплачені рахунки. Загальна сума: <span th:text="${totalSumOfPaidInvoicesInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfPaidInvoicesInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfPaidInvoicesInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfPaidInvoicesInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfPaidInvoicesInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfPaidInvoicesInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>
+
         </div>
 </div>
 <table  class="table table-hover table-bordered"
@@ -203,7 +204,7 @@
     <tr th:each="shipment : ${paidShipments}">
         <td style="width: 4em" data-field="invoiceNumber"  th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td data-field="customerName" th:text="${shipment.getContract().getCustomer().getCustomerName()}">Платник</td>
-        <td data-field="invoiceSum" th:text="${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Сума</td>
+        <td data-field="invoiceSum" th:text="${shipment.getInvoiceWholeSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">Сума</td>
         <td data-field="paymentTerms" th:text="*{shipment.getContract().getPaymentTerms()}">Умови оплати</td>
         <td data-field="plannedFullSettlementDate" th:text="*{shipment.getPlannedFullSettlementDate()}">Повний розрахунок <br> (план)</td>
         <td data-field="actualFullSettlementDate" th:text="*{shipment.getActualFullSettlementDate()}">Повний розрахунок <br> (факт)</td>

@@ -33,6 +33,7 @@ public class SalesSupportCommodityController {
         modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.addObject("unpaidSumOfLoadedGoodsInEUR", getUnpaidSumOfLoadedGoodsInEUR());
         modelAndView.addObject("unpaidSumOfLoadedGoodsInUSD", getUnpaidSumOfLoadedGoodsInUSD());
+        modelAndView.addObject("unpaidSumOfLoadedGoodsInUAH", getUnpaidSumOfLoadedGoodsInUAH());
         // Double rateEUR = JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?");
         modelAndView.setViewName("/salesSupport/allCommodities");
         return modelAndView;
@@ -86,6 +87,13 @@ public class SalesSupportCommodityController {
         List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProductInUSD = new ArrayList<>();
         allProducts.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProductInUSD.add(product.getUnpaidSumOfLoadedProductInUSD()));
         return unpaidSumOfEachLoadedAndUnpaidProductInUSD.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private BigDecimal getUnpaidSumOfLoadedGoodsInUAH (){
+        List<Product> allProducts = productService.allProducts();
+        List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProductInUAH = new ArrayList<>();
+        allProducts.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProductInUAH.add(product.getUnpaidSumOfLoadedProductInUAH()));
+        return unpaidSumOfEachLoadedAndUnpaidProductInUAH.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }

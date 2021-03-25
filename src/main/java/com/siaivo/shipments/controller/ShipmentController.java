@@ -113,21 +113,30 @@ public class ShipmentController {
     @RequestMapping(value="/salesSupport/allInvoices", method = RequestMethod.GET)
     public ModelAndView allInvoicesForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
+        modelAndView.addObject("totalSumOfAllInvoicesInEUR", shipmentService.getTotalSumOfAllInvoicesInEUR());
+        modelAndView.addObject("totalSumOfAllInvoicesInUSD", shipmentService.getTotalSumOfAllInvoicesInUSD());
+        modelAndView.addObject("totalSumOfAllInvoicesInUAH", shipmentService.getTotalSumOfAllInvoicesInUAH());
         modelAndView.setViewName("/salesSupport/allInvoices");
-        return modelAndView;
-    }
-
-    @RequestMapping(value="/salesSupport/unpaidInvoices", method = RequestMethod.GET)
-    public ModelAndView unpaidInvoicesForSalesSupport(){
-        ModelAndView modelAndView = getModelAndViewWithUnpaidShipments();
-        modelAndView.setViewName("/salesSupport/unpaidInvoices");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/paidInvoices", method = RequestMethod.GET)
     public ModelAndView paidInvoicesForSalesSupport(){
         ModelAndView modelAndView = getModelAndViewWithPaidShipments();
+        modelAndView.addObject("totalSumOfPaidInvoicesInEUR", shipmentService.getTotalSumOfPaidInvoicesInEUR());
+        modelAndView.addObject("totalSumOfPaidInvoicesInUSD", shipmentService.getTotalSumOfPaidInvoicesInUSD());
+        modelAndView.addObject("totalSumOfPaidInvoicesInUAH", shipmentService.getTotalSumOfPaidInvoicesInUAH());
         modelAndView.setViewName("/salesSupport/paidInvoices");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/unpaidInvoices", method = RequestMethod.GET)
+    public ModelAndView unpaidInvoicesForSalesSupport(){
+        ModelAndView modelAndView = getModelAndViewWithUnpaidShipments();
+        modelAndView.addObject("totalSumOfUnpaidInvoicesInEUR", shipmentService.getTotalSumOfUnpaidInvoicesInEUR());
+        modelAndView.addObject("totalSumOfUnpaidInvoicesInUSD", shipmentService.getTotalSumOfUnpaidInvoicesInUSD());
+        modelAndView.addObject("totalSumOfUnpaidInvoicesInUAH", shipmentService.getTotalSumOfUnpaidInvoicesInUAH());
+        modelAndView.setViewName("/salesSupport/unpaidInvoices");
         return modelAndView;
     }
 
@@ -325,12 +334,15 @@ public class ShipmentController {
         shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
         shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
         shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
-        shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
-        shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
-        shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
-        shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
-        shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
-        shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
+        if ("оплата частинами".equals(shipmentFromDataBase.getPaymentTerms())) {
+            shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
+            shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
+            shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
+            shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
+        } else {
+            shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
+            shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
+        }
         shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
         shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
         shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());

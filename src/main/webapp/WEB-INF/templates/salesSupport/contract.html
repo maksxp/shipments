@@ -269,7 +269,7 @@
             <th style="width: 8em" data-field="startOfShipments">Початок <br> відвантажень</th>
             <th style="width: 8em" data-field="endOfShipments">Завершення <br> відвантажень</th>
             <th style="width: 4em" data-field="totalWeightOfAllGoods">Вага всіх <br> товарів</th>
-            <th style="width: 8em" data-field="sumOfContract">Сума контракту</th>
+            <th style="width: 10em" data-field="sumOfContract">Сума контракту</th>
             <th data-field="state">Статус</th>
             <th data-field="comment">Коментар</th>
         </tr>
@@ -303,7 +303,7 @@
         <td style="width: 8em">  <input type="text" th:field="*{startOfShipments}" th:text="${startOfShipments}" class="datepicker text"  required readonly/> </td>
         <td style="width: 8em"> <input type="text" th:field="*{endOfShipments}" th:text="${endOfShipments}" class="datepicker text" required readonly /> </td>
         <td style="width: 4em" th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага <br> всіх товарів</td>
-        <td style="width: 8em" th:text="${contract.getSumOfContract()==0} ? '0' : ${#numbers.formatDecimal(contract.getSumOfContract().stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
+        <td style="width: 10em" th:text="${contract.getSumOfContract()==0} ? '0' : ${#strings.replace(#numbers.formatDecimal(contract.getSumOfContract(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
         <!--    <td style="width: max-content">-->
         <td style="text-align-last: center; width: 8em">
             <!--            <select  th:field="*{state}" th:value="#{state}" required>-->

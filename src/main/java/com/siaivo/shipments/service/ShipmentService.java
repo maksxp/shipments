@@ -60,6 +60,22 @@ public interface ShipmentService {
 
     List<Shipment> allShipmentsPerContract(Contract contract);
 
-    BigDecimal
+    BigDecimal getTotalSumOfAllInvoicesInEUR ();
+
+    BigDecimal getTotalSumOfPaidInvoicesInEUR ();
+
+    BigDecimal getTotalSumOfUnpaidInvoicesInEUR ();
+
+    BigDecimal getTotalSumOfAllInvoicesInUSD ();
+
+    BigDecimal getTotalSumOfPaidInvoicesInUSD ();
+
+    BigDecimal getTotalSumOfUnpaidInvoicesInUSD ();
+
+    BigDecimal getTotalSumOfAllInvoicesInUAH ();
+
+    BigDecimal getTotalSumOfPaidInvoicesInUAH ();
+
+    BigDecimal getTotalSumOfUnpaidInvoicesInUAH ();
 
 }

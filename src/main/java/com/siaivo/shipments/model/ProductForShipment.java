@@ -84,6 +84,14 @@ public class ProductForShipment {
         return unpaidSumInUSD;
     }
 
+    public BigDecimal getUnpaidSumInUAH () {
+        BigDecimal unpaidSumInUAH = BigDecimal.ZERO;
+        if ("UAH".equals(product.getCurrency())){
+            unpaidSumInUAH = getUnpaidQuantity().multiply(product.getPrice());
+        }
+        return unpaidSumInUAH;
+    }
+
     public BigDecimal getUnpaidQuantity () {
         BigDecimal unpaidQuantity = BigDecimal.ZERO;
         if ("оплата частинами".equals(getPaymentTerms())) {

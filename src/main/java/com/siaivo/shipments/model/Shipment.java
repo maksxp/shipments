@@ -227,9 +227,13 @@ public class Shipment {
     }
 
     public void setActualPaymentDateOfSecondPartSum(String actualPaymentDateOfSecondPartSum) {
+        System.out.println("test");
         this.actualPaymentDateOfSecondPartSum = actualPaymentDateOfSecondPartSum;
-        if (getUnpaidSumOfFirstPartSum()!=null&&getUnpaidSumOfFirstPartSum().equals(BigDecimal.ZERO))
-        actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
+        if (actualPaymentDateOfSecondPartSum.isEmpty()){
+            actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
+        } else if (getUnpaidSumOfFirstPartSum()!=null&&getUnpaidSumOfFirstPartSum().equals(BigDecimal.ZERO)) {
+            actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
+        }
     }
 
     public String getPlannedPaymentDateOfWholeSum() {
@@ -245,6 +249,7 @@ public class Shipment {
     }
 
     public void setActualPaymentDateOfWholeSum(String actualPaymentDateOfWholeSum) {
+        System.out.println("payment date whole"+actualPaymentDateOfWholeSum);
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 
@@ -274,6 +279,10 @@ public class Shipment {
 
     public String getSumForPayIdentity() {
         return sumForPayIdentity;
+    }
+
+    public String getPaymentTerms () {
+        return getContract().getPaymentTerms();
     }
 
     public void deleteProductForShipment (Product product) {
@@ -424,7 +433,7 @@ public class Shipment {
         return arrearsSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getUnpaidSum () throws ParseException{
+    public BigDecimal getUnpaidSum () {
         List <BigDecimal> unpaidSums  = new ArrayList<>();
         if (getContract().getPaymentTerms().equals("оплата частинами")){
             unpaidSums.add(getUnpaidSumOfFirstPartSum());

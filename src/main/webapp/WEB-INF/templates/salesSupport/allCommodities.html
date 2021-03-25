@@ -220,7 +220,7 @@
 </table>
 <div class="container-fluid">
     <div class="layerBottom">
-        <h3>Відправлено і не оплачено товарів на суму: <span th:text="${unpaidSumOfLoadedGoodsInEUR}==0 ? ('0 EUR') :(${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInEUR.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' EUR')"></span>&nbsp;<span th:text="${unpaidSumOfLoadedGoodsInUSD}==0 ? (' та 0 USD') : (' та '+${#numbers.formatDecimal(unpaidSumOfLoadedGoodsInUSD.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}+' USD')"></span> </h3>
+        <h3>Відправлено і не оплачено товарів на суму: <span th:text="${unpaidSumOfLoadedGoodsInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(unpaidSumOfLoadedGoodsInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${unpaidSumOfLoadedGoodsInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(unpaidSumOfLoadedGoodsInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${unpaidSumOfLoadedGoodsInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(unpaidSumOfLoadedGoodsInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span> </h3>
     </div>
 </div>
 <script>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -68,6 +69,8 @@ public class ShipmentServiceImpl implements ShipmentService{
         }
         return thisWeekShipments;
     }
+
+
 
     @Override
     public List <Shipment> allPaymentsByTheEndOfThisWeek() {
@@ -569,6 +572,125 @@ public class ShipmentServiceImpl implements ShipmentService{
         return shipmentRepository.findByContract(contract);
     }
 
+    @Override
+    public BigDecimal getTotalSumOfAllInvoicesInEUR () {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> allShipments = shipmentRepository.findAll();
+        allShipments
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfPaidInvoicesInEUR () {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> paidShipments = shipmentRepository.findPaidShipments();
+        paidShipments
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfUnpaidInvoicesInEUR () {
+        List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
+        List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        System.out.println("size unpaid EUR: "+unpaidShipments.size());
+        unpaidShipments
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceUnpaidSums.add(shipment.getUnpaidSum()));
+        return invoiceUnpaidSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllInvoicesInUSD () {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> allShipments = shipmentRepository.findAll();
+        allShipments
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfPaidInvoicesInUSD() {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> paidShipments = shipmentRepository.findPaidShipments();
+        paidShipments
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfUnpaidInvoicesInUSD () {
+        List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
+        List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        System.out.println("size unpaid USD: "+unpaidShipments.size());
+        unpaidShipments
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceUnpaidSums.add(shipment.getUnpaidSum()));
+        return invoiceUnpaidSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllInvoicesInUAH() {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> allShipments = shipmentRepository.findAll();
+        allShipments
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfPaidInvoicesInUAH () {
+        List <BigDecimal> invoiceWholeSums = new ArrayList<>();
+        List <Shipment> paidShipments = shipmentRepository.findPaidShipments();
+        paidShipments
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceWholeSums.add(shipment.getInvoiceWholeSum()));
+        return invoiceWholeSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfUnpaidInvoicesInUAH () {
+        List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
+        List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
+        System.out.println("size unpaid UAH: "+unpaidShipments.size());
+        unpaidShipments
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> invoiceUnpaidSums.add(shipment.getUnpaidSum()));
+        return invoiceUnpaidSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 
 //    private int getCurrentWeekNumber () {

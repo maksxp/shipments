@@ -88,6 +88,13 @@ public class Commodity {
         return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getUnpaidSumOfLoadedGoodsInUAH (){
+        List <Product> allProductsFromThisCommodity = products;
+        List <BigDecimal> unpaidSumOfEachLoadedAndUnpaidProduct = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> unpaidSumOfEachLoadedAndUnpaidProduct.add(product.getUnpaidSumOfLoadedProductInUAH ()));
+        return unpaidSumOfEachLoadedAndUnpaidProduct.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public BigDecimal getQuantityOfAllLoadedAndUnpaidGoods (){
         List <Product> allProductsFromThisCommodity = products;
         List <BigDecimal> quantityOfEachLoadedAndUnpaidProduct = new ArrayList<>();
