@@ -304,6 +304,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allCustomers">Усі покупці</a>
+                    <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
                     <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
@@ -330,6 +331,7 @@
                     Відправлення
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allShipments">Усі відправлення</a>
                     <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
                     <a class="dropdown-item" href="fulfilledShipments">Виконані відправлення</a>
                     <div class="dropdown-divider"></div>
@@ -340,11 +342,36 @@
                     <a class="dropdown-item" href="nextMonthShipments">Відправлення наступного місяця</a>
                 </div>
             </li>
-
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Рахунки
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allInvoices">Усі рахунки</a>
+                    <a class="dropdown-item" href="paidInvoices">Оплачені рахунки</a>
+                    <a class="dropdown-item" href="unpaidInvoices">Неоплачені рахунки</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Заплановані оплати
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfThisWeek">До кінця цього тижня</a>
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfNextWeek">До кінця наступного тижня</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfThisMonth">До кінця цього місяця</a>
+                    <a class="dropdown-item" href="allPaymentsByTheEndOfNextMonth">До кінця наступного місяця</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="allPlannedPayments">Усі</a>
+                    <a class="dropdown-item" href="allOverduePayments">Прострочені</a>
+                </div>
+            </li>
             <!--            <li class="nav-item">-->
             <!--                <a class="nav-link disabled" href="#">Disabled</a>-->
             <!--            </li>-->
         </ul>
+        <div class="text-right" style="margin-right: 20px"><strong>EUR: <span th:text="${rateEUR}"></span>&nbsp; &nbsp; &nbsp; USD: <span th:text="${rateUSD}"></span> </strong></div>
         <form th:action="@{/logout}" method="get">
             <button class="btn btn-md btn-danger btn-block" name="logout" type="Submit">Logout</button>
         </form>

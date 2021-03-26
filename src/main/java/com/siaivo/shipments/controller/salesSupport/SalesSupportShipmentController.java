@@ -1,6 +1,6 @@
-package com.siaivo.shipments.controller;
+package com.siaivo.shipments.controller.salesSupport;
 
-import com.siaivo.shipments.model.Commodity;
+import com.siaivo.shipments.json.JsonReader;
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.ProductForShipment;
 import com.siaivo.shipments.model.Shipment;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Controller
-public class ShipmentController {
+public class SalesSupportShipmentController {
 
     @Autowired
     private ShipmentService shipmentService;
@@ -39,7 +39,7 @@ public class ShipmentController {
         }
         int truckNumber = contract.getShipments().size()+1;
         String invoiceNumber = contract.getContractNumber()+"."+truckNumber;
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         Shipment shipment = new Shipment();
         List <ProductForShipment> allProductsForShipment = new ArrayList<>();
         contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
@@ -62,7 +62,7 @@ public class ShipmentController {
     }
 
     @RequestMapping(value="/salesSupport/allShipments", method = RequestMethod.GET)
-    public ModelAndView allShipmentsForSalesSupport(){
+    public ModelAndView allShipments(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.setViewName("/salesSupport/allShipments");
         return modelAndView;
@@ -83,35 +83,35 @@ public class ShipmentController {
     }
 
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfThisWeek", method = RequestMethod.GET)
-        public ModelAndView paymentsByTheEndOfThisWeekForSalesSupport(){
+        public ModelAndView paymentsByTheEndOfThisWeek(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfThisWeek();
         modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfThisWeek");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfThisMonth", method = RequestMethod.GET)
-    public ModelAndView paymentsByTheEndOfThisMonthForSalesSupport(){
+    public ModelAndView paymentsByTheEndOfThisMonth(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfThisMonth();
         modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfThisMonth");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfNextWeek", method = RequestMethod.GET)
-    public ModelAndView paymentsByTheEndOfNextWeekForSalesSupport(){
+    public ModelAndView paymentsByTheEndOfNextWeek(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfNextWeek();
         modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfNextWeek");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/allPaymentsByTheEndOfNextMonth", method = RequestMethod.GET)
-    public ModelAndView paymentsByTheEndOfNextMonthForSalesSupport(){
+    public ModelAndView paymentsByTheEndOfNextMonth(){
         ModelAndView modelAndView = getModelAndViewWithAllPaymentsByTheEndOfNextMonth();
         modelAndView.setViewName("/salesSupport/allPaymentsByTheEndOfNextMonth");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/allInvoices", method = RequestMethod.GET)
-    public ModelAndView allInvoicesForSalesSupport(){
+    public ModelAndView allInvoices(){
         ModelAndView modelAndView = getModelAndViewWithAllShipments();
         modelAndView.addObject("totalSumOfAllInvoicesInEUR", shipmentService.getTotalSumOfAllInvoicesInEUR());
         modelAndView.addObject("totalSumOfAllInvoicesInUSD", shipmentService.getTotalSumOfAllInvoicesInUSD());
@@ -121,7 +121,7 @@ public class ShipmentController {
     }
 
     @RequestMapping(value="/salesSupport/paidInvoices", method = RequestMethod.GET)
-    public ModelAndView paidInvoicesForSalesSupport(){
+    public ModelAndView paidInvoices(){
         ModelAndView modelAndView = getModelAndViewWithPaidShipments();
         modelAndView.addObject("totalSumOfPaidInvoicesInEUR", shipmentService.getTotalSumOfPaidInvoicesInEUR());
         modelAndView.addObject("totalSumOfPaidInvoicesInUSD", shipmentService.getTotalSumOfPaidInvoicesInUSD());
@@ -131,7 +131,7 @@ public class ShipmentController {
     }
 
     @RequestMapping(value="/salesSupport/unpaidInvoices", method = RequestMethod.GET)
-    public ModelAndView unpaidInvoicesForSalesSupport(){
+    public ModelAndView unpaidInvoices(){
         ModelAndView modelAndView = getModelAndViewWithUnpaidShipments();
         modelAndView.addObject("totalSumOfUnpaidInvoicesInEUR", shipmentService.getTotalSumOfUnpaidInvoicesInEUR());
         modelAndView.addObject("totalSumOfUnpaidInvoicesInUSD", shipmentService.getTotalSumOfUnpaidInvoicesInUSD());
@@ -141,28 +141,28 @@ public class ShipmentController {
     }
 
     @RequestMapping(value="/salesSupport/openShipments", method = RequestMethod.GET)
-    public ModelAndView openShipmentsForSalesSupport(){
+    public ModelAndView openShipments(){
         ModelAndView modelAndView = getModelAndViewWithOpenShipments();
         modelAndView.setViewName("/salesSupport/openShipments");
         return modelAndView;
     }
 
     @RequestMapping(value = "/salesSupport/fulfillShipment/{id}", method = RequestMethod.GET)
-    public ModelAndView fulfillShipmentForSalesSupport(@PathVariable(value = "id") int id){
+    public ModelAndView fulfillShipment(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
         shipmentService.fulfillShipment(shipment);
         return new ModelAndView("redirect:../openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/returnShipmentToWork/{id}", method = RequestMethod.GET)
-    public ModelAndView returnShipmentToWorkForSalesSupport(@PathVariable(value = "id") int id){
+    public ModelAndView returnShipmentToWork(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
         shipmentService.returnShipmentToWork(shipment);
         return new ModelAndView("redirect:../openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/deleteShipment/{id}", method = RequestMethod.GET)
-    public ModelAndView deleteShipmentForSalesSupport(@PathVariable(value = "id") int id){
+    public ModelAndView deleteShipment(@PathVariable(value = "id") int id){
         Shipment shipment =  shipmentService.findById(id);
         shipmentService.deleteShipment(shipment);
         Contract contract = shipment.getContract();
@@ -170,88 +170,72 @@ public class ShipmentController {
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
         modelAndView.setViewName("redirect:/salesSupport/allShipmentsPerContract/"+contractId);
         return modelAndView;
-//        return new ModelAndView("redirect:../openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/returnShipmentToWork", method = RequestMethod.POST)
-    public ModelAndView returnShipmentToWorkForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+    public ModelAndView returnShipmentToWork (@ModelAttribute("shipment")Shipment shipment) {
         shipmentService.returnShipmentToWork(shipment);
         return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/fulfillShipment", method = RequestMethod.POST)
-    public ModelAndView fulfillShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+    public ModelAndView fulfillShipment (@ModelAttribute("shipment")Shipment shipment) {
         shipmentService.fulfillShipment(shipment);
         return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
     @RequestMapping(value = "/salesSupport/deleteShipment", method = RequestMethod.POST)
-    public ModelAndView deleteShipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipment) {
+    public ModelAndView deleteShipment (@ModelAttribute("shipment")Shipment shipment) {
         shipmentService.deleteShipment(shipment);
         return new ModelAndView("redirect:salesSupport/openShipments");
     }
 
     @RequestMapping(value="/salesSupport/fulfilledShipments", method = RequestMethod.GET)
-    public ModelAndView fulfilledShipmentsForSalesSupport(){
+    public ModelAndView fulfilledShipments(){
         ModelAndView modelAndView = getModelAndViewWithFulfilledShipments();
         modelAndView.setViewName("/salesSupport/fulfilledShipments");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/thisWeekShipments", method = RequestMethod.GET)
-    public ModelAndView thisWeekShipmentsForSalesSupport(){
+    public ModelAndView thisWeekShipments(){
         ModelAndView modelAndView = getModelAndViewWithThisWeekShipments();
         modelAndView.setViewName("/salesSupport/thisWeekShipments");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/thisMonthShipments", method = RequestMethod.GET)
-    public ModelAndView thisMonthShipmentsForSalesSupport(){
+    public ModelAndView thisMonthShipments(){
         ModelAndView modelAndView = getModelAndViewWithThisMonthShipments();
         modelAndView.setViewName("/salesSupport/thisMonthShipments");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/nextWeekShipments", method = RequestMethod.GET)
-    public ModelAndView nextWeekShipmentsForSalesSupport(){
+    public ModelAndView nextWeekShipments(){
         ModelAndView modelAndView = getModelAndViewWithNextWeekShipments();
         modelAndView.setViewName("/salesSupport/nextWeekShipments");
         return modelAndView;
     }
 
     @RequestMapping(value="/salesSupport/nextMonthShipments", method = RequestMethod.GET)
-    public ModelAndView nextMonthShipmentsForSalesSupport(){
+    public ModelAndView nextMonthShipments(){
         ModelAndView modelAndView = getModelAndViewWithNextMonthShipments();
         modelAndView.setViewName("/salesSupport/nextMonthShipments");
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesManagement/allShipments", method = RequestMethod.GET)
-    public ModelAndView allShipmentsForSalesManagement(){
-        ModelAndView modelAndView = getModelAndViewWithAllShipments();
-        modelAndView.setViewName("/salesManagement/allShipments");
-        return modelAndView;
-    }
-
     @RequestMapping(value="/salesSupport/allShipmentsPerContract/{id}", method = RequestMethod.GET)
-    public ModelAndView allShipmentsPerContractForSalesSupport(@PathVariable(value = "id") int id){
+    public ModelAndView allShipmentsPerContract(@PathVariable(value = "id") int id){
         Contract contract = contractService.findContractById(id);
         ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
         modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesManagement/allShipmentsPerContract/{id}", method = RequestMethod.GET)
-    public ModelAndView allShipmentsPerContractForSalesManagement(@PathVariable(value = "id") int id){
-        Contract contract = contractService.findContractById(id);
-        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
-        modelAndView.setViewName("/salesManagement/allShipmentsPerContract");
-        return modelAndView;
-    }
-
     @RequestMapping(value="/salesSupport/shipment/{id}", method = RequestMethod.GET)
-    public ModelAndView shipmentForSalesSupport(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView shipment(@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = createModelAndView ();
         Shipment shipment = shipmentService.findById(id);
         modelAndView.addObject("contractNumber", shipmentService.findById(id).getContract().getContractNumber());
         modelAndView.addObject("allProductsForShipment", productForShipmentService.findByShipment(shipment));
@@ -272,36 +256,13 @@ public class ShipmentController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesManagement/shipment/{id}", method = RequestMethod.GET)
-    public ModelAndView shipmentForSalesManagement(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
-        Shipment shipment = shipmentService.findById(id);
-        modelAndView.addObject("contractNumber", shipmentService.findById(id).getContract().getContractNumber());
-        modelAndView.addObject("allProductsForShipment", productForShipmentService.findByShipment(shipment));
-        modelAndView.addObject("contractDate", shipmentService.findById(id).getContract().getContractDate());
-        modelAndView.addObject("customerName", shipmentService.findById(id).getContract().getCustomer().getCustomerName());
-        modelAndView.addObject("paymentTerms", shipmentService.findById(id).getContract().getPaymentTerms());
-        modelAndView.addObject("deliveryTerms", shipmentService.findById(id).getContract().getDeliveryTerms());
-        modelAndView.addObject("invoiceWholeSum", shipment.getInvoiceWholeSum(shipment));
-        if (shipment.getContract().getPaymentTerms().equals("оплата частинами")) {
-            modelAndView.addObject("strippedInvoiceFirstPartSum", shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString());
-            modelAndView.addObject("strippedInvoiceSecondPartSum", shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString());
-        } else {
-            modelAndView.addObject("strippedInvoiceFirstPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
-            modelAndView.addObject("strippedInvoiceSecondPartSum", BigDecimal.ZERO.stripTrailingZeros().toPlainString());
-        }
-        modelAndView.addObject("shipment", shipment);
-        modelAndView.setViewName("/salesManagement/shipment");
-        return modelAndView;
-    }
-
     @Transactional
     @RequestMapping(value="/salesSupport/shipmentRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewShipmentForSalesSupport (@RequestParam(value="contractId") String contractId, @ModelAttribute("shipment")Shipment shipmentFromView,@RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
+    public ModelAndView registerNewShipment(@RequestParam(value="contractId") String contractId, @ModelAttribute("shipment")Shipment shipmentFromView,@RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
         int id = Integer.parseInt(contractId);
         Contract contract = contractService.findContractById(id);
            shipmentFromView.setContract(contract);
-           shipmentService.saveShipment(shipmentFromView);
+//           shipmentService.saveShipment(shipmentFromView);
         List <ProductForShipment> allProductsForShipment = new ArrayList<>();
         contract.getProducts().forEach(product -> allProductsForShipment.add(new ProductForShipment(product)));
         shipmentFromView.setProductsForShipment(allProductsForShipment);
@@ -319,7 +280,7 @@ public class ShipmentController {
 
     @Transactional
     @RequestMapping(value="/salesSupport/shipment", method = RequestMethod.POST)
-    public ModelAndView shipmentForSalesSupport (@ModelAttribute("shipment")Shipment shipmentFromView, @RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
+    public ModelAndView shipment(@ModelAttribute("shipment")Shipment shipmentFromView, @RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
         int id = shipmentFromView.getId();
         Shipment shipmentFromDataBase = shipmentService.findById(id);
         for (int i=0; i<productsForShipmentWeight.size(); i++){
@@ -355,59 +316,20 @@ public class ShipmentController {
         return modelAndView;
     }
 
-    @Transactional
-    @RequestMapping(value="/salesManagement/shipment", method = RequestMethod.POST)
-    public ModelAndView shipmentForSalesManagement (@ModelAttribute("shipment")Shipment shipmentFromView, @RequestParam(value="productForShipmentWeight[]") List <BigDecimal> productsForShipmentWeight){
-        int id = shipmentFromView.getId();
-        Shipment shipmentFromDataBase = shipmentService.findById(id);
-        for (int i=0; i<productsForShipmentWeight.size(); i++){
-            shipmentFromDataBase.getProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
-            productForShipmentService.saveProductForShipment(shipmentFromDataBase.getProductsForShipment().get(i));
-        }
-        shipmentFromDataBase.setPlannedLoadingDate(shipmentFromView.getPlannedLoadingDate());
-        shipmentFromDataBase.setActualLoadingDate(shipmentFromView.getActualLoadingDate());
-        shipmentFromDataBase.setPlannedUnloadingDate(shipmentFromView.getPlannedUnloadingDate());
-        shipmentFromDataBase.setActualUnloadingDate(shipmentFromView.getActualUnloadingDate());
-        shipmentFromDataBase.setPlannedPaymentDateOfWholeSum(shipmentFromView.getPlannedPaymentDateOfWholeSum());
-        shipmentFromDataBase.setActualPaymentDateOfWholeSum(shipmentFromView.getActualPaymentDateOfWholeSum());
-        shipmentFromDataBase.setPlannedPaymentDateOfFirstPartSum(shipmentFromView.getPlannedPaymentDateOfFirstPartSum());
-        shipmentFromDataBase.setActualPaymentDateOfFirstPartSum(shipmentFromView.getActualPaymentDateOfFirstPartSum());
-        shipmentFromDataBase.setPlannedPaymentDateOfSecondPartSum(shipmentFromView.getPlannedPaymentDateOfSecondPartSum());
-        shipmentFromDataBase.setActualPaymentDateOfSecondPartSum(shipmentFromView.getActualPaymentDateOfSecondPartSum());
-        shipmentFromDataBase.setShipmentComment(shipmentFromView.getShipmentComment());
-        shipmentFromDataBase.setLabelsStatus(shipmentFromView.getLabelsStatus());
-        shipmentFromDataBase.setLogisticInstructionStatus(shipmentFromView.getLogisticInstructionStatus());
-        shipmentFromDataBase.setInvoiceComment(shipmentFromView.getInvoiceComment());
-        shipmentFromDataBase.setInvoiceFirstPartSum(shipmentFromView.getInvoiceFirstPartSum());
-        shipmentFromDataBase.setInvoiceSecondPartSum(shipmentFromView.getInvoiceSecondPartSum());
-        shipmentService.saveShipment(shipmentFromDataBase);
-        ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(shipmentFromDataBase.getContract());
-        modelAndView.setViewName("/salesManagement/allShipmentsPerContract");
-        return modelAndView;
-    }
-
     private ModelAndView getModelAndViewWithAllShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("allShipments", shipmentService.allShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithUnpaidShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("unpaidShipments", shipmentService.unpaidShipments());
         return modelAndView;
     }
 
-//    private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisWeek (){
-//        ModelAndView modelAndView = new ModelAndView();
-//        int currentWeekNumber = getCurrentWeekNumber();
-//        modelAndView.addObject("currentWeekNumber", currentWeekNumber);
-//        modelAndView.addObject("allPaymentsByTheEndOfThisWeekSorted", shipmentService.allPaymentsByTheEndOfThisWeek());
-//        return modelAndView;
-//    }
-
     private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisWeek (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         int currentWeekNumber = getCurrentWeekNumber();
         modelAndView.addObject("currentWeekNumber", currentWeekNumber);
         List <Shipment> allPaymentsByTheEndOfThisWeekSorted = shipmentService.allPaymentsByTheEndOfThisWeek();
@@ -417,7 +339,7 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfThisMonth (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allPaymentsByTheEndOfThisMonthSorted = shipmentService.allPaymentsByTheEndOfThisMonth();
         allPaymentsByTheEndOfThisMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
         modelAndView.addObject("allPaymentsByTheEndOfThisMonthSorted", allPaymentsByTheEndOfThisMonthSorted);
@@ -425,7 +347,7 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfNextWeek (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         int nextWeekNumber = getNextWeekNumber();
         modelAndView.addObject("nextWeekNumber", nextWeekNumber);
         List <Shipment> allPaymentsByTheEndOfNextWeekSorted = shipmentService.allPaymentsByTheEndOfNextWeek();
@@ -435,7 +357,7 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithAllPaymentsByTheEndOfNextMonth (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView();
         List <Shipment> allPaymentsByTheEndOfNextMonthSorted = shipmentService.allPaymentsByTheEndOfNextMonth ();
         allPaymentsByTheEndOfNextMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
         modelAndView.addObject("allPaymentsByTheEndOfNextMonthSorted", allPaymentsByTheEndOfNextMonthSorted);
@@ -443,7 +365,7 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithAllPlannedPayments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allPlannedPaymentsSorted = shipmentService.allPlannedPayments();
         allPlannedPaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
         modelAndView.addObject("allPlannedPaymentsSorted", allPlannedPaymentsSorted);
@@ -451,7 +373,7 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithAllOverduePayments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allOverduePaymentsSorted = shipmentService.allOverduePayments();
         allOverduePaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
         modelAndView.addObject("allOverduePaymentsSorted", allOverduePaymentsSorted);
@@ -459,25 +381,25 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithPaidShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("paidShipments", shipmentService.paidShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithOpenShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("openShipments", shipmentService.openShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithFulfilledShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("fulfilledShipments", shipmentService.fulfilledShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithThisWeekShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         int currentWeekNumber = getCurrentWeekNumber();
         modelAndView.addObject("currentWeekNumber", currentWeekNumber);
         modelAndView.addObject("thisWeekShipments", shipmentService.thisWeekShipments());
@@ -485,13 +407,13 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithThisMonthShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("thisMonthShipments", shipmentService.thisMonthShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithNextWeekShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         int nextWeekNumber = getNextWeekNumber();
         modelAndView.addObject("nextWeekNumber", nextWeekNumber);
         modelAndView.addObject("nextWeekShipments", shipmentService.nextWeekShipments());
@@ -499,13 +421,13 @@ public class ShipmentController {
     }
 
     private ModelAndView getModelAndViewWithNextMonthShipments (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("nextMonthShipments", shipmentService.nextMonthShipments());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
@@ -525,6 +447,13 @@ public class ShipmentController {
         calendar.setTime(today);
         calendar.add(Calendar.DATE, 7);
         return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    private ModelAndView createModelAndView (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        return modelAndView;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.siaivo.shipments.controller.salesSupport;
 
+import com.siaivo.shipments.json.JsonReader;
 import com.siaivo.shipments.model.*;
 import com.siaivo.shipments.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class SalesSupportProductController {
         productService.deleteProductAndProductsForShipments (product);
         Contract contract = product.getContract();
         int contractId = contract.getId();
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
 //        modelAndView.addObject("contract", contract);
 //        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
 //        modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
@@ -48,7 +49,7 @@ public class SalesSupportProductController {
     @RequestMapping(value="/salesSupport/productRegistration/{id}", method = RequestMethod.GET)
     public ModelAndView registerNewProduct(@PathVariable(value = "id") int id){
         Contract contract = contractService.findContractById(id);
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         Product product = new Product();
         modelAndView.addObject("product", product);
 //        String country="";
@@ -74,7 +75,7 @@ public class SalesSupportProductController {
 
     @RequestMapping(value="/salesSupport/editProduct/{id}", method = RequestMethod.GET)
     public ModelAndView editProduct (@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         Product product = productService.findById(id);
         modelAndView.addObject("product", product);
         modelAndView.addObject("contractNumber", product.getContractNumber());
@@ -88,8 +89,7 @@ public class SalesSupportProductController {
 
     @RequestMapping(value="/salesSupport/editProduct", method = RequestMethod.POST)
     public ModelAndView editProduct ( @ModelAttribute("product")Product productFromView){
-        System.out.println("type of "+productFromView.getPrice().getClass());
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         int id = productFromView.getId();
         Product productFromDataBase = productService.findById(id);
         int contractId = productFromDataBase.getContract().getId();
@@ -128,12 +128,19 @@ public class SalesSupportProductController {
             productForShipmentService.saveProductForShipment(productForShipment);
             });
         }
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.setViewName("redirect:/salesSupport/contract/"+id);
+        return modelAndView;
+    }
+
+    private ModelAndView createModelAndView (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         return modelAndView;
     }
 }

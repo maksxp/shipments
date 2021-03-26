@@ -39,6 +39,13 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     @Override
     public void saveShipment(Shipment shipment) {
+        if (!"оплата частинами".equals(shipment.getPaymentTerms())) {
+            shipment.setIsInvoiceCorrect(true);
+        } else if (0==shipment.getInvoiceWholeSum().compareTo(shipment.getInvoiceFirstPartSum().add(shipment.getInvoiceSecondPartSum()))){
+            shipment.setIsInvoiceCorrect(true);
+        } else {
+            shipment.setIsInvoiceCorrect(false);
+        }
         shipmentRepository.save(shipment);
     }
 
@@ -506,7 +513,6 @@ public class ShipmentServiceImpl implements ShipmentService{
         for (int i=0;i<allDatesOfMonth.length;i++){
             thisMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
         }
-//        System.out.println(Arrays.toString(allDatesOfMonth));
         return thisMonthShipments;
     }
 
@@ -517,7 +523,6 @@ public class ShipmentServiceImpl implements ShipmentService{
         for (int i=0;i<allDatesOfMonth.length;i++){
             nextMonthShipments.addAll(shipmentRepository.findByPlannedLoadingDate(allDatesOfMonth[i]));
         }
-//        System.out.println(Arrays.toString(allDatesOfMonth));
         return nextMonthShipments;
     }
 
@@ -795,7 +800,6 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     private String [] getAllDatesOfCurrentMonth () {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
-        calendar.set(Calendar.MONTH, 1);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         String [] allDatesOfCurrentMonth = new String[maxDay];
@@ -809,7 +813,6 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     private String [] getAllDatesOfNextMonth () {
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
-        calendar.set(Calendar.MONTH, 1);
         calendar.add(Calendar.MONTH, 1);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);

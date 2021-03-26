@@ -1,5 +1,6 @@
 package com.siaivo.shipments.controller.salesSupport;
 
+import com.siaivo.shipments.json.JsonReader;
 import com.siaivo.shipments.model.Contract;
 import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.model.Product;
@@ -61,12 +62,16 @@ public class SalesSupportContractController {
     @RequestMapping(value="/salesSupport/openContracts", method = RequestMethod.GET)
     public ModelAndView openContracts (){
         ModelAndView modelAndView = getModelAndViewWithOpenContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/openContracts");
         return modelAndView;
     }
     @RequestMapping(value="/salesSupport/fulfilledContracts", method = RequestMethod.GET)
     public ModelAndView fulfilledContracts(){
         ModelAndView modelAndView = getModelAndViewWithFulfilledContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/fulfilledContracts");
         return modelAndView;
     }
@@ -80,6 +85,8 @@ public class SalesSupportContractController {
     @RequestMapping(value="/salesSupport/contractsForPreparation", method = RequestMethod.GET)
     public ModelAndView contractsForPreparation(){
         ModelAndView modelAndView = getModelAndViewWithContractsForPreparation();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/contractsForPreparation");
         return modelAndView;
     }
@@ -95,6 +102,8 @@ public class SalesSupportContractController {
     public ModelAndView allContractsPerCustomer(@PathVariable(value = "id") int id){
         Customer customer = customerService.findCustomerById(id);
         ModelAndView modelAndView = getModelAndViewWithAllContractsPerCustomer(customer);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/allContractsPerCustomer");
         return modelAndView;
     }
@@ -102,6 +111,8 @@ public class SalesSupportContractController {
     @RequestMapping(value="/salesSupport/allContracts", method = RequestMethod.GET)
     public ModelAndView allContracts(){
         ModelAndView modelAndView = getModelAndViewWithAllContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/allContracts");
         return modelAndView;
     }
@@ -116,6 +127,8 @@ public class SalesSupportContractController {
     @RequestMapping(value="/salesSupport/unsignedContracts", method = RequestMethod.GET)
     public ModelAndView unsignedContracts(){
         ModelAndView modelAndView = getModelAndViewWithUnsignedContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/unsignedContracts");
         return modelAndView;
     }
@@ -130,6 +143,8 @@ public class SalesSupportContractController {
     @RequestMapping(value="/salesSupport/cancelledContracts", method = RequestMethod.GET)
     public ModelAndView cancelledContracts(){
         ModelAndView modelAndView = getModelAndViewWithCancelledContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/cancelledContracts");
         return modelAndView;
     }
@@ -145,17 +160,21 @@ public class SalesSupportContractController {
 
     @RequestMapping(value="/salesSupport/requestForNewContract", method = RequestMethod.GET)
     public ModelAndView requestForNewContract(){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView();
         Contract contract = new Contract ();
         ProductForm productForm = new ProductForm();
         modelAndView.setViewName("/salesSupport/requestForNewContract");
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         return getRequestForNewContractModelAndView(contract, productForm, modelAndView);
     }
 
     @RequestMapping(value="/salesSupport/contract/{id}", method = RequestMethod.GET)
     public ModelAndView getContract(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView();
         Contract contract = contractService.findContractById(id);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
@@ -193,6 +212,8 @@ public class SalesSupportContractController {
         contractFromDataBase.setComment(contractFromView.getComment());
         contractService.saveContract(contractFromDataBase);
         ModelAndView modelAndView = getModelAndViewWithAllContracts();
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("redirect:/salesSupport/allContracts");
         return modelAndView;
     }
@@ -204,21 +225,25 @@ public class SalesSupportContractController {
 //        return modelAndView;
 //    }
 
-    @RequestMapping(value="/salesSupport/editRequestForNewContract/{id}", method = RequestMethod.GET)
-    public ModelAndView editRequestForNewContract (@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = getEditRequestForNewContractModelAndView(id);
-        modelAndView.setViewName("/salesSupport/editRequestForNewContract");
-        return modelAndView;
-    }
+//    @RequestMapping(value="/salesSupport/editRequestForNewContract/{id}", method = RequestMethod.GET)
+//    public ModelAndView editRequestForNewContract (@PathVariable(value = "id") int id){
+//        ModelAndView modelAndView = getEditRequestForNewContractModelAndView(id);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.setViewName("/salesSupport/editRequestForNewContract");
+//        return modelAndView;
+//    }
 
     @RequestMapping(value="/salesSupport/contractPreparation/{id}", method = RequestMethod.GET)
     public ModelAndView getContractPreparation (@PathVariable(value = "id") int id, @ModelAttribute("shipmentsForm") ShipmentsForm shipmentsForm){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView();
         Contract contract = contractService.findContractById(id);
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("shipmentsForm", shipmentsForm);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("/salesSupport/contractPreparation");
         return modelAndView;
     }
@@ -254,6 +279,8 @@ public class SalesSupportContractController {
                 productsForShipmentForm.getProductsForShipment().stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).forEach(productForShipment -> productForShipmentService.saveProductForShipment(productForShipment));
            }
             ModelAndView modelAndView = getModelAndViewWithAllShipmentsPerContract(contract);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
             modelAndView.setViewName("/salesSupport/allShipmentsPerContract");
             return modelAndView;
         }
@@ -268,6 +295,8 @@ public class SalesSupportContractController {
     @RequestMapping(value = "/salesSupport/requestForNewContract", method = RequestMethod.POST)
     public ModelAndView requestForNewContract (@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         ModelAndView modelAndView = saveRequestForNewContractModelAndView(contract, bindingResult, productForm, customerName, paymentTerms);
+//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.setViewName("redirect:/salesSupport/contractsForPreparation");
         return modelAndView;
     }
@@ -288,7 +317,7 @@ public class SalesSupportContractController {
     private ModelAndView saveRequestForNewContractModelAndView(@Valid Contract contract, BindingResult bindingResult, ProductForm productForm, @RequestParam("customerName") String customerName, @RequestParam("paymentTerms") String paymentTerms) {
         List<Product> products = productForm.getProducts();
         if (bindingResult.hasErrors()) {
-            return getRequestForNewContractModelAndView(contract, productForm, new ModelAndView());
+            return getRequestForNewContractModelAndView(contract, productForm, createModelAndView());
         }
         products.stream().filter(product -> (product.getCommodity())!=null).forEach(product -> product.setContract(contract));
         contract.setCustomer(customerService.findCustomerByCustomerName(customerName));
@@ -341,60 +370,60 @@ public class SalesSupportContractController {
         return modelAndView;
     }
 
-    private ModelAndView getEditRequestForNewContractModelAndView(int id) {
-        ModelAndView modelAndView = new ModelAndView();
-        Contract contract = contractService.findContractById(id);
-        ProductForm productForm =new ProductForm();
-        productForm.setProductsForEdit(productService.findProductsByContract(contract));
-        int numberOfProducts = contract.getProducts().size();
-        modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
-        modelAndView.addObject("contractNumber", contract.getContractNumber());
-        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
-        modelAndView.addObject("allCommodities", commodityService.allCommodities());
-        modelAndView.addObject("contract", contract);
-        modelAndView.addObject("productForm", productForm);
-        modelAndView.addObject("numberOfProducts", numberOfProducts);
-        return modelAndView;
-    }
+//    private ModelAndView getEditRequestForNewContractModelAndView(int id) {
+//        ModelAndView modelAndView = createModelAndView ();
+//        Contract contract = contractService.findContractById(id);
+//        ProductForm productForm =new ProductForm();
+//        productForm.setProductsForEdit(productService.findProductsByContract(contract));
+//        int numberOfProducts = contract.getProducts().size();
+//        modelAndView.addObject("customerName", contract.getCustomer().getCustomerName());
+//        modelAndView.addObject("contractNumber", contract.getContractNumber());
+//        modelAndView.addObject("allCustomersNames", getAllCustomersNames());
+//        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+//        modelAndView.addObject("contract", contract);
+//        modelAndView.addObject("productForm", productForm);
+//        modelAndView.addObject("numberOfProducts", numberOfProducts);
+//        return modelAndView;
+//    }
 
     private ModelAndView getModelAndViewWithAllContracts (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("allContracts", contractService.allContracts());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithAllContractsPerCustomer (Customer customer){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("customerName", customer.getCustomerName());
         modelAndView.addObject("allContractsPerCustomer", contractService.allContractsPerCustomer(customer));
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithFulfilledContracts (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("fulfilledContracts", contractService.fulfilledContracts());
         return modelAndView;
     }
     private ModelAndView getModelAndViewWithOpenContracts (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("openContracts", contractService.openContracts());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithUnsignedContracts (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("unsignedContracts", contractService.unsignedContracts());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithCancelledContracts (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("cancelledContracts", contractService.cancelledContracts());
         return modelAndView;
     }
 
     private ModelAndView getModelAndViewWithContractsForPreparation(){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("contractsForPreparation", contractService.contractsForPreparation());
         return modelAndView;
     }
@@ -411,9 +440,16 @@ public class SalesSupportContractController {
     }
 
     private ModelAndView getModelAndViewWithAllShipmentsPerContract (Contract contract){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
+        return modelAndView;
+    }
+
+    private ModelAndView createModelAndView (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         return modelAndView;
     }
 

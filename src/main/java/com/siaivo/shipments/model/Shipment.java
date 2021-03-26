@@ -95,7 +95,18 @@ public class Shipment {
     @Column(name = "destination_place")
     private String destinationPlace;
 
+    @Column(name = "is_invoice_correct")
+    private Boolean isInvoiceCorrect;
+
     private String sumForPayIdentity;
+
+    public Boolean getIsInvoiceCorrect() {
+        return isInvoiceCorrect;
+    }
+
+    public void setIsInvoiceCorrect(Boolean isInvoiceCorrect) {
+        this.isInvoiceCorrect=isInvoiceCorrect;
+    }
 
     public int getId() {
         return id;
@@ -227,7 +238,6 @@ public class Shipment {
     }
 
     public void setActualPaymentDateOfSecondPartSum(String actualPaymentDateOfSecondPartSum) {
-        System.out.println("test");
         this.actualPaymentDateOfSecondPartSum = actualPaymentDateOfSecondPartSum;
         if (actualPaymentDateOfSecondPartSum.isEmpty()){
             actualPaymentDateOfWholeSum = actualPaymentDateOfSecondPartSum;
@@ -249,7 +259,6 @@ public class Shipment {
     }
 
     public void setActualPaymentDateOfWholeSum(String actualPaymentDateOfWholeSum) {
-        System.out.println("payment date whole"+actualPaymentDateOfWholeSum);
         this.actualPaymentDateOfWholeSum = actualPaymentDateOfWholeSum;
     }
 

@@ -1,5 +1,6 @@
-package com.siaivo.shipments.controller;
+package com.siaivo.shipments.controller.salesSupport;
 
+import com.siaivo.shipments.json.JsonReader;
 import com.siaivo.shipments.model.Customer;
 import com.siaivo.shipments.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +12,20 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-public class CustomerController {
+public class SalesSupportCustomerController {
     @Autowired
     private CustomerService customerService;
 
     @RequestMapping(value="/salesSupport/allCustomers", method = RequestMethod.GET)
-    public ModelAndView allCustomersForSalesSupport(){
+    public ModelAndView allCustomers(){
         ModelAndView modelAndView = getModelAndViewWithAllCustomers();
         modelAndView.setViewName("/salesSupport/allCustomers");
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesManagement/allCustomers", method = RequestMethod.GET)
-    public ModelAndView allCustomersForSalesManagement(){
-        ModelAndView modelAndView = getModelAndViewWithAllCustomers();
-        modelAndView.setViewName("/salesManagement/allCustomers");
-        return modelAndView;
-    }
     @RequestMapping(value="/salesSupport/customerRegistration", method = RequestMethod.GET)
     public ModelAndView registerNewCustomer(){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         Customer customer = new Customer();
         modelAndView.addObject("customer", customer);
         modelAndView.setViewName("/salesSupport/customerRegistration");
@@ -39,7 +34,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/salesSupport/customerRegistration", method = RequestMethod.POST)
     public ModelAndView registerNewCustomer (@Valid Customer customer, BindingResult bindingResult, @RequestParam("country") String country) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("allCustomers", customerService.allCustomers());
         Customer customerExists = customerService.findCustomerByCustomerName(customer.getCustomerName());
         if (customerExists != null) {
@@ -61,7 +56,7 @@ public class CustomerController {
     }
     @RequestMapping(value = "/salesSupport/editCustomer/{id}", method = RequestMethod.GET)
     public ModelAndView editCustomer(@PathVariable(value = "id") int id){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         Customer customer =  customerService.findCustomerById(id);
         modelAndView.addObject("customer", customer);
         modelAndView.setViewName("/salesSupport/editCustomer");
@@ -70,7 +65,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/salesSupport/editCustomer", method = RequestMethod.POST)
         public ModelAndView editCustomer(@ModelAttribute("customer") Customer customer, @RequestParam("country") String country) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         String customerName =  customer.getCustomerName();
         String comment =  customer.getComment();
         String customerType =  customer.getCustomerType();
@@ -102,8 +97,15 @@ public class CustomerController {
         return modelAndView;
     }
     private ModelAndView getModelAndViewWithAllCustomers (){
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("allCustomers", customerService.allCustomers());
+        return modelAndView;
+    }
+
+    private ModelAndView createModelAndView (){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         return modelAndView;
     }
 }
