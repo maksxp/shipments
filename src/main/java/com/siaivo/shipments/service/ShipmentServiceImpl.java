@@ -77,6 +77,13 @@ public class ShipmentServiceImpl implements ShipmentService{
         return thisWeekShipments;
     }
 
+    @Override
+    public List <Shipment> allReleasedShipments() {
+        List <Shipment> allReleasedShipments;
+        allReleasedShipments = allShipments().stream().filter(shipment -> shipment.isLoaded()).collect(Collectors.toList());
+         return allReleasedShipments;
+    }
+
 
 
     @Override
@@ -607,12 +614,227 @@ public class ShipmentServiceImpl implements ShipmentService{
     public BigDecimal getTotalSumOfUnpaidInvoicesInEUR () {
         List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        System.out.println("size unpaid EUR: "+unpaidShipments.size());
         unpaidShipments
                 .stream()
                 .filter(shipment -> "EUR".equals(shipment.getCurrency()))
                 .forEach(shipment -> invoiceUnpaidSums.add(shipment.getUnpaidSum()));
         return invoiceUnpaidSums
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInEUR () {
+        List <BigDecimal> allPaymentsByTheEndOfThisWeekInEUR = new ArrayList<>();
+        allPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInEUR.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisWeekInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUSD () {
+        List <BigDecimal> allPaymentsByTheEndOfThisWeekInUSD = new ArrayList<>();
+        allPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUSD.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisWeekInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUAH () {
+        List <BigDecimal> allPaymentsByTheEndOfThisWeekInUAH = new ArrayList<>();
+        allPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUAH.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisWeekInUAH
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInEUR () {
+        List <BigDecimal> allPaymentsByTheEndOfThisMonthInEUR = new ArrayList<>();
+        allPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInEUR.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisMonthInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUSD () {
+        List <BigDecimal> allPaymentsByTheEndOfThisMonthInUSD = new ArrayList<>();
+        allPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUSD.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisMonthInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUAH () {
+        List <BigDecimal> allPaymentsByTheEndOfThisMonthInUAH = new ArrayList<>();
+        allPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUAH.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfThisMonthInUAH
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInEUR () {
+        List <BigDecimal> allPaymentsByTheEndOfNextWeekInEUR = new ArrayList<>();
+        allPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInEUR.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextWeekInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUSD () {
+        List <BigDecimal> allPaymentsByTheEndOfNextWeekInUSD = new ArrayList<>();
+        allPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUSD.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextWeekInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUAH () {
+        List <BigDecimal> allPaymentsByTheEndOfNextWeekInUAH = new ArrayList<>();
+        allPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUAH.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextWeekInUAH
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInEUR () {
+        List <BigDecimal> allPaymentsByTheEndOfNextMonthInEUR = new ArrayList<>();
+        allPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInEUR.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextMonthInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUSD () {
+        List <BigDecimal> allPaymentsByTheEndOfNextMonthInUSD = new ArrayList<>();
+        allPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUSD.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextMonthInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUAH () {
+        List <BigDecimal> allPaymentsByTheEndOfNextMonthInUAH = new ArrayList<>();
+        allPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUAH.add(shipment.getUnpaidSum()));
+        return allPaymentsByTheEndOfNextMonthInUAH
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInEUR () {
+        List <BigDecimal> allPlannedPaymentsInEUR = new ArrayList<>();
+        allPlannedPayments()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPlannedPaymentsInEUR.add(shipment.getUnpaidSum()));
+        return allPlannedPaymentsInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInUSD () {
+        List <BigDecimal> allPlannedPaymentsInUSD = new ArrayList<>();
+        allPlannedPayments()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPlannedPaymentsInUSD.add(shipment.getUnpaidSum()));
+        return allPlannedPaymentsInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInUAH() {
+        List <BigDecimal> allPlannedPaymentsInUAH = new ArrayList<>();
+        allPlannedPayments()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPlannedPaymentsInUAH.add(shipment.getUnpaidSum()));
+        return allPlannedPaymentsInUAH
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllOverduePaymentsInEUR () {
+        List <BigDecimal> allOverduePaymentsInEUR = new ArrayList<>();
+        allOverduePayments()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allOverduePaymentsInEUR.add(shipment.getUnpaidSum()));
+        return allOverduePaymentsInEUR
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllOverduePaymentsInUSD () {
+        List <BigDecimal> allOverduePaymentsInUSD = new ArrayList<>();
+        allOverduePayments()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allOverduePaymentsInUSD.add(shipment.getUnpaidSum()));
+        return allOverduePaymentsInUSD
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalSumOfAllOverduePaymentsInUAH() {
+        List <BigDecimal> allOverduePaymentsInUAH = new ArrayList<>();
+        allOverduePayments()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allOverduePaymentsInUAH.add(shipment.getUnpaidSum()));
+        return allOverduePaymentsInUAH
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

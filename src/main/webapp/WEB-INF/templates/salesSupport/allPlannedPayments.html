@@ -29,6 +29,35 @@
         .table {
             margin: auto;
         }
+        th {
+            text-align: center;
+        }
+        td, th {
+            position: relative;
+        }
+        #selectable {
+            position: absolute;
+            background: #e3fcff;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            resize: none;
+
+            /* for full width without spacing */
+            width: 100%;
+            border: none;
+            /* for full width without spacing */
+
+            /* for column with internal spacing */
+            /*
+            width: 85%;
+            padding: 0.3rem;
+            margin: 0.2rem 0.5rem;
+            border: 1px solid #ddd;
+            */
+            /* for column with internal spacing */
+        }
     </style>
 <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
 <!--    <script>-->
@@ -101,6 +130,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allShipments">Усі відправлення</a>
                     <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
+                    <a class="dropdown-item" href="allReleasedShipments">Відвантажені відправлення</a>
                     <a class="dropdown-item" href="fulfilledShipments">Виконані відправлення</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
@@ -147,11 +177,15 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h3>Усі заплановані надходження</h3>
+            <h4>Усі заплановані надходження</h4>
+            <h4>Загальна сума: <span th:text="${totalSumOfAllPlannedPaymentsInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllPlannedPaymentsInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllPlannedPaymentsInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllPlannedPaymentsInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfAllInvoicesInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllPlannedPaymentsInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>
+
         </div>
 </div>
 <table  class="table table-hover table-bordered "
         id="table"
+        data-sort-name="invoiceNumber"
+        data-sort-order="asc"
         data-pagination="true"
         data-page-list="[10, 25, 50, 100, all]"
         data-show-jump-to="true"
@@ -160,12 +194,13 @@
         data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th data-field="invoiceNumber" data-filter-control="input">Рахунок</th>
-        <th data-field="customerName" data-filter-control="input">Платник</th>
-        <th data-field="sumForPayment" data-filter-control="input">Сума</th>
-        <th data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
-        <th data-field="estimatedDate" data-filter-control="input">Очікувана дата</th>
-        <th data-field="invoiceComment" data-filter-control="input">Коментар</th>
+        <th data-field="invoiceNumber" data-sortable="true" data-filter-control="input">Рахунок</th>
+        <th data-field="customerName" data-sortable="true" data-filter-control="input">Платник</th>
+        <th data-field="sumForPayment" data-sortable="true" data-filter-control="input">Сума</th>
+        <th data-field="paymentTerms" data-sortable="true" data-filter-control="input">Умови оплати</th>
+        <th data-field="estimatedDate" data-sortable="true" data-filter-control="input">Очікувана дата</th>
+        <th data-field="invoiceComment" data-sortable="true" data-filter-control="input">Коментар</th>
+        <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити</th>
     </tr>
     </thead>
 
@@ -209,6 +244,17 @@
         </th:block>
 <!--        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>-->
         <td data-field="invoiceComment" th:text="${shipment.invoiceComment}">Коментар</td>
+        <td style="width: 7em">
+            <select id="selectable" onchange="location = this.value;">
+                <option value="" disabled selected hidden>Оберіть</option>
+                <option th:value="${'/salesSupport/contract/' + shipment.getContract().id}">Контракт</option>
+                <!--                <option th:value="${'/salesSupport/allShipmentsPerContract/' + contract.id}">Відправлення</option>-->
+                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Відправлення</option>
+            </select>
+            <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
+            <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->
+            <!--            <a th:href="${'/salesSupport/allShipmentsPerContract/' + contract.id}" type="button" class="btn btn-outline-success" role="button" aria-pressed="true">Відправлення</a>-->
+        </td>
     </tr>
     </tbody>
 </table>

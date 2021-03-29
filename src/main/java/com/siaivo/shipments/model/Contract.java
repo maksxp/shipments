@@ -135,6 +135,14 @@ public class Contract {
         this.shipments = shipments;
     }
 
+    public String getCurrency (){
+        if (getProducts().isEmpty()){
+            return "";
+        } else {
+            return getProducts().get(0).getCurrency();
+        }
+    }
+
     public String getStringOfAllCommodityNames (Contract contract) {
         StringBuilder str = new StringBuilder();
         contract.getProducts().stream().forEach(product -> str.append(product.getCommodity().getCommodityName()+"/"));

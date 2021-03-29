@@ -453,6 +453,30 @@ public class Shipment {
         return unpaidSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getUnpaidSumInEUR () {
+           BigDecimal unpaidSumInEUR = BigDecimal.ZERO;
+           if ("EUR".equals(getCurrency())){
+               unpaidSumInEUR = getUnpaidSum();
+           }
+           return unpaidSumInEUR;
+    }
+
+    public BigDecimal getUnpaidSumInUSD () {
+        BigDecimal unpaidSumInUSD  = BigDecimal.ZERO;
+        if ("USD".equals(getCurrency())){
+            unpaidSumInUSD  = getUnpaidSum();
+        }
+        return unpaidSumInUSD ;
+    }
+
+    public BigDecimal getUnpaidSumInUAH () {
+        BigDecimal unpaidSumInUAH  = BigDecimal.ZERO;
+        if ("UAH".equals(getCurrency())){
+            unpaidSumInUAH  = getUnpaidSum();
+        }
+        return unpaidSumInUAH ;
+    }
+
     public BigDecimal getFirstSumArrears () throws ParseException {
         BigDecimal firstSumArrears = BigDecimal.ZERO;
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
@@ -463,6 +487,7 @@ public class Shipment {
         }
         return firstSumArrears;
     }
+
 
     public BigDecimal getUnpaidSumOfFirstPartSum () {
         BigDecimal unpaidSumOfFirstPartSum = BigDecimal.ZERO;

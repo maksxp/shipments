@@ -84,6 +84,14 @@ public class Customer {
         this.comment = comment;
     }
 
+    public String getCurrency () {
+        if (getContracts().isEmpty()){
+            return "";
+        } else {
+            return getContracts().get(0).getCurrency();
+        }
+    }
+
     public BigDecimal getArrears () {
         List <BigDecimal> arrearsSums = new ArrayList<>();
         List <Contract> allContracts = getContracts();

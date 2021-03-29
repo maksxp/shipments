@@ -8,6 +8,8 @@ import com.siaivo.shipments.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -74,6 +76,28 @@ public class SalesSupportCommodityController {
         }
         return modelAndView;
     }
+
+    @RequestMapping(value="/salesSupport/editCommodity/{id}", method = RequestMethod.GET)
+    public ModelAndView editCommodity (@PathVariable(value = "id") int id){
+        ModelAndView modelAndView = createModelAndView ();
+        Commodity commodity = commodityService.findCommodityById(id);
+        modelAndView.addObject("commodity", commodity);
+        modelAndView.setViewName("/salesSupport/editCommodity");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/salesSupport/editCommodity", method = RequestMethod.POST)
+    public ModelAndView editCommodity ( @ModelAttribute("commodity")Commodity commodityFromView){
+        ModelAndView modelAndView = createModelAndView ();
+        int id = commodityFromView.getId();
+        Commodity commodityFromDataBase = commodityService.findCommodityById(id);
+        commodityFromDataBase.setCommodityCode(commodityFromView.getCommodityCode());
+        commodityFromDataBase.setCommodityName(commodityFromView.getCommodityName());
+        commodityService.saveCommodity(commodityFromDataBase);
+        modelAndView.setViewName("redirect:/salesSupport/allCommodities");
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithAllCommodities (){
         ModelAndView modelAndView = createModelAndView();
         modelAndView.addObject("allCommodities", commodityService.allCommodities());

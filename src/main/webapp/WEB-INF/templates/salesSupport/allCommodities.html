@@ -125,6 +125,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="allShipments">Усі відправлення</a>
                     <a class="dropdown-item" href="openShipments">Відправлення в роботі</a>
+                    <a class="dropdown-item" href="allReleasedShipments">Відвантажені відправлення</a>
                     <a class="dropdown-item" href="fulfilledShipments">Виконані відправлення</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="thisWeekShipments">Відправлення цього тижня</a>
@@ -178,6 +179,15 @@
         id="table"
         data-toggle="table"
         style="width: max-content">
+    <colgroup>
+<!--        <col class="bg-success"></col>-->
+        <col span="3"></col>
+        <col></col>
+        <col style="background-color: lightblue"></col>
+        <col style="background-color: lightpink"></col>
+        <col style="background-color: lightyellow"></col>
+        <col span="2" style="background-color: lightgreen"></col>
+    </colgroup>
     <thead class="thead-light">
     <tr>
         <th data-field="commodityCode" data-visible="false">Код товару</th>
@@ -201,11 +211,10 @@
         <td class="forCount" data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (всього)</td>
         <td class="forCount" data-field="thisWeekNotLoaded" th:text="*{commodity.getQuantityOfThisWeekNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (на цьому тижні)</td>
         <td class="forCount" data-field="nextWeekNotLoaded" th:text="*{commodity.getQuantityOfNextWeekNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (на наступному тижні)</td>
-        <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{commodity.getQuantityOfThisMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в цьому місяці)</td>
+         <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{commodity.getQuantityOfThisMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в цьому місяці)</td>
         <td class="forCount" data-field="nextMonthNotLoaded" th:text="*{commodity.getQuantityOfNextMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в наступному місяці)</td>
-
     </tr>
-    <tfoot style="font-weight: bold">
+    <tfoot style="font-weight: bold; border-top-style: solid; border-top-color: #222222">
     <tr>
         <td colspan="2" style="text-align: right" th:text="'Всього:'">Total:</td>
         <td class="sum">Total:</td>

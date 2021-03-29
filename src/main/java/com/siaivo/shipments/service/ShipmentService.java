@@ -48,6 +48,8 @@ public interface ShipmentService {
 
     List<Shipment> allShipments();
 
+    List<Shipment> allReleasedShipments();
+
     List<Shipment> openShipments();
 
     List<Shipment> unpaidShipments();
@@ -77,5 +79,41 @@ public interface ShipmentService {
     BigDecimal getTotalSumOfPaidInvoicesInUAH ();
 
     BigDecimal getTotalSumOfUnpaidInvoicesInUAH ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInEUR ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUSD ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUAH ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInEUR ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUSD ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUAH ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInEUR ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUSD ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUAH ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInEUR ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUSD ();
+
+    public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUAH ();
+
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInEUR ();
+
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInUSD ();
+
+    public BigDecimal getTotalSumOfAllPlannedPaymentsInUAH ();
+
+    public BigDecimal getTotalSumOfAllOverduePaymentsInEUR ();
+
+    public BigDecimal getTotalSumOfAllOverduePaymentsInUSD ();
+
+    public BigDecimal getTotalSumOfAllOverduePaymentsInUAH ();
 
 }

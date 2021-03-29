@@ -19,35 +19,67 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-    <title>Contract preparation</title>
+    <title>Edit Commodity</title>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".datepicker").datepicker({
-                monthNames: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
-                dayNamesMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                firstDay: 1,
-                dateFormat: "dd.mm.yy",
-                // changeYear: true,
-                // changeMonth: true,
-                showWeek: true,
-                weekHeader: "тж",
-            });
-        });
-
-    </script>
     <style>
         .layerHeader {
-            padding: 70px 5px 5px;
+            padding: 130px 5px 10px;
             text-align: center;
         }
         .layerBottom {
             width: 20%;
-            padding: 20px;
+            padding: 30px;
         }
         .layerForm{
             border: 4px solid cornflowerblue;
             padding: 10px;
+        }
+        .notOdd {
+            text-decoration: underline;
+        }
+        p {
+            margin-top: 0.2em; /* Отступ сверху */
+            margin-bottom: 0.2em; /* Отступ снизу */
+        }
+        td {
+            position: relative;
+            height: 2em;
+        }
+
+        .table {
+            text-align: center;
+            /*width: max-content;*/
+            /*position: center;*/
+            margin: auto;
+        }
+        th, td {
+            text-align: center;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            position: absolute;
+            background: #e3fcff;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            resize: none;
+            text-align: center;
+            /* for full width without spacing */
+            width: 100%;
+            border: none;
+            /* for full width without spacing */
+
+            /* for column with internal spacing */
+            /*
+            width: 85%;
+            padding: 0.3rem;
+            margin: 0.2rem 0.5rem;
+            border: 1px solid #ddd;
+            */
+            /* for column with internal spacing */
         }
     </style>
 </head>
@@ -149,117 +181,43 @@
 
 <div class="container-fluid">
     <div class="layerHeader">
-        <div style="text-align: left">
-            <h4>Базова інформація</h4>
+        <div style="text-align: center">
+            <h4>Форма редагуваня товару</h4>
         </div>
     </div>
 </div>
-<!--<input th:name="contractId" id="${contract.id}" hidden required/>-->
-<!--<input type="hidden" th:field="*{id}"/>-->
-<table class="table table-hover table-bordered"
-       data-pagination="true">
-    <thead class="thead-light">
-    <tr>
-        <th data-field="id">id</th>
-        <th data-field="customer">Покупець</th>
-        <th data-field="paymentTerms">Умови оплати</th>
-        <th data-field="startOfShipments">Початок відвантажень</th>
-        <th data-field="endOfShipments">Завершення відвантажень</th>
-        <th data-field="totalWeightOfAllGoods">Загальна вага</th>
-        <th data-field="comment">Коментар</th>
-    </tr>
-    </thead>
-    <tbody>
-    <td th:text="${contract.id}">id</td>
-    <td th:text="${contract.customer.customerName}">Покупець</td>
-    <td th:text="${contract.paymentTerms}">Умови оплати</td>
-    <td th:text="${contract.startOfShipments}">Початок відвантажень</td>
-    <td th:text="${contract.endOfShipments}">Завершення відвантажень</td>
-    <td th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага</td>
-    <td th:text="${contract.comment}">Коментар</td>
-    </tbody>
-</table>
-<div class="container-fluid">
-    <div style="text-align: left">
-        <h4>Товари та ціни</h4>
-    </div>
-</div>
-<table class="table table-hover table-bordered"
-       data-pagination="true">
-    <thead class="thead-light">
-    <tr>
-        <th data-field="commodityName">Товар</th>
-        <th data-field="batch">Партія</th>
-        <th data-field="price">Ціна</th>
-        <th data-field="currency">Валюта</th>
-        <th data-field="quantity">Кількість</th>
-        <th data-field="packaging">Пакування</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${allProductsByContract}">
-        <td th:text="${product.commodity.commodityName}">Товар</td>
-        <td th:text="${product.batch}">Партія</td>
-        <td th:text="${product.price.stripTrailingZeros().toPlainString()}">Ціна</td>
-        <td th:text="${product.currency}">Валюта</td>
-        <td th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Кількість</td>
-        <td th:text="${product.packaging}">Пакування</td>
-    </tr>
-    </tbody>
-</table>
-<div class="row justify-content-md-center">
-    <h3>Реєстрація контракту</h3>
-</div>
-<form autocomplete="off" action="#" th:action="@{/salesSupport/contractPreparation}"
-      th:object="${contract}" method="post" class="form-horizontal" role="form">
+
+<form autocomplete="off" action="#" th:action="@{/salesSupport/editCommodity}"
+      th:object="${commodity}" method="post" class="form-horizontal" role="form">
+
     <input type="hidden" th:field="*{id}"/>
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="layerForm">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="font-size: 90%; font-weight: bold"> Номер контракту </th>
-                        <th scope="col" style="font-size: 90%; font-weight: bold"> Дата Контракту </th>
-                        <th scope="col" style="font-size: 90%; font-weight: bold"> Кількість машин </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td >
-                            <input type="text" th:name="contractNumber" th:value="*{contractNumber}" required style="width: 7em">
-                        </td>
-                        <td >
-                            <input type="text" th:name="contractDate"  th:value="*{contractDate}" class="datepicker" style="width: 7em" required readonly>
-                        </td>
-                        <td>
-                            <input type="number" th:name="numberOfTrucks" min="1" step="1" required style="width: 7em">
-                        </td>
-                        <!--                    <td>-->
-                        <!--                        <input type="number" th:name="WeightOfGoodsInTruck" step="0.001" required style="width: 7em">-->
-                        <!--                    </td>-->
-                    </tr>
-                    </tbody>
-                </table>
 
-            </div>
-
+    <div class="form-group">
+        <div class="col-sm-9">
+            <p>Назва товару</p>
+            <label th:if="${#fields.hasErrors('commodityName')}" th:errors="*{commodityName}"
+                   class="validation-message"></label>
+            <input type="text" th:field="*{commodityName}" th:value="#{commodityName}" class="form-control" />
         </div>
     </div>
-    <div class="container-fluid">
-        <div align="center">
-            <div class="layerBottom">
-                <button type="submit" class="btn btn-primary btn-block">Зареєструвати контракт</button>
-            </div>
+
+    <div class="form-group">
+        <div class="col-sm-9">
+            <p>Код УКТЗЕД</p>
+            <label th:if="${#fields.hasErrors('commodityCode')}" th:errors="*{commodityCode}"
+                   class="validation-message"></label>
+            <input type="text" th:field="*{commodityCode}" th:value="#{commodityCode}"  class="form-control" />
         </div>
     </div>
-    <div style="text-align: center;">
-        <span font-size="3"
-              th:utext="${successMessage}">
-        </span>
+
+
+    <div class="form-group">
+        <div class="col-sm-9">
+            <button type="submit" class="btn btn-primary btn-block">Внести зміни</button>
+        </div>
     </div>
+    <span th:utext="${successMessage}"></span>
 </form>
-
 
 <script>
     $(function() {

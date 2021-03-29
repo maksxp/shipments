@@ -68,9 +68,17 @@ public class SalesSupportShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/allReleasedShipments", method = RequestMethod.GET)
+    public ModelAndView allReleasedShipments(){
+        ModelAndView modelAndView = getModelAndViewWithAllReleasedShipments();
+        modelAndView.setViewName("/salesSupport/allReleasedShipments");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/allPlannedPayments", method = RequestMethod.GET)
     public ModelAndView allPlannedPayments(){
         ModelAndView modelAndView = getModelAndViewWithAllPlannedPayments();
+
         modelAndView.setViewName("/salesSupport/allPlannedPayments");
         return modelAndView;
     }
@@ -322,6 +330,12 @@ public class SalesSupportShipmentController {
         return modelAndView;
     }
 
+    private ModelAndView getModelAndViewWithAllReleasedShipments (){
+        ModelAndView modelAndView = createModelAndView ();
+        modelAndView.addObject("allReleasedShipments", shipmentService.allReleasedShipments());
+        return modelAndView;
+    }
+
     private ModelAndView getModelAndViewWithUnpaidShipments (){
         ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("unpaidShipments", shipmentService.unpaidShipments());
@@ -334,6 +348,10 @@ public class SalesSupportShipmentController {
         modelAndView.addObject("currentWeekNumber", currentWeekNumber);
         List <Shipment> allPaymentsByTheEndOfThisWeekSorted = shipmentService.allPaymentsByTheEndOfThisWeek();
         allPaymentsByTheEndOfThisWeekSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisWeekInEUR", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisWeekInEUR());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisWeekInUSD", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisWeekInUSD());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisWeekInUAH", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisWeekInUAH());
+
         modelAndView.addObject("allPaymentsByTheEndOfThisWeekSorted", allPaymentsByTheEndOfThisWeekSorted);
         return modelAndView;
     }
@@ -342,6 +360,9 @@ public class SalesSupportShipmentController {
         ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allPaymentsByTheEndOfThisMonthSorted = shipmentService.allPaymentsByTheEndOfThisMonth();
         allPaymentsByTheEndOfThisMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisMonthInEUR", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisMonthInEUR());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisMonthInUSD", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisMonthInUSD());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfThisMonthInUAH", shipmentService.getTotalSumOfAllPaymentsByTheEndOfThisMonthInUAH());
         modelAndView.addObject("allPaymentsByTheEndOfThisMonthSorted", allPaymentsByTheEndOfThisMonthSorted);
         return modelAndView;
     }
@@ -352,6 +373,9 @@ public class SalesSupportShipmentController {
         modelAndView.addObject("nextWeekNumber", nextWeekNumber);
         List <Shipment> allPaymentsByTheEndOfNextWeekSorted = shipmentService.allPaymentsByTheEndOfNextWeek();
         allPaymentsByTheEndOfNextWeekSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextWeekInEUR", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextWeekInEUR());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextWeekInUSD", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextWeekInUSD());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextWeekInUAH", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextWeekInUAH());
         modelAndView.addObject("allPaymentsByTheEndOfNextWeekSorted", allPaymentsByTheEndOfNextWeekSorted);
         return modelAndView;
     }
@@ -360,6 +384,9 @@ public class SalesSupportShipmentController {
         ModelAndView modelAndView = createModelAndView();
         List <Shipment> allPaymentsByTheEndOfNextMonthSorted = shipmentService.allPaymentsByTheEndOfNextMonth ();
         allPaymentsByTheEndOfNextMonthSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextMonthInEUR", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextMonthInEUR());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextMonthInUSD", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextMonthInUSD());
+        modelAndView.addObject("totalSumOfAllPaymentsByTheEndOfNextMonthInUAH", shipmentService.getTotalSumOfAllPaymentsByTheEndOfNextMonthInUAH());
         modelAndView.addObject("allPaymentsByTheEndOfNextMonthSorted", allPaymentsByTheEndOfNextMonthSorted);
         return modelAndView;
     }
@@ -368,6 +395,9 @@ public class SalesSupportShipmentController {
         ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allPlannedPaymentsSorted = shipmentService.allPlannedPayments();
         allPlannedPaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllPlannedPaymentsInEUR", shipmentService.getTotalSumOfAllPlannedPaymentsInEUR());
+        modelAndView.addObject("totalSumOfAllPlannedPaymentsInUSD", shipmentService.getTotalSumOfAllPlannedPaymentsInUSD());
+        modelAndView.addObject("totalSumOfAllPlannedPaymentsInUAH", shipmentService.getTotalSumOfAllPlannedPaymentsInUAH());
         modelAndView.addObject("allPlannedPaymentsSorted", allPlannedPaymentsSorted);
         return modelAndView;
     }
@@ -376,6 +406,9 @@ public class SalesSupportShipmentController {
         ModelAndView modelAndView = createModelAndView ();
         List <Shipment> allOverduePaymentsSorted = shipmentService.allOverduePayments();
         allOverduePaymentsSorted.sort(Comparator.comparingInt(Shipment::getId));
+        modelAndView.addObject("totalSumOfAllOverduePaymentsInEUR", shipmentService.getTotalSumOfAllOverduePaymentsInEUR());
+        modelAndView.addObject("totalSumOfAllOverduePaymentsInUSD", shipmentService.getTotalSumOfAllOverduePaymentsInUSD());
+        modelAndView.addObject("totalSumOfAllOverduePaymentsInUAH", shipmentService.getTotalSumOfAllOverduePaymentsInUAH());
         modelAndView.addObject("allOverduePaymentsSorted", allOverduePaymentsSorted);
         return modelAndView;
     }

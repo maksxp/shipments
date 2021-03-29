@@ -13,7 +13,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
-    <title>Request for new contract</title>
+    <title>Contract</title>
 <!--    <script>-->
 <!--    $( function() {-->
 <!--    let availableTerms = [-->
@@ -177,6 +177,9 @@
         .highlightIncorrectInvoice td {
             background: red;
         }
+        .invisible {
+            visibility: hidden;
+        }
 
     </style>
 </head>
@@ -231,6 +234,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../allShipments">Усі відправлення</a>
                     <a class="dropdown-item" href="../openShipments">Відправлення в роботі</a>
+                    <a class="dropdown-item" href="../allReleasedShipments">Відвантажені відправлення</a>
                     <a class="dropdown-item" href="../fulfilledShipments">Виконані відправлення</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../thisWeekShipments">Відправлення цього тижня</a>
@@ -502,7 +506,7 @@
         data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="isInvoiceCorrect">isInvoiceCorrect</th>
+        <th data-visible="false" style="display:none" data-sortable="true" data-filter-control="input" data-field="isInvoiceCorrect">isInvoiceCorrect</th>
         <!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>-->
         <!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="contractNumber">Контракт</th>-->
         <th style="!important; width: 2em" data-sortable="true" data-field="truckNumber" data-filter-control="input">Авто</th>
@@ -535,7 +539,7 @@
     <!--    </tfoot>-->
     <tbody id="shipmentsTable">
     <tr th:each="shipment : ${allShipmentsPerContract}">
-        <td class="isInvoiceCorrect" style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.isInvoiceCorrect}">isInvoiceCorrect</td>
+        <td data-visible="false" style="display:none" class="isInvoiceCorrect" data-sortable="true" data-filter-control="input" th:text="${shipment.isInvoiceCorrect}">isInvoiceCorrect</td>
         <!--        <td data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>-->
         <!--        <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().contractNumber}">Контракт</td>-->
         <td style=" !important; width: 2em" data-sortable="true" data-field="truckNumber" data-filter-control="input" th:text="${shipment.truckNumber}">Машина</td>
