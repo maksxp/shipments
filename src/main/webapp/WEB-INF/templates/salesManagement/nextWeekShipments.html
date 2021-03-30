@@ -94,7 +94,7 @@
                     <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+<!--                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>-->
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -262,9 +262,9 @@
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
                 <option value="" disabled selected hidden>Оберіть</option>
-                <option th:value="${'/salesSupport/contract/' + shipment.getContract().id}">Контракт</option>
+                <option th:value="${'/salesManagement/contract/' + shipment.getContract().id}">Контракт</option>
                 <!--                <option th:value="${'/salesSupport/allShipmentsPerContract/' + contract.id}">Відправлення</option>-->
-                <option th:value="${'/salesSupport/shipment/' + shipment.id}">Відправлення</option>
+                <option th:value="${'/salesManagement/shipment/' + shipment.id}">Відправлення</option>
             </select>
             <!--            <a th:href="${'/salesSupport/shipment/' + shipment.id}">Редагувати</a>-->
             <!--            <a th:href="${'/salesSupport/editRequestForNewContract/' + contract.id}" class="btn btn-outline-warning" role="button" aria-pressed="true">Заявка</a>-->

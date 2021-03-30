@@ -41,41 +41,41 @@ public class SalesManagementCommodityController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/salesManagement/commodityRegistration", method = RequestMethod.GET)
-    public ModelAndView registerNewCommodity(){
-
-        ModelAndView modelAndView = createModelAndView();
-        Commodity commodity = new Commodity();
-        modelAndView.addObject("commodity", commodity);
-//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
-//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
-        modelAndView.setViewName("/salesManagement/commodityRegistration");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "salesManagement/commodityRegistration", method = RequestMethod.POST)
-    public ModelAndView registerNewCommodity (@Valid Commodity commodity, BindingResult bindingResult) {
-        ModelAndView modelAndView = createModelAndView();
-        modelAndView.addObject("allCommodities", commodityService.allCommodities());
-//        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
-//        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
-        Commodity commodityExists = commodityService.findCommodityByCommodityName(commodity.getCommodityName());
-        if (commodityExists != null) {
-            bindingResult
-                    .rejectValue("commodityName", "error.commodity",
-                            "Товар з такою назвою вже зареєстровано");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/salesSupport/commodityRegistration");
-        } else {
-            commodityService.saveCommodity(commodity);
-            modelAndView.addObject("successMessage", "Товар успішно зареєстровано");
-            modelAndView.addObject("commodity", new Commodity());
-            modelAndView.setViewName("/salesManagement/commodityRegistration");
-
-        }
-        return modelAndView;
-    }
+//    @RequestMapping(value="/salesManagement/commodityRegistration", method = RequestMethod.GET)
+//    public ModelAndView registerNewCommodity(){
+//
+//        ModelAndView modelAndView = createModelAndView();
+//        Commodity commodity = new Commodity();
+//        modelAndView.addObject("commodity", commodity);
+////        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+////        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        modelAndView.setViewName("/salesManagement/commodityRegistration");
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "salesManagement/commodityRegistration", method = RequestMethod.POST)
+//    public ModelAndView registerNewCommodity (@Valid Commodity commodity, BindingResult bindingResult) {
+//        ModelAndView modelAndView = createModelAndView();
+//        modelAndView.addObject("allCommodities", commodityService.allCommodities());
+////        modelAndView.addObject("rateEUR", JsonReader.getRateEUR("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+////        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
+//        Commodity commodityExists = commodityService.findCommodityByCommodityName(commodity.getCommodityName());
+//        if (commodityExists != null) {
+//            bindingResult
+//                    .rejectValue("commodityName", "error.commodity",
+//                            "Товар з такою назвою вже зареєстровано");
+//        }
+//        if (bindingResult.hasErrors()) {
+//            modelAndView.setViewName("/salesSupport/commodityRegistration");
+//        } else {
+//            commodityService.saveCommodity(commodity);
+//            modelAndView.addObject("successMessage", "Товар успішно зареєстровано");
+//            modelAndView.addObject("commodity", new Commodity());
+//            modelAndView.setViewName("/salesManagement/commodityRegistration");
+//
+//        }
+//        return modelAndView;
+//    }
     private ModelAndView getModelAndViewWithAllCommodities (){
         ModelAndView modelAndView = createModelAndView();
         modelAndView.addObject("allCommodities", commodityService.allCommodities());

@@ -33,6 +33,35 @@
         .table {
             margin: auto;
         }
+        /*th {*/
+        /*    text-align: center;*/
+        /*}*/
+        /*td, th {*/
+        /*    position: relative;*/
+        /*}*/
+        /*#selectable {*/
+        /*    position: absolute;*/
+        /*    background: #e3fcff;*/
+        /*    top: 0;*/
+        /*    bottom: 0;*/
+        /*    left: 0;*/
+        /*    right: 0;*/
+        /*    resize: none;*/
+
+        /*    !* for full width without spacing *!*/
+        /*    width: 100%;*/
+        /*    border: none;*/
+        /*    !* for full width without spacing *!*/
+
+        /*    !* for column with internal spacing *!*/
+        /*    !**/
+        /*    width: 85%;*/
+        /*    padding: 0.3rem;*/
+        /*    margin: 0.2rem 0.5rem;*/
+        /*    border: 1px solid #ddd;*/
+        /*    *!*/
+        /*    !* for column with internal spacing *!*/
+        /*}*/
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
@@ -99,7 +128,7 @@
                     <a class="dropdown-item" href="customerRegistration">Реєстрація нового покупця</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="allCommodities">Усі товари</a>
-                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>
+<!--                    <a class="dropdown-item" href="commodityRegistration">Реєстрація нового товару</a>-->
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -186,39 +215,50 @@
         <col style="background-color: lightblue"></col>
         <col style="background-color: lightpink"></col>
         <col style="background-color: lightyellow"></col>
-        <col span="2" style="background-color: lightgreen"></col>
+        <col style="background-color: lightgreen"></col>
+        <col style="background-color: lightgrey"></col>
     </colgroup>
     <thead class="thead-light">
     <tr>
-        <th data-field="commodityCode" data-visible="false">Код товару</th>
-        <th data-field="commodityName" >Назва товару</th>
-        <th data-field="shipped" >Відвантажено <br> (всього) </th>
-        <th data-field="loadedAndUnpaidQuantity" >Відвантажено <br> і не оплачено</th>
-        <th data-field="contracted" >До відвантаження <br> (всього)</th>
-        <th data-field="thisWeekNotLoaded" >До відвантаження <br> (на цьому тижні)</th>
-        <th data-field="nextWeekNotLoaded" >До відвантаження <br> (на наступному тижні)</th>
-        <th data-field="thisMonthNotLoaded" >До відвантаження <br> (в цьому місяці)</th>
-        <th data-field="nextMonthNotLoaded" >До відвантаження <br> (в наступному місяці)</th>
+        <th rowspan="2" data-field="commodityCode" data-visible="false">Код товару</th>
+        <th rowspan="2" style="border-right-color: #222222">Назва товару</th>
+<!--        <th rowspan="2" data-field="shipped" >Відвантажено <br> (всього з 2019) </th>-->
+<!--        <th rowspan="2" data-field="loadedAndUnpaidQuantity" >Відвантажено <br> (не оплачено)</th>-->
+        <th colspan="2" style="text-align: center; border-right-color: #222222">Відвантажено</th>
+        <th colspan="5" style="text-align: center">До відвантаження</th>
+<!--        <th  >До відвантаження <br> (всього)</th>-->
+    </tr>
+    <tr>
+        <th data-field="shipped" >Всього з 2019</th>
+        <th data-field="loadedAndUnpaidQuantity" style="border-right-color: #222222" >Не оплачено</th>
+        <th data-field="contracted" style="width: 10em; text-align: center; background-color: lightblue">Всього</th>
+        <th data-field="thisWeekNotLoaded" style="width: 10em; text-align: center; background-color: lightpink">На цьому тижні</th>
+        <th data-field="nextWeekNotLoaded" style="width: 10em; text-align: center; background-color: lightyellow">На наступному тижні</th>
+        <th data-field="thisMonthNotLoaded" style="width: 10em; text-align: center; background-color: lightgreen">В цьому місяці</th>
+        <th data-field="nextMonthNotLoaded" style="width: 10em; text-align: center; background-color: lightgrey">В наступному місяці</th>
     </tr>
     </thead>
 
     <tbody>
     <tr th:each="commodity : ${allCommodities}">
         <td data-field="commodityCode"  data-visible="false" th:text="${commodity.commodityCode}">Код товару</td>
-        <td data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
+        <td style="border-right-color: #222222" data-field="commodityName" th:text="${commodity.commodityName}">Назва товару</td>
         <td class="forCount" data-field="shipped" th:text="*{commodity.getQuantityOfAllLoadedGoods().stripTrailingZeros().toPlainString()}">
-        <td class="forCount" data-field="loadedAndUnpaidQuantity" th:text="*{commodity.getQuantityOfAllLoadedAndUnpaidGoods().stripTrailingZeros().toPlainString()}">Всьго відвантажено <br> і не оплачено</td>
+        <td style="border-right-color: #222222" class="forCount" data-field="loadedAndUnpaidQuantity" th:text="*{commodity.getQuantityOfAllLoadedAndUnpaidGoods().stripTrailingZeros().toPlainString()}">Всьго відвантажено <br> і не оплачено</td>
         <td class="forCount" data-field="contracted" th:text="*{commodity.getQuantityOfAllNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (всього)</td>
         <td class="forCount" data-field="thisWeekNotLoaded" th:text="*{commodity.getQuantityOfThisWeekNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (на цьому тижні)</td>
         <td class="forCount" data-field="nextWeekNotLoaded" th:text="*{commodity.getQuantityOfNextWeekNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (на наступному тижні)</td>
-         <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{commodity.getQuantityOfThisMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в цьому місяці)</td>
+        <td class="forCount" data-field="thisMonthNotLoaded" th:text="*{commodity.getQuantityOfThisMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в цьому місяці)</td>
         <td class="forCount" data-field="nextMonthNotLoaded" th:text="*{commodity.getQuantityOfNextMonthNotLoadedGoods().stripTrailingZeros().toPlainString()}">До відвантаження <br> (в наступному місяці)</td>
+<!--        <td>-->
+<!--            <a th:href="${'/salesSupport/editCommodity/' + commodity.id}" role="button" aria-pressed="true">Edit</a>-->
+<!--        </td>-->
     </tr>
     <tfoot style="font-weight: bold; border-top-style: solid; border-top-color: #222222">
     <tr>
-        <td colspan="2" style="text-align: right" th:text="'Всього:'">Total:</td>
+        <td colspan="2" style="text-align: right; border-right-color: #222222" th:text="'Всього:'">Total:</td>
         <td class="sum">Total:</td>
-        <td class="sum">Total:</td>
+        <td style="border-right-color: #222222" class="sum">Total:</td>
         <td class="sum">Total:</td>
         <td class="sum">Total:</td>
         <td class="sum">Total:</td>
