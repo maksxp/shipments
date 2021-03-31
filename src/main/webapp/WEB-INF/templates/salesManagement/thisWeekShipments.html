@@ -188,7 +188,7 @@
             data-filter-control="true">
     <thead class="thead-light">
     <tr>
-        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="isInvoiceCorrect">isInvoiceCorrect</th>
+<!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="isInvoiceCorrect">isInvoiceCorrect</th>-->
 <!--        <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>-->
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="invoiceNumber">Рахунок</th>
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-field="paymentTerms">Умови оплати</th>
@@ -224,7 +224,7 @@
 <!--    </tfoot>-->
     <tbody>
     <tr th:each="shipment : ${thisWeekShipments}">
-        <td class="isInvoiceCorrect" style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.isInvoiceCorrect}">isInvoiceCorrect</td>
+<!--        <td class="isInvoiceCorrect" style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.isInvoiceCorrect}">isInvoiceCorrect</td>-->
 <!--        <td style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" th:text="${shipment.id}">id</td>-->
         <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.invoiceNumber}">Рахунок</td>
         <td style="width: 7em" data-sortable="true" data-filter-control="input" th:text="${shipment.getContract().getPaymentTerms()}">Умови оплати</td>

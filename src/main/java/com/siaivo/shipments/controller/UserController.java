@@ -67,13 +67,14 @@ public class UserController {
     @RequestMapping(value = "/admin/userEdit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user")User user) {
         ModelAndView modelAndView = new ModelAndView();
+        int id = user.getId();
         String type =  user.getUserType();
         String password =  user.getPassword();
         String name =  user.getName();
         String email = user.getEmail();
-        user = userService.findUserByEmail(email);
-        int id = user.getId();
+        user = userService.findUserById(id);
         //userType changing
+        user.setEmail(email);
         userService.editUserType(type, id);
         //name changing
         if (name.length()<1 ) {

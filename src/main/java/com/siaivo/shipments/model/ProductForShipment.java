@@ -97,18 +97,23 @@ public class ProductForShipment {
         if ("оплата частинами".equals(getPaymentTerms())) {
             if (isFirstAndSecondPartSumUnpaid()) {
                 unpaidQuantity = getQuantity();
+                System.out.println("prod for ship "+getId()+"isFirstAndSecondPartSumUnpaid "+unpaidQuantity);
                 return unpaidQuantity;
             } else if (!isFirstPartSumPaid()) {
-                unpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
-                return unpaidQuantity;
-            } else if (isSecondPartSumPaid()) {
                 unpaidQuantity = quantity.multiply(shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
+                System.out.println("prod for ship "+getId()+"!isFirstPartSumPaid "+unpaidQuantity);
+                return unpaidQuantity;
+            } else if (!isSecondPartSumPaid()) {
+                unpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
+                System.out.println("prod for ship "+getId()+"isSecondPartSumPaid "+unpaidQuantity);
                 return unpaidQuantity;
             }
         }
         if (!isWholeSumPaid()) {
             unpaidQuantity = getQuantity();
+            System.out.println("prod for ship "+getId()+"isWholeSumPaid "+unpaidQuantity);
         }
+        System.out.println("prod for ship "+getId()+"final "+unpaidQuantity);
         return unpaidQuantity;
     }
 
@@ -119,10 +124,10 @@ public class ProductForShipment {
                 loadedAndUnpaidQuantity = getQuantity();
                 return loadedAndUnpaidQuantity;
             } else if (isLoaded() && !isFirstPartSumPaid()) {
-                loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
+                loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
                 return loadedAndUnpaidQuantity;
             } else if (isLoaded() && !isSecondPartSumPaid()) {
-                loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceFirstPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
+                loadedAndUnpaidQuantity = quantity.multiply(shipment.getInvoiceSecondPartSum().divide(shipment.getInvoiceWholeSum(), 3, RoundingMode.HALF_UP));
                 return loadedAndUnpaidQuantity;
             }
         }
