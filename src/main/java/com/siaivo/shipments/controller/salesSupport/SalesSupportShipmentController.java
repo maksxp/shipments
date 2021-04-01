@@ -75,6 +75,13 @@ public class SalesSupportShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesSupport/shipmentsWithoutPlannedLoadingDate", method = RequestMethod.GET)
+    public ModelAndView shipmentsWithoutPlannedLoadingDate(){
+        ModelAndView modelAndView = getModelAndViewWithShipmentsWithoutPlannedLoadingDate();
+        modelAndView.setViewName("/salesSupport/shipmentsWithoutPlannedLoadingDate");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesSupport/allPlannedPayments", method = RequestMethod.GET)
     public ModelAndView allPlannedPayments(){
         ModelAndView modelAndView = getModelAndViewWithAllPlannedPayments();
@@ -333,6 +340,12 @@ public class SalesSupportShipmentController {
     private ModelAndView getModelAndViewWithAllReleasedShipments (){
         ModelAndView modelAndView = createModelAndView ();
         modelAndView.addObject("allReleasedShipments", shipmentService.allReleasedShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithShipmentsWithoutPlannedLoadingDate (){
+        ModelAndView modelAndView = createModelAndView ();
+        modelAndView.addObject("shipmentsWithoutPlannedLoadingDate", shipmentService.shipmentsWithoutPlannedLoadingDate());
         return modelAndView;
     }
 

@@ -226,6 +226,13 @@ public class SalesManagementShipmentController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/salesManagement/shipmentsWithoutPlannedLoadingDate", method = RequestMethod.GET)
+    public ModelAndView shipmentsWithoutPlannedLoadingDate(){
+        ModelAndView modelAndView = getModelAndViewWithShipmentsWithoutPlannedLoadingDate();
+        modelAndView.setViewName("/salesManagement/shipmentsWithoutPlannedLoadingDate");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/salesManagement/nextMonthShipments", method = RequestMethod.GET)
     public ModelAndView nextMonthShipments(){
         ModelAndView modelAndView = getModelAndViewWithNextMonthShipments();
@@ -436,6 +443,12 @@ public class SalesManagementShipmentController {
         int currentWeekNumber = getCurrentWeekNumber();
         modelAndView.addObject("currentWeekNumber", currentWeekNumber);
         modelAndView.addObject("thisWeekShipments", shipmentService.thisWeekShipments());
+        return modelAndView;
+    }
+
+    private ModelAndView getModelAndViewWithShipmentsWithoutPlannedLoadingDate (){
+        ModelAndView modelAndView = createModelAndView ();
+        modelAndView.addObject("shipmentsWithoutPlannedLoadingDate", shipmentService.shipmentsWithoutPlannedLoadingDate());
         return modelAndView;
     }
 

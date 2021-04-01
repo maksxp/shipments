@@ -22,6 +22,8 @@ public interface ShipmentService {
 
     List<Shipment>thisWeekShipments();
 
+    List<Shipment> shipmentsWithoutPlannedLoadingDate();
+
     List<Shipment> allPlannedPayments();
 
     List<Shipment> allOverduePayments();

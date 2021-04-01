@@ -561,6 +561,11 @@ public class ShipmentServiceImpl implements ShipmentService{
     }
 
     @Override
+    public List<Shipment> shipmentsWithoutPlannedLoadingDate() {
+        return shipmentRepository.findShipmentsWithoutPlannedLoadingDate();
+    }
+
+    @Override
     public List<Shipment> notLoadedAndWithoutAnyPaymentShipments() {
         List <Shipment> notLoadedAndWithoutAnyPaymentShipments=shipmentRepository.findNotLoadedShipments();
         notLoadedAndWithoutAnyPaymentShipments.removeAll(shipmentRepository.findFirstPartSumPaidShipments());

@@ -128,6 +128,8 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="thisMonthShipments">Відправлення цього місяця</a>
                     <a class="dropdown-item" href="nextMonthShipments">Відправлення наступного місяця</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="shipmentsWithoutPlannedLoadingDate">Без запланованої дати завантаження</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -199,8 +201,8 @@
 <!--        <th data-sortable="true" data-field="actualLoadingDate" data-filter-control="input">Завантаження <br> (фактична дата)</th>-->
         <!--        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (запланована дата)</th>-->
         <!--        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (фактична дата)</th>-->
-        <th data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="input">Логістична <br> інструкція</th>
-        <th data-sortable="true" data-field="labelsStatus" data-filter-control="input">Етикетки</th>
+<!--        <th data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="input">Логістична <br> інструкція</th>-->
+<!--        <th data-sortable="true" data-field="labelsStatus" data-filter-control="input">Етикетки</th>-->
         <th data-sortable="true" data-visible="false" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
         <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити</th>
@@ -255,8 +257,8 @@
 <!--        <td data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>-->
         <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>-->
         <!--        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>-->
-        <td style="width: 7em"  data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="select" th:text="${shipment.logisticInstructionStatus}">Логістична <br> інструкція</td>
-        <td style="width: 7em"  data-sortable="true" data-field="labelsStatus" data-filter-control="select" th:text="${shipment.labelsStatus}">Етикетки</td>
+<!--        <td style="width: 7em"  data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="select" th:text="${shipment.logisticInstructionStatus}">Логістична <br> інструкція</td>-->
+<!--        <td style="width: 7em"  data-sortable="true" data-field="labelsStatus" data-filter-control="select" th:text="${shipment.labelsStatus}">Етикетки</td>-->
         <td data-sortable="true" data-visible="false" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
         <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
         <td style="width: 7em">

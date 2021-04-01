@@ -31,5 +31,7 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
     List <Shipment> findFirstPartSumPaidShipments();
     @Query ("SELECT s FROM Shipment s WHERE actualPaymentDateOfSecondPartSum<>'' AND actualPaymentDateOfSecondPartSum IS NOT NULL")
     List <Shipment> findSecondPartSumPaidShipments();
+    @Query ("SELECT s FROM Shipment s WHERE plannedLoadingDate='' OR plannedLoadingDate IS NULL")
+    List <Shipment> findShipmentsWithoutPlannedLoadingDate();
 
 }
