@@ -258,7 +258,7 @@
 <!--    </td>-->
 
 <!--    <td> <input type="text" th:field="*{shipmentComment}" th:value="#{shipmentComment}"/></td>-->
-    <td th:text="${shipment.shipmentComment}"></td>
+    <td style="white-space: pre-wrap;" th:text="${shipment.shipmentComment}"></td>
 <!--    <td style="width: 100%; height: 100%; border: none">  <textarea  th:field="*{shipmentComment}" th:value="#{shipmentComment}"> </textarea></td>-->
     </tbody>
 </table>
@@ -338,7 +338,7 @@
         <td style="width: 7em" class="twoPayments" th:text="${shipment.actualPaymentDateOfSecondPartSum}"> </td>
         <td style="width: 7em" class="onePayment" th:text="${shipment.plannedPaymentDateOfWholeSum}"> </td>
         <td style="width: 7em" class="onePayment" th:text="${shipment.actualPaymentDateOfWholeSum}"> </td>
-        <td  style="width: 15em" th:text="${shipment.invoiceComment}"></td>
+        <td  style="white-space: pre-wrap;" style="width: 15em" th:text="${shipment.invoiceComment}"></td>
         </tbody>
     </table>
 

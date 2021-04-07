@@ -213,18 +213,18 @@
 <!--        <td data-field="sumForPayment" th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">Сума</td>-->
         <th:block th:switch="${shipment.getSumForPayIdentity()}">
             <td th:case="'first'" data-field="sumForPayment"
-                th:text="${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+                th:text="${shipment.getInvoiceFirstPartSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceFirstPartSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">
             </td>
             <td th:case="'second'" data-field="sumForPayment"
-                th:text="${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+                th:text="${shipment.getInvoiceSecondPartSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceSecondPartSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">
             </td>
             <td th:case="'whole'" data-field="sumForPayment"
-                th:text="${shipment.getInvoiceWholeSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+                th:text="${shipment.getInvoiceWholeSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceWholeSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">
             </td>
             <td th:case="'firstAndSecond'" data-field="sumForPayment"
                 th:text="${iterStat.odd} ?
-                ${shipment.getInvoiceFirstPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()} :
-                ${shipment.getInvoiceSecondPartSum().stripTrailingZeros().toPlainString()}+' '+${shipment.getContract().getProducts().get(0).getCurrency()}">
+                ${shipment.getInvoiceFirstPartSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceFirstPartSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()} :
+                ${shipment.getInvoiceSecondPartSum()==0} ? '' : ${#strings.replace(#numbers.formatDecimal(shipment.getInvoiceSecondPartSum(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${shipment.getCurrency()}">
             </td>
         </th:block>
         <td data-field="paymentTerms" th:text="${shipment.getContract().getPaymentTerms()}">Умови оплати</td>
@@ -245,7 +245,7 @@
             </td>
         </th:block>
 <!--        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>-->
-        <td data-field="invoiceComment" th:text="${shipment.invoiceComment}">Коментар</td>
+        <td style="white-space: pre-wrap;" data-field="invoiceComment" th:text="${shipment.invoiceComment}">Коментар</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
                 <option value="" disabled selected hidden>Оберіть</option>

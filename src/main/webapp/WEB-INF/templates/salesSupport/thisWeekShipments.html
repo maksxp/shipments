@@ -265,7 +265,7 @@
         <td style="width: 7em"  data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="select" th:text="${shipment.logisticInstructionStatus}">Логістична <br> інструкція</td>
         <td style="width: 7em"  data-sortable="true" data-field="labelsStatus" data-filter-control="select" th:text="${shipment.labelsStatus}">Етикетки</td>
         <td data-sortable="true" data-visible="false" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
-        <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
+        <td style="white-space: pre-wrap" data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
                 <option value="" disabled selected hidden>Оберіть</option>

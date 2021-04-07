@@ -19,7 +19,9 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -176,7 +178,10 @@ public class SalesManagementContractController {
 //        modelAndView.addObject("rateUSD", JsonReader.getRateUSD("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json?"));
         modelAndView.addObject("contract", contract);
         modelAndView.addObject("allCustomersNames", getAllCustomersNames());
-        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract));
+        modelAndView.addObject("allShipmentsPerContract", shipmentService.allShipmentsPerContract(contract)
+                .stream()
+                .sorted(Comparator.comparingInt(Shipment::getTruckNumber))
+                .collect(Collectors.toList()));
         modelAndView.addObject("allProductsByContract", productService.findProductsByContract(contract));
         modelAndView.addObject("weightOfAllProductsByContract", productService.findWeightOfAllProductsByContract(contract));
         modelAndView.setViewName("/salesManagement/contract");

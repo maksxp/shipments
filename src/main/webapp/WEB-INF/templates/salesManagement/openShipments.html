@@ -273,7 +273,7 @@
         <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedUnloadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()})">Розвантаження <br> (план)</td>
         <td data-sortable="true" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
         <td data-sortable="true" data-visible="false" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
-        <td data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
+        <td style="white-space: pre-wrap" data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
 <!--                <option  value="" >Оберіть</option>-->
