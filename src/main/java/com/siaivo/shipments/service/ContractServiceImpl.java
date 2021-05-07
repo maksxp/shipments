@@ -31,7 +31,8 @@ public class ContractServiceImpl implements ContractService{
         if (!contract.getState().equals("скасований")){
             contractRepository.save(contract);
         } else {
-            shipmentService.notLoadedAndWithoutAnyPaymentShipments().forEach(shipment -> shipmentService.deleteShipment(shipment));
+//            shipmentService.notLoadedAndWithoutAnyPaymentShipments().forEach(shipment -> shipmentService.deleteShipment(shipment));
+            shipmentService.notLoadedAndWithoutAnyPaymentShipments().stream().filter(shipment -> shipment.getContract().equals(contract)).forEach(shipment -> shipmentService.deleteShipment(shipment));
             contractRepository.save(contract);
         }
     }
