@@ -180,8 +180,8 @@
 <div class="container-fluid">
         <div class="layerHeader">
             <h4>Усі прострочені платежі</h4>
-            <h4>Загальна сума: <span th:text="${totalSumOfAllOverduePaymentsInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllOverduePaymentsInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfAllOverduePaymentsInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>
-
+<!--            <h4>Загальна сума: <span th:text="${totalSumOfAllOverduePaymentsInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllOverduePaymentsInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfAllOverduePaymentsInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>-->
+            <h4>Загальна сума: <span th:text="${totalSumOfAllOverduePaymentsInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllOverduePaymentsInUSD}==0 ? ('та 0 USD') : 'та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllOverduePaymentsInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> </h4>
         </div>
 </div>
 <table  class="table table-hover table-bordered "
