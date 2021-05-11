@@ -293,7 +293,7 @@
             <td th:text="${productForShipment.getProduct().getLoadedQuantity().stripTrailingZeros().toPlainString()}" ></td>
             <td th:text="${productForShipment.getProduct().getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
 <!--            <td> <input type="text" th:name="productForShipmentWeight[]" th:value="${productForShipment.quantity.stripTrailingZeros().toPlainString()}"></td>-->
-            <td style="background-color: #e3fcff" th:text="${productForShipment.quantity.stripTrailingZeros().toPlainString()}"></td>
+            <td th:text="${productForShipment.quantity.stripTrailingZeros().toPlainString()}"></td>
             <td th:text="${productForShipment.getProduct().getPackaging()}"></td>
         </tr>
         </tbody>
@@ -338,7 +338,7 @@
         <td style="width: 7em" class="twoPayments" th:text="${shipment.actualPaymentDateOfSecondPartSum}"> </td>
         <td style="width: 7em" class="onePayment" th:text="${shipment.plannedPaymentDateOfWholeSum}"> </td>
         <td style="width: 7em" class="onePayment" th:text="${shipment.actualPaymentDateOfWholeSum}"> </td>
-        <td  style="white-space: pre-wrap;" style="width: 15em" th:text="${shipment.invoiceComment}"></td>
+        <td  style="white-space: pre-wrap; width: 15em" th:text="${shipment.invoiceComment}"></td>
         </tbody>
     </table>
 
