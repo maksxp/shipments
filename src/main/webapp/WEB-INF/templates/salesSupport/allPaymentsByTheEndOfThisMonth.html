@@ -179,7 +179,7 @@
 </nav>
 <div class="container-fluid">
         <div class="layerHeader">
-            <h4>Заплановані надходження до кінця цього місяця</h4>
+            <h4>Заплановані оплати до кінця цього місяця</h4>
 <!--            <h4>Загальна сума: <span th:text="${totalSumOfAllPaymentsByTheEndOfThisMonthInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllPaymentsByTheEndOfThisMonthInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllPaymentsByTheEndOfThisMonthInUSD}==0 ? (', 0 USD') : ', '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllPaymentsByTheEndOfThisMonthInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> <span th:text="${totalSumOfAllPaymentsByTheEndOfThisMonthInUAH}==0 ? (' та 0 UAH') : ' та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllPaymentsByTheEndOfThisMonthInUAH, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' UAH'"></span></h4>-->
             <h4>Загальна сума: <span th:text="${totalSumOfAllPaymentsByTheEndOfThisMonthInEUR}==0 ? ('0 EUR') :${#strings.replace(#numbers.formatDecimal(totalSumOfAllPaymentsByTheEndOfThisMonthInEUR, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' EUR'"></span>&nbsp;<span th:text="${totalSumOfAllPaymentsByTheEndOfThisMonthInUSD}==0 ? ('та 0 USD') : 'та '+${#strings.replace(#numbers.formatDecimal(totalSumOfAllPaymentsByTheEndOfThisMonthInUSD, 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' USD'"></span> </h4>
         </div>

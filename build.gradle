@@ -5,6 +5,12 @@ plugins {
     id 'war'
 }
 
+apply plugin: 'war'
+
+war {
+    enabled = true
+}
+
 group = 'com.siaivo'
 version = '1.0'
 sourceCompatibility = '14'
