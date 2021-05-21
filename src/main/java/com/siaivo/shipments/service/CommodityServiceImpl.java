@@ -4,13 +4,17 @@ import com.siaivo.shipments.model.Commodity;
 import com.siaivo.shipments.repository.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("commodityService")
 public class CommodityServiceImpl implements CommodityService{
+
     @Autowired
+    @Qualifier ("commodityRepository")
     private CommodityRepository commodityRepository;
 
     @Override

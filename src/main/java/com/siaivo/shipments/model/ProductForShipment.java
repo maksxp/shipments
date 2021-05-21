@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Entity
+@Table(name = "product_for_shipment")
 public class ProductForShipment {
 
     @Id

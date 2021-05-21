@@ -33,13 +33,13 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
                 }
             } else if(authority.getAuthority().equalsIgnoreCase("salesManagement")) {
                 try {
-                    redirectStrategy.sendRedirect(request, response, "/salesManagement/openContracts");
+                    redirectStrategy.sendRedirect(request, response, "/salesManagement/thisWeekShipments");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }else if(authority.getAuthority().equalsIgnoreCase("salesSupport")) {
                 try {
-                    redirectStrategy.sendRedirect(request, response, "/salesSupport/openShipments");
+                    redirectStrategy.sendRedirect(request, response, "/salesSupport/thisWeekShipments");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
