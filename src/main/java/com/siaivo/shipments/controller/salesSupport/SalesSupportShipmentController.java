@@ -299,7 +299,6 @@ public class SalesSupportShipmentController {
         int id = shipmentFromView.getId();
         Shipment shipmentFromDataBase = shipmentService.findById(id);
         for (int i=0; i<productsForShipmentWeight.size(); i++){
-            System.out.println("test");
             shipmentFromDataBase.getAllProductsForShipment().get(i).setQuantity(productsForShipmentWeight.get(i));
             productForShipmentService.saveProductForShipment(shipmentFromDataBase.getAllProductsForShipment().get(i));
         }

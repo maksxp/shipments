@@ -198,7 +198,7 @@
         <th data-sortable="true" data-field="invoiceSum" data-filter-control="input">Сума рахунку</th>
         <th data-sortable="true" data-field="unpaidInvoiceSum" data-filter-control="input">Неоплачена сума</th>
         <th data-sortable="true" data-field="paymentTerms" data-filter-control="input">Умови оплати</th>
-        <th data-sortable="true" data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
+        <th data-sortable="true" data-sorter="datesSorter" data-field="plannedFullSettlementDate" data-filter-control="input">Повний розрахунок <br> (план)</th>
         <th data-sortable="true" data-field="invoiceComment" data-filter-control="input">Коментар</th>
         <th data-field="actions" data-filter-control="input" >Відкрити</th>
     </tr>
@@ -233,6 +233,30 @@
     })
 </script>
 
+<script>
+    function datesSorter(a, b) {
+        if (a.length<10 && b.length<10){
+            return 0;
+        }
+        if (a.length<10 && b.length==10){
+            return -1;
+        }
+        if (a.length==10 && b.length<10){
+            return 1;
+        }
+        let splittedDateA = a.split(".");
+        let splittedDateB = b.split(".");
+        let dateA = new Date(splittedDateA[2], splittedDateA[1] - 1, splittedDateA[0]);
+        let dateB = new Date(splittedDateB[2], splittedDateB[1] - 1, splittedDateB[0]);
+        if (dateA > dateB) {
+            return 1;
+        }
+        if (dateA < dateB) {
+            return -1;
+        }
+        return 0;
+    }
+</script>
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

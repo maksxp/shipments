@@ -259,7 +259,7 @@
             </p>
         </td>
 <!--        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>-->
-        <td style="text-align: center; width: 7em" class="loaded" data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
+        <td style="text-align: center; width: 7em" class="loaded" data-sorter="datesSorter" data-sortable="true" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (фактична дата)</td>
 <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (запланована дата)</td>-->
 <!--        <td data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (фактична дата)</td>-->
         <td style="width: 7em"  data-sortable="true" data-field="logisticInstructionStatus" data-filter-control="select" th:text="${shipment.logisticInstructionStatus}">Логістична <br> інструкція</td>
@@ -307,6 +307,32 @@
         }
     })
 </script>
+
+<script>
+    function datesSorter(a, b) {
+        if (a.length<10 && b.length<10){
+            return 0;
+        }
+        if (a.length<10 && b.length==10){
+            return -1;
+        }
+        if (a.length==10 && b.length<10){
+            return 1;
+        }
+        let splittedDateA = a.split(".");
+        let splittedDateB = b.split(".");
+        let dateA = new Date(splittedDateA[2], splittedDateA[1] - 1, splittedDateA[0]);
+        let dateB = new Date(splittedDateB[2], splittedDateB[1] - 1, splittedDateB[0]);
+        if (dateA > dateB) {
+            return 1;
+        }
+        if (dateA < dateB) {
+            return -1;
+        }
+        return 0;
+    }
+</script>
+
 <!--<script>-->
 
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->

@@ -268,11 +268,11 @@
 <!--        </td>-->
 <!--        <td data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input" th:text="${shipment.plannedLoadingDate}">Завантаження <br> (запланована дата)</td>-->
         <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedLoadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedLoadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedLoadingDate()}+', '+${shipment.getYearOfPlannedLoadingDate()})">Завантаження <br> (план)</td>
-        <td data-sortable="true" class="loaded" style="text-align: center" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (факт)</td>
+        <td data-sortable="true" data-sorter="datesSorter" class="loaded" style="text-align: center" data-field="actualLoadingDate" data-filter-control="input" th:text="${shipment.actualLoadingDate}">Завантаження <br> (факт)</td>
 <!--        <td data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input" th:text="${shipment.plannedUnloadingDate}">Розвантаження <br> (план)</td>-->
         <td data-sortable="true" style="text-align: center" data-field="weekOfPlannedUnloadingDate" data-filter-control="input" th:text="${shipment.getWeekOfPlannedUnloadingDate()}==0 ? ('') : (W+${shipment.getWeekOfPlannedUnloadingDate()}+', '+${shipment.getYearOfPlannedUnloadingDate()})">Розвантаження <br> (план)</td>
-        <td data-sortable="true" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
-        <td data-sortable="true" data-visible="false" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
+        <td data-sortable="true" data-sorter="datesSorter" style="text-align: center" data-field="actualUnloadingDate" data-filter-control="input" th:text="${shipment.actualUnloadingDate}">Розвантаження <br> (факт)</td>
+        <td data-sortable="true" data-sorter="datesSorter" data-visible="false" class="paid" style="text-align: center" data-field="ActualFullSettlementDate" data-filter-control="input" th:text="${shipment.getActualFullSettlementDate ()}">Повний <br> розрахунок</td>
         <td style="white-space: pre-wrap" data-sortable="true" data-field="shipmentComment" data-filter-control="input" th:text="${shipment.shipmentComment}">Коментар</td>
         <td style="width: 7em">
             <select id="selectable" onchange="location = this.value;">
@@ -315,6 +315,31 @@
             r.classList.add('highlightIncorrectInvoice');
         }
     })
+</script>
+
+<script>
+    function datesSorter(a, b) {
+        if (a.length<10 && b.length<10){
+            return 0;
+        }
+        if (a.length<10 && b.length==10){
+            return -1;
+        }
+        if (a.length==10 && b.length<10){
+            return 1;
+        }
+        let splittedDateA = a.split(".");
+        let splittedDateB = b.split(".");
+        let dateA = new Date(splittedDateA[2], splittedDateA[1] - 1, splittedDateA[0]);
+        let dateB = new Date(splittedDateB[2], splittedDateB[1] - 1, splittedDateB[0]);
+        if (dateA > dateB) {
+            return 1;
+        }
+        if (dateA < dateB) {
+            return -1;
+        }
+        return 0;
+    }
 </script>
 <!--<script>-->
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->

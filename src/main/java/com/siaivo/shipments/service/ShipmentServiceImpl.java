@@ -874,7 +874,6 @@ public class ShipmentServiceImpl implements ShipmentService{
     public BigDecimal getTotalSumOfUnpaidInvoicesInUSD () {
         List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        System.out.println("size unpaid USD: "+unpaidShipments.size());
         unpaidShipments
                 .stream()
                 .filter(shipment -> "USD".equals(shipment.getCurrency()))
@@ -914,7 +913,6 @@ public class ShipmentServiceImpl implements ShipmentService{
     public BigDecimal getTotalSumOfUnpaidInvoicesInUAH () {
         List <BigDecimal> invoiceUnpaidSums = new ArrayList<>();
         List <Shipment> unpaidShipments = shipmentRepository.findUnpaidShipments();
-        System.out.println("size unpaid UAH: "+unpaidShipments.size());
         unpaidShipments
                 .stream()
                 .filter(shipment -> "UAH".equals(shipment.getCurrency()))

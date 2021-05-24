@@ -38,7 +38,6 @@ public class UserController {
         User userExists;
         userExists = userService.findUserByEmail(user.getEmail());
         if (bindingResult.hasErrors()) {
-            System.out.println("error");
             modelAndView.setViewName("/admin/userRegistration");
             return modelAndView;}
         if (userExists != null) {
@@ -47,7 +46,6 @@ public class UserController {
                             "Користувач з такими email вже зареєстрований");
         }
         else {
-            System.out.println("NO errors");
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "Користувача успішно додано");
             modelAndView.addObject("user", new User());
