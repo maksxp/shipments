@@ -21,7 +21,6 @@ public class User {
     @Column(name = "password")
     @Size(min = 5, message = "*Password must have at least 5 characters" )
     @NotEmpty(message = "*Please provide user password")
-    @Transient
     private String password;
     @Column(name = "name")
     @NotEmpty(message = "*Please provide user name")

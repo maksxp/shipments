@@ -38,7 +38,9 @@ public class UserServiceImpl implements UserService{
         Role userRole = roleRepository.findByRole(user.getUserType());
         user.setEnabled(true);
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
+        System.out.println("saving "+user.getPassword());
         userRepository.save(user);
+        System.out.println("saved "+user.getPassword());
     }
     @Override
     public void editUserPassword(String password,int userId){
