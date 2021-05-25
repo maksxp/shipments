@@ -158,6 +158,8 @@ public class Product {
         return getContract().getCustomer().getCustomerName();
     }
 
+    public String getCommodityName () { return getCommodity().getCommodityName();}
+
     public BigDecimal getLoadedQuantity (){
         List <BigDecimal> quantityOfLoadedProductInEachShipment = new ArrayList<>();
         getProductsForShipments()
