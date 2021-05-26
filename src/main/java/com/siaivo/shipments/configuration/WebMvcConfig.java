@@ -30,7 +30,7 @@ import java.util.Properties;
 //@EnableWebMvc - don't use it. with it css and js etc doesn't load
 @EnableJpaRepositories(basePackages = "com.siaivo.shipments.repository")
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 public class WebMvcConfig implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;

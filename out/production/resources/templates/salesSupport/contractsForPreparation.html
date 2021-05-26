@@ -177,7 +177,7 @@
         <th style="width: 7em" data-sortable="true" data-filter-control="input" data-visible="false" data-field="id">id</th>
         <th style="width: 6em" data-sortable="true" data-field="contractNumber" data-filter-control="input">Номер</th>
         <th data-sortable="true" data-field="customer" data-filter-control="input">Покупець</th>
-        <th data-sortable="true" data-field="sumOfContract" data-filter-control="input">Сума <br> контракту</th>
+        <th data-sortable="true" data-sorter="sumsSorter" data-field="sumOfContract" data-filter-control="input">Сума <br> контракту</th>
         <th data-sortable="true" data-field="paymentTerms" data-filter-control="select">Умови оплати</th>
         <th data-sortable="true" data-field="goods" data-filter-control="input">Товар</th>
         <th data-sortable="true" data-field="startOfShipments" data-filter-control="input">Початок <br> відвантажень</th>
@@ -209,7 +209,8 @@
         <!--        <td data-sortable="true" data-field="sumOfContract" data-filter-control="input" th:text="${contract.getSumOfContract(contract).stripTrailingZeros().toPlainString()}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>-->
         <td data-sortable="true" data-field="goods" data-filter-control="input" >
             <p th:each="product, iterStat  : ${contract.getProducts()}" th:class="${iterStat.odd}? 'odd' : 'notOdd'">
-                <span style="white-space: nowrap" th:text="${product.getCommodity().getCommodityName()}+' ('+${product.quantity.stripTrailingZeros().toPlainString()}+' т)'"> Товар</span>
+<!--                <span style="white-space: nowrap" th:text="${product.getCommodity().getCommodityName()}+' ('+${product.quantity.stripTrailingZeros().toPlainString()}+' т)'"> Товар</span>-->
+                <span style="white-space: nowrap" th:text="${product.getCommodityName()}+' ('+${product.quantity.stripTrailingZeros().toPlainString()}+' т по '+${product.price.stripTrailingZeros().toPlainString()}+' '+${contract.getCurrency()}+')'"> Товар</span>
             </p>
         </td>
         <td data-sortable="true" data-field="startOfShipments" data-filter-control="input" th:text="${contract.startOfShipments}">startOfShipments</td>
@@ -235,6 +236,21 @@
     $(function() {
         $('#table').bootstrapTable()
     })
+</script>
+
+<script>
+    function sumsSorter(a, b) {
+        let numA = parseInt(a.replace(/[^0-9,.]/g, ''),10);
+        let numB = parseInt(b.replace(/[^0-9,.]/g, ''),10);
+
+        if (numA > numB) {
+            return 1;
+        }
+        if (numA < numB) {
+            return -1;
+        }
+        return 0;
+    }
 </script>
 <!--<script>-->
 

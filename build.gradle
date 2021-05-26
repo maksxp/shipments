@@ -5,6 +5,7 @@ plugins {
     id 'java'
 //    id 'war'
 }
+apply plugin: 'war'
 
 //jar {
 //    manifest {

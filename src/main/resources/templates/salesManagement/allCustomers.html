@@ -185,7 +185,7 @@
         <th data-sortable="true" data-field="customerName" data-filter-control="input">Назва</th>
         <th data-sortable="true" data-field="customerCountry" data-filter-control="input">Країна</th>
         <th data-sortable="true" data-field="customerType" data-filter-control="select">Тип</th>
-        <th data-sortable="true" data-sorter="sumsSorter" data-field="arrears" data-filter-control="select">Прострочена <br> заборгованість</th>
+        <th data-sortable="true" data-sorter="sumsSorter" data-field="arrears" data-filter-control="input">Прострочена <br> заборгованість</th>
         <th data-sortable="true" data-sorter="sumsSorter" data-field="UnpaidSumOfOpenContracts" data-filter-control="input">До оплати по <br> усім контрактам</th>
         <th data-sortable="true" data-field="comment" data-filter-control="input">Коментар</th>
         <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити/ <br> Дії</th>
@@ -240,17 +240,19 @@
         $('#table').bootstrapTable()
     })
 </script>
-<script>
-    var rows = document.querySelectorAll('tr');
-    [...rows].forEach((r) => {
-        if (r.querySelectorAll('.debtor:empty').length == 0 ) {
-            r.classList.add('highlightDebtor');
-        }
-    })
-</script>
 
 <script>
     function sumsSorter(a, b) {
+        if (a.length==0 && b.length==0){
+            return 0;
+        }
+        if (a.length>0 && b.length==0){
+            return 1;
+        }
+        if (a.length==0 && b.length>0){
+            return -1;
+        }
+
         let numA = parseInt(a.replace(/[^0-9,.]/g, ''),10);
         let numB = parseInt(b.replace(/[^0-9,.]/g, ''),10);
 
@@ -263,6 +265,16 @@
         return 0;
     }
 </script>
+<script>
+    var rows = document.querySelectorAll('tr');
+    [...rows].forEach((r) => {
+        if (r.querySelectorAll('.debtor:empty').length == 0 ) {
+            r.classList.add('highlightDebtor');
+        }
+    })
+</script>
+
+
 <!--<script>-->
 
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->

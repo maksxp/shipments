@@ -213,12 +213,12 @@
 <!--        <th data-sortable="true" data-field="plannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>-->
         <th data-sortable="true" data-field="weekOfPlannedLoadingDate" data-filter-control="input">Завантаження <br> (план)</th>
 <!--        <th data-field="actualLoadingDate" data-sorter="datesSorter" data-formatter="dateFormatter" data-sortable="true" data-filter-control="input">Завантаження <br> (факт)</th>-->
-        <th data-field="actualLoadingDate" data-sortable="true" data-filter-control="input">Завантаження <br> (факт)</th>
+        <th data-field="actualLoadingDate" data-sorter="datesSorter" data-sortable="true" data-filter-control="input">Завантаження <br> (факт)</th>
 
         <!--        <th data-sortable="true" data-field="plannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>-->
         <th data-sortable="true" data-field="weekOfPlannedUnloadingDate" data-filter-control="input">Розвантаження <br> (план)</th>
-        <th data-sortable="true" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
-        <th data-sortable="true" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
+        <th data-sortable="true" data-sorter="datesSorter" data-field="actualUnloadingDate" data-filter-control="input">Розвантаження <br> (факт)</th>
+        <th data-sortable="true" data-sorter="datesSorter" data-field="ActualFullSettlementDate" data-filter-control="input">Повний <br> розрахунок </th>
         <th data-sortable="true" data-field="shipmentComment" data-filter-control="input">Коментар</th>
         <th data-sortable="true" data-field="actions" data-filter-control="input">Відкрити</th>
     </tr>
@@ -321,28 +321,30 @@
 </script>
 
 
-<!--<script>-->
-<!--    function datesSorter(a, b) {-->
-<!--        // let splittedDateA = a.split(".");-->
-<!--        // let splittedDateB = b.split(".");-->
-<!--        // dateA = new Date(splittedDateA[2]+"/"+splittedDateA[1]-1+"/"+splittedDateA[0]);-->
-<!--        // dateB = new Date(splittedDateB[2]+"/"+splittedDateB[1]-1+"/"+splittedDateB[0]);-->
-<!--        // if (dateA > dateB) {-->
-<!--        //     return 1;}-->
-<!--        // if (dateA < dateB) {-->
-<!--        //     return  -1;}-->
-<!--        // return 0;-->
-
-<!--        if (new Date(a) < new Date(b)) return -1;-->
-<!--        if (new Date(a) > new Date(b)) return 1;-->
-<!--        return 0;-->
-<!--    }-->
-
-<!--    function dateFormatter(date) {-->
-<!--        return moment(date).format('DD.MM.YYYY');-->
-<!--        // alert(moment(date).format('DD.MM.YYYY'));-->
-<!--    }-->
-<!--</script>-->
+<script>
+    function datesSorter(a, b) {
+        if (a.length<10 && b.length<10){
+            return 0;
+        }
+        if (a.length<10 && b.length==10){
+            return -1;
+        }
+        if (a.length==10 && b.length<10){
+            return 1;
+        }
+        let splittedDateA = a.split(".");
+        let splittedDateB = b.split(".");
+        let dateA = new Date(splittedDateA[2], splittedDateA[1] - 1, splittedDateA[0]);
+        let dateB = new Date(splittedDateB[2], splittedDateB[1] - 1, splittedDateB[0]);
+        if (dateA > dateB) {
+            return 1;
+        }
+        if (dateA < dateB) {
+            return -1;
+        }
+        return 0;
+    }
+</script>
 <!--<script>-->
 <!--    $('#table').on('click-cell.bs.table', function (field, value, row, $element) {-->
 <!--        if (value=="contractNumber") {-->
@@ -357,6 +359,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 <!-- For comparing dates -->
-<script src="https://momentjs.com/downloads/moment.js"></script>
+<!--<script src="https://momentjs.com/downloads/moment.js"></script>-->
 </body>
 </html>
