@@ -243,6 +243,16 @@
 
 <script>
     function sumsSorter(a, b) {
+        if (a.length==0 && b.length==0){
+            return 0;
+        }
+        if (a.length>0 && b.length==0){
+            return 1;
+        }
+        if (a.length==0 && b.length>0){
+            return -1;
+        }
+
         let numA = parseInt(a.replace(/[^0-9,.]/g, ''),10);
         let numB = parseInt(b.replace(/[^0-9,.]/g, ''),10);
 

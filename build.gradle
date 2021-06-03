@@ -3,9 +3,17 @@ plugins {
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-//    id 'war'
+    id 'war'
 }
-apply plugin: 'war'
+//apply plugin: 'war'
+
+//sourceSets {
+//    main {
+//        resources {
+//            srcDirs "src/main/resources", "src/main/resources/templates"
+//        }
+//    }
+//}
 
 //jar {
 //    manifest {
@@ -24,7 +32,6 @@ apply plugin: 'war'
 
 group = 'com.siaivo'
 version = '1.0'
-sourceCompatibility = '14'
 
 configurations {
     compileOnly {
@@ -52,12 +59,17 @@ dependencies {
     // https://mvnrepository.com/artifact/org.json/json
     implementation group: 'org.json', name: 'json', version: '20201115'
 //    compile group: 'org.json', name: 'json', version: '20201115'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testImplementation 'org.springframework.security:spring-security-test'
+//    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+//        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//    }
+//    testImplementation 'org.springframework.security:spring-security-test'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.14.1'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
 }
 
-test {
-    useJUnitPlatform()
-}
+//test {
+//    useJUnitPlatform()
+//}
