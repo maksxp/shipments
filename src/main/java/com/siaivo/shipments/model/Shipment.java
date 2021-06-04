@@ -392,6 +392,29 @@ public class Shipment {
         }
     }
 
+    public int getMYOfPActualLoadingDate() {
+        int MYOfPActualLoadingDate=0;
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = null;
+        try {
+            date = df.parse(getActualLoadingDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        cal.setTime(date);
+        int yearOfLoading = cal.get(Calendar.YEAR);
+        int monthOfLoading = cal.get(Calendar.MONTH);
+
+        if (monthOfLoading<=5){
+            MYOfPActualLoadingDate = yearOfLoading-1;
+        }
+        if (monthOfLoading>5){
+            MYOfPActualLoadingDate = yearOfLoading;
+        }
+        return MYOfPActualLoadingDate;
+    }
+
     public List<ProductForShipment> getProductsForShipment() {
         return productsForShipment.stream().filter(productForShipment -> productForShipment.getQuantity().compareTo(BigDecimal.ZERO)!=0).collect(Collectors.toList());
     }

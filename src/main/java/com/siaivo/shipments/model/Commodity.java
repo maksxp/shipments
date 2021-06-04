@@ -68,7 +68,33 @@ public class Commodity {
         List <Product> allProductsFromThisCommodity = products;
         List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
         allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
-        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+//        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(ProductForShipment::isLoaded).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachLoadedProductForShipment = new ArrayList<>();
+        allLoadedProductsForShipmentFromThisCommodity.forEach(loadedProductForShipment -> quantityOfEachLoadedProductForShipment.add(loadedProductForShipment.getQuantity()));
+        return quantityOfEachLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getQuantityOfPreviousMYLoadedGoods (){
+        List <ProductForShipment> allLoadedProductsForShipmentFromThisCommodity;
+        List <Product> allProductsFromThisCommodity = products;
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+//        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(ProductForShipment::isPreviousMYLoaded).collect(Collectors.toList());
+        List <BigDecimal> quantityOfEachLoadedProductForShipment = new ArrayList<>();
+        allLoadedProductsForShipmentFromThisCommodity.forEach(loadedProductForShipment -> quantityOfEachLoadedProductForShipment.add(loadedProductForShipment.getQuantity()));
+        return quantityOfEachLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getQuantityOfThisMYLoadedGoods () {
+
+        List <ProductForShipment> allLoadedProductsForShipmentFromThisCommodity;
+        List <Product> allProductsFromThisCommodity = products;
+        List <ProductForShipment> allProductsForShipmentFromThisCommodity = new ArrayList<>();
+        allProductsFromThisCommodity.forEach(product -> allProductsForShipmentFromThisCommodity.addAll(product.getProductsForShipments()));
+//        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(productForShipment -> productForShipment.getShipment().getActualLoadingDate()!=null && !productForShipment.getShipment().getActualLoadingDate().equals("")).collect(Collectors.toList());
+        allLoadedProductsForShipmentFromThisCommodity = allProductsForShipmentFromThisCommodity.stream().filter(ProductForShipment::isThisMYLoaded).collect(Collectors.toList());
         List <BigDecimal> quantityOfEachLoadedProductForShipment = new ArrayList<>();
         allLoadedProductsForShipmentFromThisCommodity.forEach(loadedProductForShipment -> quantityOfEachLoadedProductForShipment.add(loadedProductForShipment.getQuantity()));
         return quantityOfEachLoadedProductForShipment.stream().reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -3,6 +3,9 @@ package com.siaivo.shipments.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Locale;
 
 @Entity
 @Table(name = "product_for_shipment")
@@ -142,6 +145,32 @@ public class ProductForShipment {
             isLoaded = false;
         }
         return isLoaded;
+    }
+
+    public boolean isThisMYLoaded () {
+        int MYOfPActualLoadingDate=0;
+        boolean isThisMYLoaded = false;
+        int thisYear = Calendar.getInstance(Locale.FRANCE).get(Calendar.YEAR);
+        if (isLoaded()){
+            MYOfPActualLoadingDate=getShipment().getMYOfPActualLoadingDate();
+        }
+        if (MYOfPActualLoadingDate==thisYear){
+            isThisMYLoaded = true;
+        }
+        return isThisMYLoaded;
+    }
+
+    public boolean isPreviousMYLoaded () {
+        int MYOfPActualLoadingDate=0;
+        boolean isPreviousMYLoaded = false;
+        int PreviousYear = Calendar.getInstance(Locale.FRANCE).get(Calendar.YEAR)-1;
+        if (isLoaded()){
+            MYOfPActualLoadingDate=getShipment().getMYOfPActualLoadingDate();
+        }
+        if (MYOfPActualLoadingDate==PreviousYear){
+            isPreviousMYLoaded = true;
+        }
+        return isPreviousMYLoaded;
     }
 
     private boolean isWholeSumPaid (){
