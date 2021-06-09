@@ -150,11 +150,10 @@ public class ProductForShipment {
     public boolean isThisMYLoaded () {
         int MYOfPActualLoadingDate=0;
         boolean isThisMYLoaded = false;
-        int thisYear = Calendar.getInstance(Locale.FRANCE).get(Calendar.YEAR);
         if (isLoaded()){
             MYOfPActualLoadingDate=getShipment().getMYOfPActualLoadingDate();
         }
-        if (MYOfPActualLoadingDate==thisYear){
+        if (MYOfPActualLoadingDate==getCurrentMY()){
             isThisMYLoaded = true;
         }
         return isThisMYLoaded;
@@ -163,13 +162,14 @@ public class ProductForShipment {
     public boolean isPreviousMYLoaded () {
         int MYOfPActualLoadingDate=0;
         boolean isPreviousMYLoaded = false;
-        int PreviousYear = Calendar.getInstance(Locale.FRANCE).get(Calendar.YEAR)-1;
         if (isLoaded()){
             MYOfPActualLoadingDate=getShipment().getMYOfPActualLoadingDate();
+
         }
-        if (MYOfPActualLoadingDate==PreviousYear){
+        if (MYOfPActualLoadingDate==getPreviousMY()){
             isPreviousMYLoaded = true;
         }
+
         return isPreviousMYLoaded;
     }
 
@@ -214,6 +214,22 @@ public class ProductForShipment {
             isAnySumPaid=true;
         }
         return isAnySumPaid;
+    }
+
+    private int getCurrentMY (){
+        int currentYear = Calendar.getInstance(Locale.FRANCE).get(Calendar.YEAR);
+        int currentMonth = Calendar.getInstance(Locale.FRANCE).get(Calendar.MONTH);
+        int currentMY =0;
+        if (currentMonth<=5){
+            currentMY = currentYear-1;
+        } else {
+            currentMY = currentYear;
+        }
+        return currentMY;
+    }
+
+    private int getPreviousMY (){
+        return getCurrentMY()-1;
     }
 
 }
