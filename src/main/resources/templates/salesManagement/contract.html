@@ -77,6 +77,9 @@
 
 
     <style>
+        .background {
+            background: #e3fcff;
+        }
         .layerHeader {
             padding: 70px 5px 5px;
             text-align: center;
@@ -302,8 +305,8 @@
             <th data-field="customer">Покупець</th>
             <th data-field="deliveryTerms">Incoterms</th>
             <th style="width: 13em" data-field="paymentTerms">Умови оплати</th>
-            <th style="width: 8em" data-field="startOfShipments">Початок <br> відвантажень</th>
-            <th style="width: 8em" data-field="endOfShipments">Завершення <br> відвантажень</th>
+            <th style="width: 10em" data-field="startOfShipments">Початок <br> відвантажень</th>
+            <th style="width: 10em" data-field="endOfShipments">Завершення <br> відвантажень</th>
 <!--            <th style="width: 4em" data-field="totalWeightOfAllGoods">Вага всіх <br> товарів</th>-->
             <th style="width: 10em" data-field="sumOfContract">Сума контракту</th>
             <th data-field="state">Статус</th>
@@ -312,7 +315,7 @@
         </thead>
         <tbody>
 <!--        <td>  <input th:name="customerName" th:value="*{customer.customerName}" id="nameInput" class="text"  required /> </td>-->
-        <td th:text="${contract.customer.customerName}">Покупець</td>
+        <td class="background" th:text="${contract.customer.customerName}">Покупець</td>
 
 <!--        <td style="text-align-last: center; width: 4em">-->
 <!--            <select  class="selectable" th:field="*{deliveryTerms}" th:value="#{deliveryTerms}">-->
@@ -322,8 +325,8 @@
 <!--                <option th:value="CFR">CFR</option>-->
 <!--            </select>-->
 <!--        </td>-->
-        <td th:text="${contract.deliveryTerms}">Incoterms</td>
-        <td th:text="${contract.paymentTerms}">paymentTerms</td>
+        <td class="background" th:text="${contract.deliveryTerms}">Incoterms</td>
+        <td class="background" th:text="${contract.paymentTerms}">paymentTerms</td>
 <!--        <td style="text-align-last: center; width: 13em" >-->
 <!--            <select class="selectable" th:field="*{paymentTerms}" th:value="#{paymentTerms}">-->
 <!--                <option th:value="'1 день по завантаженню'">1 день по завантаженню</option>-->
@@ -340,14 +343,14 @@
 <!--            </select>-->
 <!--        </td>-->
         <!--    <td th:text="${contract.startOfShipments}">Початок <br> відвантажень</td>-->
-        <td th:text="${contract.startOfShipments}">startOfShipments</td>
-        <td th:text="${contract.endOfShipments}">endOfShipments</td>
+        <td class="background" th:text="${contract.startOfShipments}">startOfShipments</td>
+        <td class="background" th:text="${contract.endOfShipments}">endOfShipments</td>
 <!--        <td style="width: 8em">  <input type="text" th:field="*{startOfShipments}" th:text="${startOfShipments}" class="datepicker text"  required readonly/> </td>-->
 <!--        <td style="width: 8em"> <input type="text" th:field="*{endOfShipments}" th:text="${endOfShipments}" class="datepicker text" required readonly /> </td>-->
 <!--        <td style="width: 4em" th:text="${weightOfAllProductsByContract.stripTrailingZeros().toPlainString()}">Загальна вага <br> всіх товарів</td>-->
-        <td style="width: 10em" th:text="${contract.getSumOfContract()==0} ? '0' : ${#strings.replace(#numbers.formatDecimal(contract.getSumOfContract(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
+        <td class="background" style="width: 10em" th:text="${contract.getSumOfContract()==0} ? '0' : ${#strings.replace(#numbers.formatDecimal(contract.getSumOfContract(), 0, 'WHITESPACE', 2, 'POINT'), '.00', '')}+' '+${contract.getProducts().get(0).getCurrency()}">sumOfContract</td>
         <!--    <td style="width: max-content">-->
-        <td th:text="${contract.state}">state</td>
+        <td class="background" th:text="${contract.state}">state</td>
 <!--        <td style="text-align-last: center; width: 8em">-->
 <!--            &lt;!&ndash;            <select  th:field="*{state}" th:value="#{state}" required>&ndash;&gt;-->
 <!--            <select class="selectable" th:field="*{state}" th:value="#{state}" >-->
@@ -358,7 +361,7 @@
 <!--                <option th:value="'скасований'">скасований</option>-->
 <!--            </select>-->
 <!--        </td>-->
-        <td th:text="${contract.comment}">state</td>
+        <td class="background" th:text="${contract.comment}">state</td>
 <!--        <td>  <textarea  class="text" th:field="*{comment}" th:value="#{comment}"> </textarea></td>-->
 
         </tbody>
@@ -400,14 +403,14 @@
     </thead>
     <tbody>
     <tr th:each="product : ${allProductsByContract}">
-        <td th:text="${product.commodity.commodityName}">Товар</td>
-        <td th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Вага <br> (законтрактована)</td>
-        <td th:text="${product.getLoadedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (законтрактована)</td>
-        <td th:text="${product.getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
-        <td th:text="${product.batch}">Партія</td>
-        <td th:text="${product.price.stripTrailingZeros().toPlainString()}">Ціна</td>
-        <td th:text="${product.currency}">Валюта</td>
-        <td th:text="${product.packaging}">Пакування</td>
+        <td class="background" th:text="${product.commodity.commodityName}">Товар</td>
+        <td class="background" th:text="${product.quantity.stripTrailingZeros().toPlainString()}">Вага <br> (законтрактована)</td>
+        <td class="background" th:text="${product.getLoadedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (законтрактована)</td>
+        <td class="background" th:text="${product.getNotDistributedQuantity().stripTrailingZeros().toPlainString()}">Вага <br> (не розподілена)</td>
+        <td class="background" th:text="${product.batch}">Партія</td>
+        <td class="background" th:text="${product.price.stripTrailingZeros().toPlainString()}">Ціна</td>
+        <td class="background" th:text="${product.currency}">Валюта</td>
+        <td class="background" th:text="${product.packaging}">Пакування</td>
 <!--        <td style="width: 7em">-->
 <!--            <select class="selectable" onchange="location = this.value;">-->
 <!--                <option value="" disabled selected hidden>Оберіть</option>-->
