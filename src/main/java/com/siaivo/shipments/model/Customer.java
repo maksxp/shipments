@@ -98,11 +98,7 @@ public class Customer {
         List <Shipment> allShipments = new ArrayList<>();
         allContracts.forEach(contract -> allShipments.addAll(contract.getShipments()));
         allShipments.forEach(shipment -> {
-            try {
-                arrearsSums.add(shipment.getArrears());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            arrearsSums.add(shipment.getArrears());
         });
         return arrearsSums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }

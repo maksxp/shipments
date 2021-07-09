@@ -454,7 +454,7 @@ public class Shipment {
         return listOfGoodsPerShipment;
     }
 
-    public BigDecimal getArrears () throws ParseException {
+    public BigDecimal getArrears () {
         List <BigDecimal> arrearsSums = new ArrayList<>();
         if (getContract().getPaymentTerms().equals("оплата частинами")){
             arrearsSums.add(getFirstSumArrears());
@@ -500,13 +500,19 @@ public class Shipment {
         return unpaidSumInUAH ;
     }
 
-    public BigDecimal getFirstSumArrears () throws ParseException {
+    public BigDecimal getFirstSumArrears () {
         BigDecimal firstSumArrears = BigDecimal.ZERO;
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (plannedPaymentDateOfFirstPartSum==null||plannedPaymentDateOfFirstPartSum.equals("")) {
-        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfFirstPartSum))>0&&(actualPaymentDateOfFirstPartSum==null||actualPaymentDateOfFirstPartSum.equals(""))){
-            firstSumArrears = this.invoiceFirstPartSum;
+        } else {
+            try {
+                   if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfFirstPartSum))>0&&(actualPaymentDateOfFirstPartSum==null||actualPaymentDateOfFirstPartSum.equals(""))){
+                    firstSumArrears = this.invoiceFirstPartSum;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return firstSumArrears;
     }
@@ -521,13 +527,19 @@ public class Shipment {
         return unpaidSumOfFirstPartSum;
     }
 
-    public BigDecimal getSecondSumArrears () throws ParseException {
+    public BigDecimal getSecondSumArrears () {
         BigDecimal secondSumArrears = BigDecimal.ZERO;
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         if (plannedPaymentDateOfSecondPartSum==null||plannedPaymentDateOfSecondPartSum.equals("")) {
-        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfSecondPartSum))>0&&(actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals(""))){
-            secondSumArrears = this.invoiceSecondPartSum;
+        } else {
+            try {
+                if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfSecondPartSum))>0&&(actualPaymentDateOfSecondPartSum==null||actualPaymentDateOfSecondPartSum.equals(""))){
+                    secondSumArrears = this.invoiceSecondPartSum;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return secondSumArrears;
     }
@@ -540,14 +552,20 @@ public class Shipment {
         return unpaidSumOfSecondPartSum;
     }
 
-    public BigDecimal getWholeSumArrears () throws ParseException {
+    public BigDecimal getWholeSumArrears () {
         BigDecimal wholeSumArrears = BigDecimal.ZERO;
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
         if (plannedPaymentDateOfWholeSum==null||plannedPaymentDateOfWholeSum.equals("")) {
-        } else if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfWholeSum))>0&&(actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals(""))){
-            wholeSumArrears = getInvoiceWholeSum();
+        } else {
+            try {
+                if (df.parse(df.format(calendar.getTime())).compareTo(df.parse(this.plannedPaymentDateOfWholeSum))>0&&(actualPaymentDateOfWholeSum==null||actualPaymentDateOfWholeSum.equals(""))){
+                    wholeSumArrears = getInvoiceWholeSum();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return wholeSumArrears;
     }

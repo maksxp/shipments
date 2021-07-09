@@ -20,8 +20,6 @@ public interface ShipmentService {
 
     void deleteShipment (Shipment shipment);
 
-    List<Shipment>thisWeekShipments();
-
     List<Shipment> shipmentsWithoutPlannedLoadingDate();
 
     List<Shipment> allPlannedPayments();
@@ -46,7 +44,17 @@ public interface ShipmentService {
 
     List<Shipment>nextMonthShipments();
 
+    List<Shipment>thisWeekShipments();
+
     List<Shipment>nextWeekShipments();
+
+//    List<Shipment>thisMonthPayments();
+//
+//    List<Shipment>nextMonthPayments();
+//
+//    List<Shipment>thisWeekPayments();
+//
+//    List<Shipment>nextWeekPayments();
 
     List<Shipment> allShipments();
 

@@ -242,8 +242,8 @@
             </td>
             <td th:case="'firstAndSecond'" data-field="estimatedDate"
                 th:text="${iterStat.odd} ?
-                ${shipment.getPlannedPaymentDateOfFirstPartSum()} :
-                ${shipment.getPlannedPaymentDateOfSecondPartSum()}">
+                (${shipment.getPlannedPaymentDateOfFirstPartSum()}) :
+                (${shipment.getPlannedPaymentDateOfSecondPartSum()})">
             </td>
         </th:block>
 <!--        <td data-field="estimatedDate" th:text="${shipment.getPlannedFullSettlementDate()}">Очікувана дата</td>-->

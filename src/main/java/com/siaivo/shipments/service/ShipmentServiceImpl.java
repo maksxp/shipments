@@ -77,6 +77,16 @@ public class ShipmentServiceImpl implements ShipmentService{
         return thisWeekShipments;
     }
 
+//    @Override
+//    public List<Shipment> thisWeekPayments() {
+//        List <Shipment> thisWeekPayments = new ArrayList<>();
+//        String [] allDatesOfWeek = getAllDatesOfCurrentWeek();
+//        for (int i=0;i<7;i++){
+//            thisWeekPayments.addAll(shipmentRepository.findByPlannedPaymentDateOfFirstPartSum(allDatesOfWeek[i]));
+//        }
+//        return thisWeekPayments;
+//    }
+
     @Override
     public List <Shipment> allReleasedShipments() {
         List <Shipment> allReleasedShipments;
@@ -158,7 +168,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         allPaymentsByTheEndOfNextMonth.addAll(
                 firstSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfNextMonth.addAll(
-                this.secondSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
+                secondSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         allPaymentsByTheEndOfNextMonth.addAll(
                 wholeSumPaymentsByTheEndOfNextMonth().stream().filter(shipment -> !shipment.getContract().getPaymentTerms().equals("оплата частинами")).collect(Collectors.toList()));
         return allPaymentsByTheEndOfNextMonth;
@@ -215,7 +225,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfNextWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
-        firstSumPaymentsByTheEndOfNextWeek = firstSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> null != shipment.getActualPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
+        firstSumPaymentsByTheEndOfNextWeek = firstSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
         firstSumPaymentsByTheEndOfNextWeek = firstSumPaymentsByTheEndOfNextWeek.stream().filter(shipment -> {
             try {
                 return 0 <= df.parse(getLastDateOfNextWeek()).compareTo(df.parse(shipment.getPlannedPaymentDateOfFirstPartSum()));
@@ -235,7 +245,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumPaymentsByTheEndOfNextMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
-        firstSumPaymentsByTheEndOfNextMonth = firstSumPaymentsByTheEndOfNextMonth.stream().filter(shipment -> null != shipment.getActualPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
+        firstSumPaymentsByTheEndOfNextMonth = firstSumPaymentsByTheEndOfNextMonth.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
         firstSumPaymentsByTheEndOfNextMonth = firstSumPaymentsByTheEndOfNextMonth.stream().filter(shipment -> {
             try {
                 return 0 <= df.parse(getLastDateOfNextMonth()).compareTo(df.parse(shipment.getPlannedPaymentDateOfFirstPartSum()));
@@ -269,7 +279,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         firstSumOverduePayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfFirstPartSum() || shipment.getActualPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
-        firstSumOverduePayments = firstSumOverduePayments.stream().filter(shipment -> null != shipment.getActualPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
+        firstSumOverduePayments = firstSumOverduePayments.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfFirstPartSum() && !shipment.getPlannedPaymentDateOfFirstPartSum().equals("")).collect(Collectors.toList());
         firstSumOverduePayments = firstSumOverduePayments.stream().filter(shipment -> {
             try {
                 return 0 < df.parse(getTodayDate()).compareTo(df.parse(shipment.getPlannedPaymentDateOfFirstPartSum()));
@@ -290,7 +300,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfThisWeek = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
-        secondSumPaymentsByTheEndOfThisWeek = secondSumPaymentsByTheEndOfThisWeek.stream().filter(shipment -> null != shipment.getActualPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
+        secondSumPaymentsByTheEndOfThisWeek = secondSumPaymentsByTheEndOfThisWeek.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPaymentsByTheEndOfThisWeek = secondSumPaymentsByTheEndOfThisWeek.stream().filter(shipment -> {
             try {
                 return 0 <= df.parse(getLastDateOfCurrentWeek()).compareTo(df.parse(shipment.getPlannedPaymentDateOfSecondPartSum()));
@@ -311,7 +321,7 @@ public class ShipmentServiceImpl implements ShipmentService{
         Calendar calendar = new GregorianCalendar(Locale.FRANCE);
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPaymentsByTheEndOfThisMonth = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
-        secondSumPaymentsByTheEndOfThisMonth = secondSumPaymentsByTheEndOfThisMonth.stream().filter(shipment -> null != shipment.getActualPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
+        secondSumPaymentsByTheEndOfThisMonth = secondSumPaymentsByTheEndOfThisMonth.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPaymentsByTheEndOfThisMonth = secondSumPaymentsByTheEndOfThisMonth.stream().filter(shipment -> {
             try {
                 return 0 <= df.parse(getLastDateOfCurrentMonth()).compareTo(df.parse(shipment.getPlannedPaymentDateOfSecondPartSum()));
@@ -372,7 +382,7 @@ public class ShipmentServiceImpl implements ShipmentService{
 //        Calendar calendar = new GregorianCalendar(Locale.FRANCE);
 //        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         secondSumPlannedPayments = unpaidShipments.stream().filter(shipment -> null == shipment.getActualPaymentDateOfSecondPartSum() ||shipment.getActualPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
-        secondSumPlannedPayments = secondSumPlannedPayments.stream().filter(shipment -> null != shipment.getActualPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
+        secondSumPlannedPayments = secondSumPlannedPayments.stream().filter(shipment -> null != shipment.getPlannedPaymentDateOfSecondPartSum() && !shipment.getPlannedPaymentDateOfSecondPartSum().equals("")).collect(Collectors.toList());
         secondSumPlannedPayments.forEach(shipment -> shipment.setSumForPayIdentity("second"));
         return secondSumPlannedPayments;
     }
@@ -631,10 +641,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInEUR () {
         List <BigDecimal> allPaymentsByTheEndOfThisWeekInEUR = new ArrayList<>();
-        allPaymentsByTheEndOfThisWeek()
+        firstSumPaymentsByTheEndOfThisWeek()
                 .stream()
                 .filter(shipment -> "EUR".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInEUR.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInEUR.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInEUR.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInEUR.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisWeekInEUR
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -643,10 +661,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUSD () {
         List <BigDecimal> allPaymentsByTheEndOfThisWeekInUSD = new ArrayList<>();
-        allPaymentsByTheEndOfThisWeek()
+        firstSumPaymentsByTheEndOfThisWeek()
                 .stream()
                 .filter(shipment -> "USD".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUSD.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUSD.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUSD.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUSD.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisWeekInUSD
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -655,10 +681,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisWeekInUAH () {
         List <BigDecimal> allPaymentsByTheEndOfThisWeekInUAH = new ArrayList<>();
-        allPaymentsByTheEndOfThisWeek()
+        firstSumPaymentsByTheEndOfThisWeek()
                 .stream()
                 .filter(shipment -> "UAH".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUAH.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUAH.add(shipment.getInvoiceSecondPartSum()));
+        secondSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUAH .add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisWeekInUAH.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisWeekInUAH
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -667,10 +701,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInEUR () {
         List <BigDecimal> allPaymentsByTheEndOfThisMonthInEUR = new ArrayList<>();
-        allPaymentsByTheEndOfThisMonth()
+        firstSumPaymentsByTheEndOfThisMonth()
                 .stream()
                 .filter(shipment -> "EUR".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInEUR.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInEUR.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInEUR.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInEUR.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisMonthInEUR
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -679,10 +721,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUSD () {
         List <BigDecimal> allPaymentsByTheEndOfThisMonthInUSD = new ArrayList<>();
-        allPaymentsByTheEndOfThisMonth()
+        firstSumPaymentsByTheEndOfThisMonth()
                 .stream()
                 .filter(shipment -> "USD".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUSD.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUSD.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUSD.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUSD.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisMonthInUSD
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -691,10 +741,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfThisMonthInUAH () {
         List <BigDecimal> allPaymentsByTheEndOfThisMonthInUAH = new ArrayList<>();
-        allPaymentsByTheEndOfThisMonth()
+        firstSumPaymentsByTheEndOfThisMonth()
                 .stream()
                 .filter(shipment -> "UAH".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUAH.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUAH.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUAH.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfThisMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfThisMonthInUAH.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfThisMonthInUAH
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -702,11 +760,21 @@ public class ShipmentServiceImpl implements ShipmentService{
 
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInEUR () {
+
         List <BigDecimal> allPaymentsByTheEndOfNextWeekInEUR = new ArrayList<>();
-        allPaymentsByTheEndOfNextWeek()
+        firstSumPaymentsByTheEndOfNextWeek()
                 .stream()
                 .filter(shipment -> "EUR".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInEUR.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInEUR.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInEUR.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInEUR.add(shipment.getInvoiceWholeSum()));
+
         return allPaymentsByTheEndOfNextWeekInEUR
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -715,10 +783,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUSD () {
         List <BigDecimal> allPaymentsByTheEndOfNextWeekInUSD = new ArrayList<>();
-        allPaymentsByTheEndOfNextWeek()
+        firstSumPaymentsByTheEndOfNextWeek()
                 .stream()
                 .filter(shipment -> "USD".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUSD.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUSD.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUSD.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUSD.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfNextWeekInUSD
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -727,10 +803,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextWeekInUAH () {
         List <BigDecimal> allPaymentsByTheEndOfNextWeekInUAH = new ArrayList<>();
-        allPaymentsByTheEndOfNextWeek()
+        firstSumPaymentsByTheEndOfNextWeek()
                 .stream()
                 .filter(shipment -> "UAH".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUAH.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUAH.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUAH.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextWeek()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextWeekInUAH.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfNextWeekInUAH
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -739,10 +823,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInEUR () {
         List <BigDecimal> allPaymentsByTheEndOfNextMonthInEUR = new ArrayList<>();
-        allPaymentsByTheEndOfNextMonth()
+        firstSumPaymentsByTheEndOfNextMonth()
                 .stream()
                 .filter(shipment -> "EUR".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInEUR.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInEUR.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInEUR.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "EUR".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInEUR.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfNextMonthInEUR
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -751,10 +843,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUSD () {
         List <BigDecimal> allPaymentsByTheEndOfNextMonthInUSD = new ArrayList<>();
-        allPaymentsByTheEndOfNextMonth()
+        firstSumPaymentsByTheEndOfNextMonth()
                 .stream()
                 .filter(shipment -> "USD".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUSD.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUSD.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUSD.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "USD".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUSD.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfNextMonthInUSD
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -763,10 +863,18 @@ public class ShipmentServiceImpl implements ShipmentService{
     @Override
     public BigDecimal getTotalSumOfAllPaymentsByTheEndOfNextMonthInUAH () {
         List <BigDecimal> allPaymentsByTheEndOfNextMonthInUAH = new ArrayList<>();
-        allPaymentsByTheEndOfNextMonth()
+        firstSumPaymentsByTheEndOfNextMonth()
                 .stream()
                 .filter(shipment -> "UAH".equals(shipment.getCurrency()))
-                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUAH.add(shipment.getUnpaidSum()));
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUAH.add(shipment.getInvoiceFirstPartSum()));
+        secondSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUAH.add(shipment.getInvoiceSecondPartSum()));
+        wholeSumPaymentsByTheEndOfNextMonth()
+                .stream()
+                .filter(shipment -> "UAH".equals(shipment.getCurrency()))
+                .forEach(shipment -> allPaymentsByTheEndOfNextMonthInUAH.add(shipment.getInvoiceWholeSum()));
         return allPaymentsByTheEndOfNextMonthInUAH
                 .stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
